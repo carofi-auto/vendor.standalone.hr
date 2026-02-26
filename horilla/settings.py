@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     "django_apscheduler",
 ]
 ENABLE_SOCIAL_LOGIN = env.bool("ENABLE_SOCIAL_LOGIN", default=False)
+ENABLE_LOGIN_FORM = env.bool("ENABLE_LOGIN_FORM", default=True)
 if ENABLE_SOCIAL_LOGIN:
     INSTALLED_APPS += ["social_django"]
 
@@ -208,9 +209,9 @@ MESSAGE_TAGS = {
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 
 LOGIN_URL = "/login"
-AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
+_auth_backends = []
 if ENABLE_SOCIAL_LOGIN:
-    AUTHENTICATION_BACKENDS = ("social_core.backends.google.GoogleOAuth2",)
+    _auth_backends.append("social_core.backends.google.GoogleOAuth2")
     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env(
         "SOCIAL_AUTH_GOOGLE_OAUTH2_KEY",
         default=env("GOOGLE_CLIENT_ID", default=""),
@@ -246,6 +247,14 @@ if ENABLE_SOCIAL_LOGIN:
     )
     SOCIAL_AUTH_LOGIN_REDIRECT_URL = "/"
     SOCIAL_AUTH_LOGIN_ERROR_URL = "/login/"
+
+if ENABLE_LOGIN_FORM:
+    _auth_backends.append("django.contrib.auth.backends.ModelBackend")
+
+if not _auth_backends:
+    _auth_backends.append("django.contrib.auth.backends.ModelBackend")
+
+AUTHENTICATION_BACKENDS = tuple(_auth_backends)
 
 
 SIMPLE_HISTORY_REVERT_DISABLED = True

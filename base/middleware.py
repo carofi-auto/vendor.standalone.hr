@@ -3,6 +3,7 @@ middleware.py
 """
 
 from django.apps import apps
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.core.cache import cache
@@ -210,6 +211,12 @@ class ForcePasswordChangeMiddleware:
 
         if hasattr(request, "user") and request.user.is_authenticated:
             if getattr(request.user, "is_new_employee", True):
+                # Do not force local password change for social-authenticated users.
+                backend_path = request.session.get("_auth_user_backend", "")
+                if backend_path.startswith("social_core.backends.") and getattr(
+                    settings, "ENABLE_SOCIAL_LOGIN", False
+                ):
+                    return self.get_response(request)
                 return redirect("change-password")
 
         return self.get_response(request)

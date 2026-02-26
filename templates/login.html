@@ -46,7 +46,8 @@
                         {% trans "Only carofi.app Google Workspace accounts are allowed." %}
                     </small>
                 </div>
-                {% else %}
+                {% endif %}
+                {% if login_form_enabled %}
                 <form method="post" class="oh-form-group">
                     {% csrf_token %}
                     <div class="oh-input-group">
@@ -114,7 +115,7 @@
                 <img src={% if white_label_company.icon %}
                         "{{white_label_company.icon.url}}"
                         alt="{{white_label_company_name}}"
-                        style=" opacity:.90; 200px; height: 140px;"
+                        style="opacity: .9; width: 200px; height: 140px;"
                     {% else %}
                         "{% static 'images/ui/auth-logo.png' %}" alt="Horilla"
                     {% endif %}

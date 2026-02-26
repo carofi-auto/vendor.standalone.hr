@@ -565,12 +565,13 @@ def login_user(request):
     Handles user login and authentication.
     """
     social_login_enabled = getattr(settings, "ENABLE_SOCIAL_LOGIN", False)
+    login_form_enabled = getattr(settings, "ENABLE_LOGIN_FORM", True)
     next_url = request.GET.get("next", "/")
     query_params = request.GET.dict()
     query_params.pop("next", None)
     params = urlencode(query_params)
 
-    if social_login_enabled:
+    if social_login_enabled and not login_form_enabled:
         social_login_url = reverse("social:begin", args=["google-oauth2"])
         if url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
             social_login_url += f"?{urlencode({'next': next_url})}"
@@ -584,6 +585,7 @@ def login_user(request):
             {
                 "initialize_database": initialize_database_condition(),
                 "social_login_enabled": True,
+                "login_form_enabled": False,
                 "social_login_url": social_login_url,
             },
         )
@@ -637,7 +639,11 @@ def login_user(request):
         "login.html",
         {
             "initialize_database": initialize_database_condition(),
-            "social_login_enabled": False,
+            "social_login_enabled": social_login_enabled,
+            "login_form_enabled": login_form_enabled,
+            "social_login_url": reverse("social:begin", args=["google-oauth2"])
+            if social_login_enabled
+            else "",
         },
     )
 
