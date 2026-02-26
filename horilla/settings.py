@@ -35,6 +35,22 @@ env = environ.Env(
 
 env.read_env(os.path.join(BASE_DIR, ".env"), overwrite=True)
 
+
+def _env_csv(name, default=""):
+    raw_value = env(name, default=default)
+    return [item.strip() for item in raw_value.split(",") if item.strip()]
+
+
+def _env_key_value_pairs(name, default=""):
+    raw_value = env(name, default=default)
+    parsed = {}
+    for part in [item.strip() for item in raw_value.split(",") if item.strip()]:
+        if "=" in part:
+            key, value = part.split("=", 1)
+            parsed[key.strip()] = value.strip()
+    return parsed
+
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
 
@@ -69,6 +85,10 @@ INSTALLED_APPS = [
     "widget_tweaks",
     "django_apscheduler",
 ]
+ENABLE_SOCIAL_LOGIN = env.bool("ENABLE_SOCIAL_LOGIN", default=False)
+if ENABLE_SOCIAL_LOGIN:
+    INSTALLED_APPS += ["social_django"]
+
 APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
 
 APSCHEDULER_RUN_NOW_TIMEOUT = 25  # Seconds
@@ -188,6 +208,44 @@ MESSAGE_TAGS = {
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 
 LOGIN_URL = "/login"
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
+if ENABLE_SOCIAL_LOGIN:
+    AUTHENTICATION_BACKENDS = ("social_core.backends.google.GoogleOAuth2",)
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env(
+        "SOCIAL_AUTH_GOOGLE_OAUTH2_KEY",
+        default=env("GOOGLE_CLIENT_ID", default=""),
+    )
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env(
+        "SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET",
+        default=env("GOOGLE_CLIENT_SECRET", default=""),
+    )
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = _env_csv(
+        "SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE",
+        default="email,profile",
+    )
+    SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = _env_key_value_pairs(
+        "SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS",
+        default="access_type=online",
+    )
+    SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = _env_csv(
+        "SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS",
+        default="carofi.app",
+    )
+    # Reuse existing users by verified email instead of creating duplicates.
+    SOCIAL_AUTH_PIPELINE = (
+        "social_core.pipeline.social_auth.social_details",
+        "social_core.pipeline.social_auth.social_uid",
+        "social_core.pipeline.social_auth.auth_allowed",
+        "social_core.pipeline.social_auth.social_user",
+        "social_core.pipeline.user.get_username",
+        "social_core.pipeline.social_auth.associate_by_email",
+        "social_core.pipeline.user.create_user",
+        "social_core.pipeline.social_auth.associate_user",
+        "social_core.pipeline.social_auth.load_extra_data",
+        "social_core.pipeline.user.user_details",
+    )
+    SOCIAL_AUTH_LOGIN_REDIRECT_URL = "/"
+    SOCIAL_AUTH_LOGIN_ERROR_URL = "/login/"
 
 
 SIMPLE_HISTORY_REVERT_DISABLED = True

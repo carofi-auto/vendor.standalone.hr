@@ -19,9 +19,6 @@ COPY requirements.txt .
 
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
-RUN pip install --no-cache-dir --prefix=/install \
-    gunicorn \
-    social-auth-app-django
 
 # =========================
 # Runtime Stage

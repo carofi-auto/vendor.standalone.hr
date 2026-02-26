@@ -45,5 +45,8 @@ urlpatterns = [
     path("health/", health_check),
 ]
 
+if settings.ENABLE_SOCIAL_LOGIN:
+    urlpatterns.append(path("social-auth/", include("social_django.urls", namespace="social")))
+
 # if settings.DEBUG:
 #     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

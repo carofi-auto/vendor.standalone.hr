@@ -34,6 +34,19 @@
                 <p class="text-muted text-center">
                     {% trans "Please login to access the dashboard." %}
                 </p>
+                {% if social_login_enabled %}
+                <div class="oh-form-group">
+                    <a href="{{ social_login_url }}"
+                        class="oh-btn oh-onboarding-card__button mt-4 oh-btn--secondary oh-btn--shadow w-100 mb-2"
+                        role="button">
+                        <ion-icon class="me-2" name="logo-google"></ion-icon>
+                        {% trans "Continue with Google" %}
+                    </a>
+                    <small class="text-muted text-center d-block">
+                        {% trans "Only carofi.app Google Workspace accounts are allowed." %}
+                    </small>
+                </div>
+                {% else %}
                 <form method="post" class="oh-form-group">
                     {% csrf_token %}
                     <div class="oh-input-group">
@@ -61,13 +74,14 @@
                         {% trans "Secure Sign-in" %}
                     </button>
                     {% if not initialize_database %}
-                        <small class="text-center">
-                            <a href="{% url 'forgot-password' %}" class="oh-link oh-link--secondary justify-content-center">
-                                {% trans "Forgot password" %}?
-                            </a>
-                        </small>
+                    <small class="text-center">
+                        <a href="{% url 'forgot-password' %}" class="oh-link oh-link--secondary justify-content-center">
+                            {% trans "Forgot password" %}?
+                        </a>
+                    </small>
                     {% endif %}
                 </form>
+                {% endif %}
                 {% if initialize_database %}
                     <div>
                         <div class="d-flex gap-2">

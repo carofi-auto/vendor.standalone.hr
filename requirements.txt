@@ -23,6 +23,7 @@ django-mathfilters
 django-microsoft-auth
 django-model-utils
 django-simple-history
+social-auth-app-django
 django-widget-tweaks
 djangorestframework
 djangorestframework-simplejwt
