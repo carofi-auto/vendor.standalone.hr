@@ -209,9 +209,15 @@ MESSAGE_TAGS = {
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 
 LOGIN_URL = "/login"
-_auth_backends = []
+_auth_backends = ["django.contrib.auth.backends.ModelBackend"]
 if ENABLE_SOCIAL_LOGIN:
     _auth_backends.append("social_core.backends.google.GoogleOAuth2")
+    SOCIAL_LOGIN_STRICT_EMPLOYEE_MATCH = env.bool(
+        "SOCIAL_LOGIN_STRICT_EMPLOYEE_MATCH", default=False
+    )
+    SOCIAL_LOGIN_STRICT_REQUIRE_ACTIVE_EMPLOYEE = env.bool(
+        "SOCIAL_LOGIN_STRICT_REQUIRE_ACTIVE_EMPLOYEE", default=True
+    )
     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env(
         "SOCIAL_AUTH_GOOGLE_OAUTH2_KEY",
         default=env("GOOGLE_CLIENT_ID", default=""),
@@ -240,6 +246,7 @@ if ENABLE_SOCIAL_LOGIN:
         "social_core.pipeline.social_auth.social_user",
         "social_core.pipeline.user.get_username",
         "social_core.pipeline.social_auth.associate_by_email",
+        "base.social_pipeline.enforce_employee_access",
         "social_core.pipeline.user.create_user",
         "social_core.pipeline.social_auth.associate_user",
         "base.social_pipeline.link_employee_by_email",
@@ -248,12 +255,6 @@ if ENABLE_SOCIAL_LOGIN:
     )
     SOCIAL_AUTH_LOGIN_REDIRECT_URL = "/"
     SOCIAL_AUTH_LOGIN_ERROR_URL = "/login/"
-
-if ENABLE_LOGIN_FORM:
-    _auth_backends.append("django.contrib.auth.backends.ModelBackend")
-
-if not _auth_backends:
-    _auth_backends.append("django.contrib.auth.backends.ModelBackend")
 
 AUTHENTICATION_BACKENDS = tuple(_auth_backends)
 

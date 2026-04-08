@@ -2,7 +2,38 @@
 Custom social-auth pipeline helpers for Horilla.
 """
 
+from django.conf import settings
+
+from social_core.exceptions import AuthForbidden
+
 from employee.models import Employee
+
+
+def _resolve_login_email(details, user=None):
+    return (getattr(user, "email", "") or details.get("email") or "").strip().lower()
+
+
+def enforce_employee_access(strategy, details, user=None, *args, **kwargs):
+    """
+    Strict social-login gate controlled by environment flags.
+
+    When enabled, only users with an Employee record (and optionally active status)
+    are allowed to complete social authentication.
+    """
+    if not getattr(settings, "SOCIAL_LOGIN_STRICT_EMPLOYEE_MATCH", False):
+        return
+
+    email = _resolve_login_email(details, user)
+    if not email:
+        raise AuthForbidden(strategy.backend)
+
+    employee = Employee.objects.filter(email__iexact=email).first()
+    if employee is None:
+        raise AuthForbidden(strategy.backend)
+
+    if getattr(settings, "SOCIAL_LOGIN_STRICT_REQUIRE_ACTIVE_EMPLOYEE", True):
+        if not employee.is_active:
+            raise AuthForbidden(strategy.backend)
 
 
 def link_employee_by_email(strategy, details, user=None, *args, **kwargs):
@@ -15,7 +46,7 @@ def link_employee_by_email(strategy, details, user=None, *args, **kwargs):
     if user is None:
         return
 
-    email = (getattr(user, "email", "") or details.get("email") or "").strip().lower()
+    email = _resolve_login_email(details, user)
     if not email:
         return
 
