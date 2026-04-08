@@ -297,6 +297,18 @@ LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = env("TIME_ZONE", default="Asia/Kolkata")
 
+# ---------------------------------------------------------------------------
+# Carofi internal integration
+#
+# Used by the new HR / Leave module on client.web.admin: the carofi BFF
+# (server.connect.admin) exchanges a shared service token for a per-employee
+# JWT via /api/auth/internal-token/, and the leave signal posts an HMAC-signed
+# webhook to the BFF whenever a LeaveRequest status changes.
+# ---------------------------------------------------------------------------
+CAROFI_INTERNAL_SERVICE_TOKEN = env("CAROFI_INTERNAL_SERVICE_TOKEN", default="")
+CAROFI_LEAVE_WEBHOOK_URL = env("CAROFI_LEAVE_WEBHOOK_URL", default="")
+CAROFI_LEAVE_WEBHOOK_SECRET = env("CAROFI_LEAVE_WEBHOOK_SECRET", default="")
+
 USE_I18N = True
 
 USE_L10N = True
