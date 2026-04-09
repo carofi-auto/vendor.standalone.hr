@@ -35,6 +35,13 @@ env = environ.Env(
 
 env.read_env(os.path.join(BASE_DIR, ".env"), overwrite=True)
 
+# Load secrets from AWS Secrets Manager when enabled. Must run after
+# read_env() so ENABLE_AWS_SECRET_MANAGER and the secret names are available,
+# and before any setting reads from env() below.
+from horilla.aws_secrets import load_aws_secrets  # noqa: E402
+
+load_aws_secrets()
+
 
 def _env_csv(name, default=""):
     raw_value = env(name, default=default)
