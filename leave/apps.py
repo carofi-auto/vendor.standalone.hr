@@ -10,7 +10,8 @@ class LeaveConfig(AppConfig):
 
         from horilla.horilla_settings import APPS
         from horilla.urls import urlpatterns
-        from leave import signals
+        from leave import signals  # noqa: F401
+        from leave import signals_carofi  # noqa: F401
 
         APPS.append("leave")
         urlpatterns.append(

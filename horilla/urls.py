@@ -30,8 +30,6 @@ def health_check(request):
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("accounts/", include("django.contrib.auth.urls")),
-    path("accounts/", include("django.contrib.auth.urls")),
     path("", include("base.urls")),
     path("", include("horilla_automations.urls")),
     path("", include("horilla_views.urls")),
@@ -44,6 +42,9 @@ urlpatterns = [
     path("i18n/", include("django.conf.urls.i18n")),
     path("health/", health_check),
 ]
+
+if settings.ENABLE_LOGIN_FORM:
+    urlpatterns.append(path("accounts/", include("django.contrib.auth.urls")))
 
 if settings.ENABLE_SOCIAL_LOGIN:
     urlpatterns.append(path("social-auth/", include("social_django.urls", namespace="social")))
