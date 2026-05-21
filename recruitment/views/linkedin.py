@@ -108,8 +108,13 @@ def post_recruitment_in_linkedin(
         f"{site_url}/recruitment/application-form?recruitmentId={recruitment.id}"
     )
 
+    if linkedin_acc.organization_id:
+        author_urn = f"urn:li:organization:{linkedin_acc.organization_id}"
+    else:
+        author_urn = f"urn:li:person:{linkedin_acc.sub_id}"
+
     payload_dict = {
-        "author": f"urn:li:person:{linkedin_acc.sub_id}",
+        "author": author_urn,
         "lifecycleState": "PUBLISHED",
         "specificContent": {
             "com.linkedin.ugc.ShareContent": {
@@ -153,15 +158,49 @@ def post_recruitment_in_linkedin(
         )
         recruitment.linkedin_post_id = post_id
         recruitment.save()
-    else:
-        logger.error(
-            "LinkedIn ugcPosts failed: status=%s body=%s author=%s",
-            response.status_code,
-            response.text,
-            payload_dict["author"],
+        return
+
+    duplicate_urn = _extract_duplicate_post_urn(response)
+    if duplicate_urn:
+        logger.info(
+            "LinkedIn ugcPosts duplicate detected; treating as success: post_id=%s",
+            duplicate_urn,
         )
-        recruitment.publish_in_linkedin = False
+        recruitment.linkedin_post_id = duplicate_urn
         recruitment.save()
+        return
+
+    logger.error(
+        "LinkedIn ugcPosts failed: status=%s body=%s author=%s",
+        response.status_code,
+        response.text,
+        payload_dict["author"],
+    )
+    recruitment.publish_in_linkedin = False
+    recruitment.save()
+
+
+_DUPLICATE_URN_RE = re.compile(r"urn:li:share:\d+")
+
+
+def _extract_duplicate_post_urn(response):
+    """If LinkedIn rejected the post as a duplicate, return the existing URN."""
+    if response.status_code != 422:
+        return None
+    try:
+        body = response.json()
+    except ValueError:
+        return None
+
+    is_duplicate = any(
+        err.get("code") == "DUPLICATE_POST"
+        for err in body.get("errorDetails", {}).get("inputErrors", [])
+    )
+    if not is_duplicate:
+        return None
+
+    match = _DUPLICATE_URN_RE.search(body.get("message", ""))
+    return match.group(0) if match else None
 
 
 def delete_post(recruitment):

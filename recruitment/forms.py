@@ -1365,6 +1365,7 @@ class LinkedInAccountForm(BaseModelForm):
             "username",
             "email",
             "api_token",
+            "organization_id",
             "is_active",
             "company_id",
         ]

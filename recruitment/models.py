@@ -1091,6 +1091,17 @@ class LinkedInAccount(HorillaModel):
     email = models.EmailField(max_length=254, verbose_name=_("Email"))
     api_token = models.CharField(max_length=500, verbose_name=_("API Token"))
     sub_id = models.CharField(max_length=250, unique=True)
+    organization_id = models.CharField(
+        max_length=50,
+        blank=True,
+        default="",
+        verbose_name=_("LinkedIn Page ID"),
+        help_text=_(
+            "Numeric LinkedIn organization ID (e.g. 93254216). When set, "
+            "posts are authored by the Company Page instead of the user. "
+            "Requires w_organization_social scope and admin rights on the page."
+        ),
+    )
     company_id = models.ForeignKey(
         Company, on_delete=models.CASCADE, null=True, verbose_name=_("Company")
     )
