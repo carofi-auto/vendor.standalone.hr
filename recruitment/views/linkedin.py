@@ -145,9 +145,21 @@ def post_recruitment_in_linkedin(
     response = requests.post(url, headers=headers, data=payload)
     if response.status_code == 201:
         response_data = response.json()
-        recruitment.linkedin_post_id = response_data.get("id")  # Store post ID
+        post_id = response_data.get("id")
+        logger.info(
+            "LinkedIn ugcPosts succeeded: post_id=%s author=%s",
+            post_id,
+            payload_dict["author"],
+        )
+        recruitment.linkedin_post_id = post_id
         recruitment.save()
     else:
+        logger.error(
+            "LinkedIn ugcPosts failed: status=%s body=%s author=%s",
+            response.status_code,
+            response.text,
+            payload_dict["author"],
+        )
         recruitment.publish_in_linkedin = False
         recruitment.save()
 
