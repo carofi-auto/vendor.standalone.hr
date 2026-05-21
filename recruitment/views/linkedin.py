@@ -108,13 +108,18 @@ def post_recruitment_in_linkedin(
         f"{site_url}/recruitment/application-form?recruitmentId={recruitment.id}"
     )
 
-    if linkedin_acc.organization_id:
-        author_urn = f"urn:li:organization:{linkedin_acc.organization_id}"
-    else:
-        author_urn = f"urn:li:person:{linkedin_acc.sub_id}"
+    if not linkedin_acc.organization_id:
+        logger.error(
+            "LinkedIn account %s has no organization_id set; refusing to "
+            "post to a personal feed.",
+            linkedin_acc.id,
+        )
+        recruitment.publish_in_linkedin = False
+        recruitment.save()
+        return
 
     payload_dict = {
-        "author": author_urn,
+        "author": f"urn:li:organization:{linkedin_acc.organization_id}",
         "lifecycleState": "PUBLISHED",
         "specificContent": {
             "com.linkedin.ugc.ShareContent": {

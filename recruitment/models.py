@@ -1093,13 +1093,12 @@ class LinkedInAccount(HorillaModel):
     sub_id = models.CharField(max_length=250, unique=True)
     organization_id = models.CharField(
         max_length=50,
-        blank=True,
         default="",
         verbose_name=_("LinkedIn Page ID"),
         help_text=_(
-            "Numeric LinkedIn organization ID (e.g. 93254216). When set, "
-            "posts are authored by the Company Page instead of the user. "
-            "Requires w_organization_social scope and admin rights on the page."
+            "Numeric LinkedIn organization ID (e.g. 93254216). Posts will be "
+            "authored by this Company Page. Requires w_organization_social "
+            "scope on the token and admin rights on the page."
         ),
     )
     company_id = models.ForeignKey(
