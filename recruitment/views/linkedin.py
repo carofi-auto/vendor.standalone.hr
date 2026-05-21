@@ -14,6 +14,7 @@ import json
 import requests
 from bs4 import BeautifulSoup
 from django.conf import settings
+from django.contrib.auth.decorators import login_required as django_login_required
 from django.http import HttpResponse, JsonResponse
 from django.utils.translation import gettext_lazy as _
 
@@ -76,7 +77,7 @@ def check_linkedin(request):
     return JsonResponse(response)
 
 
-@login_required
+@django_login_required
 def validate_linkedin_token(request, pk):
     linkedin_account = LinkedInAccount.objects.filter(id=pk).first()
     access_token = linkedin_account.api_token
@@ -99,7 +100,6 @@ def html_to_text(html):
     )
 
 
-@login_required
 def post_recruitment_in_linkedin(
     request, recruitment, linkedin_acc, feed_type="feed", group_id=None
 ):
@@ -152,7 +152,6 @@ def post_recruitment_in_linkedin(
         recruitment.save()
 
 
-@login_required
 def delete_post(recruitment):
     """Delete recruitment post from LinkedIn"""
     linkedin_post_id = recruitment.linkedin_post_id

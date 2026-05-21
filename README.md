@@ -1,3 +1,13 @@
+Production deployment
+
+aws ecr get-login-password --region us-east-1 --profile carofi | docker login --username AWS --password-stdin 319286726886.dkr.ecr.us-east-1.amazonaws.com
+
+docker buildx build \
+  --platform linux/amd64 \
+  -t 319286726886.dkr.ecr.us-east-1.amazonaws.com/prod/vendor.standalone.hr:latest \
+  --push .
+
+
 # **Horilla 🦍** [![LGPL License](https://img.shields.io/badge/license-LGPL-green.svg)](https://www.gnu.org/licenses/lgpl-3.0)  [![Docker](https://img.shields.io/badge/Docker-Horilla-blue?logo=docker)](https://hub.docker.com/r/horilla/horilla)
 
 **Horilla** is a Free and Open Source HRMS (Human Resource Management System) Software designed to streamline HR processes and enhance organizational efficiency.
