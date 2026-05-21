@@ -6,12 +6,15 @@ This module is used to register models for recruitment app
 """
 
 import json
+import logging
 import os
 import re
 from uuid import uuid4
 
 import django
 import requests
+
+logger = logging.getLogger(__name__)
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.files.storage import default_storage
@@ -1108,10 +1111,20 @@ class LinkedInAccount(HorillaModel):
 
         if response.status_code == 200:
             data = response.json()
-            if not data["email"] == self.email:
+            if not data.get("email") == self.email:
+                logger.warning(
+                    "LinkedIn email mismatch: token belongs to %s, form has %s",
+                    data.get("email"),
+                    self.email,
+                )
                 raise ValidationError({"email": _("Email mismatched.")})
-            self.sub_id = response.json()["sub"]
+            self.sub_id = data["sub"]
         else:
+            logger.error(
+                "LinkedIn userinfo call failed: status=%s body=%s",
+                response.status_code,
+                response.text,
+            )
             raise ValidationError(_("Check the credentials"))
 
     def action_template(self):
