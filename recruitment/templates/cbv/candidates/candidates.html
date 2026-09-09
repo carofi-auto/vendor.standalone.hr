@@ -246,7 +246,7 @@
 
     function toEmployee(url) {
         Swal.fire({
-            text: "{% trans 'Are you sure you want to convert this candidate into an employee?' %}",
+            text: "{% trans 'Are you sure you want to convert this candidate into an employee?'|escapejs %}",
             icon: "question",
             showCancelButton: true,
             confirmButtonColor: "#008000",
