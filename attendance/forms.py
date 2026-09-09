@@ -135,11 +135,15 @@ class AttendanceUpdateForm(BaseModelForm):
             )
             initial = {
                 "attendance_date": instance.attendance_date.strftime("%Y-%m-%d"),
-                "attendance_clock_in": instance.attendance_clock_in.strftime("%H:%M"),
-                "attendance_clock_in_date": instance.attendance_clock_in_date.strftime(
-                    "%Y-%m-%d"
-                ),
             }
+            if instance.attendance_clock_in is not None:
+                initial["attendance_clock_in"] = instance.attendance_clock_in.strftime(
+                    "%H:%M"
+                )
+            if instance.attendance_clock_in_date is not None:
+                initial["attendance_clock_in_date"] = (
+                    instance.attendance_clock_in_date.strftime("%Y-%m-%d")
+                )
             if instance.attendance_clock_out_date is not None:
                 initial["attendance_clock_out"] = (
                     instance.attendance_clock_out.strftime("%H:%M")
@@ -281,14 +285,16 @@ class AttendanceForm(BaseModelForm):
             initial.update(
                 {
                     "attendance_date": instance.attendance_date.strftime("%Y-%m-%d"),
-                    "attendance_clock_in": instance.attendance_clock_in.strftime(
-                        "%H:%M"
-                    ),
-                    "attendance_clock_in_date": instance.attendance_clock_in_date.strftime(
-                        "%Y-%m-%d"
-                    ),
                 }
             )
+            if instance.attendance_clock_in is not None:
+                initial["attendance_clock_in"] = instance.attendance_clock_in.strftime(
+                    "%H:%M"
+                )
+            if instance.attendance_clock_in_date is not None:
+                initial["attendance_clock_in_date"] = (
+                    instance.attendance_clock_in_date.strftime("%Y-%m-%d")
+                )
             if instance.attendance_clock_out_date is not None:
                 initial["attendance_clock_out"] = (
                     instance.attendance_clock_out.strftime("%H:%M")
@@ -452,7 +458,7 @@ class MonthSelectField(forms.ChoiceField):
         choices = [
             (month_name[i].lower(), _(month_name[i].capitalize())) for i in range(1, 13)
         ]
-        super().__init__(choices=choices, *args, **kwargs)
+        super().__init__(*args, choices=choices, **kwargs)
 
 
 class AttendanceOverTimeForm(BaseModelForm):
@@ -606,11 +612,15 @@ class AttendanceRequestForm(BaseModelForm):
             # so here overriding default forms instance method to set initial value
             initial = {
                 "attendance_date": instance.attendance_date.strftime("%Y-%m-%d"),
-                "attendance_clock_in": instance.attendance_clock_in.strftime("%H:%M"),
-                "attendance_clock_in_date": instance.attendance_clock_in_date.strftime(
-                    "%Y-%m-%d"
-                ),
             }
+            if instance.attendance_clock_in is not None:
+                initial["attendance_clock_in"] = instance.attendance_clock_in.strftime(
+                    "%H:%M"
+                )
+            if instance.attendance_clock_in_date is not None:
+                initial["attendance_clock_in_date"] = (
+                    instance.attendance_clock_in_date.strftime("%Y-%m-%d")
+                )
             if instance.attendance_clock_out_date is not None:
                 if isinstance(instance.attendance_clock_out_date, str):
                     instance.attendance_clock_out_date = datetime.datetime.strptime(

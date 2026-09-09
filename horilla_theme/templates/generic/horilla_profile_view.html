@@ -240,7 +240,7 @@
                                 navBar.style.display = '';
                                 var tagRow = navBar.querySelector('#filterTagContainerSectionNav');
                                 if (tagRow) { tagRow.innerHTML = ''; }
-                                list.innerHTML = '<div class=&quot;animated-background&quot;></div>';
+                                list.innerHTML = '';
                                 setTimeout(function () {
                                     var btn = document.getElementById('applyFilter');
                                     if (btn) { btn.click(); }
@@ -290,7 +290,6 @@
                                     {% elif action.accessibility|accessibility:instance %}
                                         <li>
                                             <a
-                                                href="#"
                                                 class="flex w-full items-center gap-2.5 px-3 py-2 text-left text-xs font-medium transition duration-200
                                                     {% if action.variant == 'danger' %}
                                                         text-danger hover:bg-danger/10

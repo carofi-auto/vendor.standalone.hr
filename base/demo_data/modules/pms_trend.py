@@ -84,6 +84,26 @@ def backfill_pms_objectives(today: date | None = None) -> int:
         )
         key_result_deltas[kr["id"]] = delta_days
 
+    # created_at is auto_now_add and nullable, so rows created via
+    # bulk_create() never get one. A NULL here makes the row invisible to
+    # every period-filtered report (report/metrics/talent.py), not just the
+    # current window -- and the undated rows happen to carry the only
+    # non-"Not Started" statuses, so the Key Result Status chart renders a
+    # flat single bar without them. Date them from their own objective.
+    for kr in EmployeeKeyResult._base_manager.filter(created_at__isnull=True).values(
+        "id", "employee_objective_id", "start_date"
+    ):
+        seed = kr["start_date"]
+        if seed is None:
+            seed = (
+                EmployeeObjective._base_manager.filter(pk=kr["employee_objective_id"])
+                .values_list("start_date", flat=True)
+                .first()
+            )
+        if seed is None:
+            continue
+        EmployeeKeyResult._base_manager.filter(pk=kr["id"]).update(created_at=seed)
+
     for comment in Comment._base_manager.filter(
         employee_objective_id__in=objective_deltas
     ).values("id", "employee_objective_id", "created_at"):
@@ -206,18 +226,26 @@ def backfill_pms_coverage(today: date | None = None) -> int:
         .values_list("id", flat=True)
     )
 
-    candidates_by_company: dict[int, list[int]] = defaultdict(list)
+    # Target is a fraction of each company's *total* headcount, not of
+    # whatever's currently uncovered -- computing it from the shrinking
+    # uncovered pool would make every additional non-flush reload add ~15%
+    # of whatever's left, converging toward full coverage instead of
+    # holding steady near the intended ratio.
+    all_ids_by_company: dict[int, list[int]] = defaultdict(list)
     for employee_id in active_ids:
-        if employee_id in covered_ids:
-            continue
         company_id = company_by_employee.get(employee_id)
         if company_id:
-            candidates_by_company[company_id].append(employee_id)
+            all_ids_by_company[company_id].append(employee_id)
 
     created = 0
-    for candidate_ids in candidates_by_company.values():
-        target = max(1, int(len(candidate_ids) * NEW_COVERAGE_RATE))
-        for employee_id in candidate_ids[:target]:
+    for company_id, all_ids in all_ids_by_company.items():
+        target = max(1, int(len(all_ids) * NEW_COVERAGE_RATE))
+        currently_covered = sum(1 for e in all_ids if e in covered_ids)
+        need = target - currently_covered
+        if need <= 0:
+            continue
+        candidate_ids = [e for e in all_ids if e not in covered_ids][:need]
+        for employee_id in candidate_ids:
             objective_id = objective_ids[created % len(objective_ids)]
             EmployeeObjective._base_manager.get_or_create(
                 employee_id_id=employee_id,
@@ -234,6 +262,6 @@ def backfill_pms_coverage(today: date | None = None) -> int:
     logger.info(
         "PMS backfill: created %s EmployeeObjective assignment(s) across %s compan(ies)",
         created,
-        len(candidates_by_company),
+        len(all_ids_by_company),
     )
     return created

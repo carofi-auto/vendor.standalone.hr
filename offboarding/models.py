@@ -248,7 +248,6 @@ class OffboardingEmployee(HorillaModel):
         Required offboarding tasks assigned to this employee in ``stage``
         (defaults to the employee's current stage) that are not yet completed.
         """
-        print(self)
         stage = stage or self.stage_id
         completed_task_ids = EmployeeTask.objects.filter(
             employee_id=self,
@@ -287,6 +286,16 @@ class OffboardingEmployee(HorillaModel):
         return render_template(
             path="cbv/exit_process/pipeline_action_col.html",
             context={"employee": self, "stage": self.stage_id},
+        )
+
+    def detail_action_col(self):
+        """
+        Action buttons for the exit process detail modal - same buttons,
+        same conditions, as get_action_col's pipeline card actions.
+        """
+        return render_template(
+            path="cbv/exit_process/detail_action_col.html",
+            context={"instance": self},
         )
 
     def __getattribute__(self, name):

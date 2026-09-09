@@ -75,7 +75,7 @@
         }
     </style>
 
-<div hx-get="{% url "my-leave-request-nav" %}" hx-trigger="load">
+<div hx-get="{% url "my-leave-request-nav" %}?{{request.GET.urlencode}}" hx-trigger="load">
 </div>
 <div>
     {% include "leave/user_leave/user_leave.html" %}
@@ -88,8 +88,6 @@
 
 <div class="oh-wrapper" hx-trigger="load" hx-get="{% url "user-request-filter" %}?{{request.GET.urlencode}}"
    id="listContainer">
-  <div class="animated-background">
-</div>
 </div>
 
 

@@ -22,9 +22,12 @@ from datetime import date, datetime
 from itertools import chain
 from urllib.parse import parse_qs
 
-import fitz  # type: ignore
+import phonenumbers
+import pycountry
+import pymupdf  # type: ignore
+import spacy
+from dateutil import parser as dateutil_parser
 from django import template
-from django.conf import settings
 from django.contrib import messages
 from django.core import serializers
 from django.core.cache import cache as CACHE
@@ -38,16 +41,19 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_http_methods
+from rapidfuzz import fuzz
 
 from base.backends import ConfiguredEmailBackend
 from base.context_processors import check_candidate_self_tracking
 from base.countries import country_arr, s_a, states
 from base.forms import MailTemplateForm
 from base.methods import (
+    build_safe_template_request,
     eval_validate,
     export_data,
     generate_pdf,
     get_key_instances,
+    sanitize_mail_template_body,
     sortby,
 )
 from base.models import EmailLog, HorillaMailTemplate, JobPosition, clear_messages
@@ -977,7 +983,10 @@ def view_note(request, cand_id):
     Args:
         id : candidate instance id
     """
-    candidate_obj = Candidate.objects.get(id=cand_id)
+    candidate_obj = Candidate.objects.filter(id=cand_id).first()
+    if not candidate_obj:
+        messages.error(request, _("Candidate not found."))
+        return HorillaRedirect(request)
     notes = candidate_obj.stagenote_set.all().order_by("-id")
     return render(
         request,
@@ -993,6 +1002,11 @@ def add_note(request, pk=None):
     """
     This method renders template component to add candidate remark
     """
+    candidate_obj = Candidate.objects.filter(id=pk).first()
+    if not candidate_obj:
+        messages.error(request, _("Candidate not found."))
+        return HorillaRedirect(request)
+
     form = StageNoteForm(initial={"candidate_id": pk})
     if request.method == "POST":
         form = StageNoteForm(
@@ -1001,14 +1015,12 @@ def add_note(request, pk=None):
         )
         if form.is_valid():
             note, attachment_ids = form.save(commit=False)
-            candidate = Candidate.objects.get(id=pk)
-            note.candidate_id = candidate
-            note.stage_id = candidate.stage_id
+            note.candidate_id = candidate_obj
+            note.stage_id = candidate_obj.stage_id
             note.updated_by = request.user.employee_get
             note.save()
             note.stage_files.set(attachment_ids)
             messages.success(request, _("Note added successfully.."))
-    candidate_obj = Candidate.objects.get(id=pk)
     notes = candidate_obj.stagenote_set.all().order_by("-id")
     notes = paginator_qry(notes, request.GET.get("page"))
     return render(
@@ -1029,20 +1041,23 @@ def create_note(request, cand_id=None):
     """
     This method renders template component to add candidate remark
     """
+    candidate_obj = Candidate.objects.filter(id=cand_id).first()
+    if not candidate_obj:
+        messages.error(request, _("Candidate not found."))
+        return HorillaRedirect(request)
+
     form = StageNoteForm(initial={"candidate_id": cand_id})
     if request.method == "POST":
         form = StageNoteForm(request.POST, request.FILES)
         if form.is_valid():
             note, attachment_ids = form.save(commit=False)
-            candidate = Candidate.objects.get(id=cand_id)
-            note.candidate_id = candidate
-            note.stage_id = candidate.stage_id
+            note.candidate_id = candidate_obj
+            note.stage_id = candidate_obj.stage_id
             note.updated_by = request.user.employee_get
             note.save()
             note.stage_files.set(attachment_ids)
             messages.success(request, _("Note added successfully.."))
             return redirect("view-note", cand_id=cand_id)
-    candidate_obj = Candidate.objects.get(id=cand_id)
     notes = candidate_obj.stagenote_set.all().order_by("-id")
     return render(
         request,
@@ -1117,7 +1132,10 @@ def add_more_files(request, id):
     Args:
         id : stage note instance id
     """
-    note = StageNote.objects.get(id=id)
+    note = StageNote.objects.filter(id=id).first()
+    if not note:
+        messages.error(request, _("Note not found."))
+        return HorillaRedirect(request)
     if request.method == "POST":
         files = request.FILES.getlist("files")
         files_ids = []
@@ -1137,7 +1155,10 @@ def add_more_individual_files(request, id):
     Args:
         id : stage note instance id
     """
-    note = StageNote.objects.get(id=id)
+    note = StageNote.objects.filter(id=id).first()
+    if not note:
+        messages.error(request, _("Note not found."))
+        return HorillaRedirect(request)
     if request.method == "POST":
         files = request.FILES.getlist("files")
         files_ids = []
@@ -1175,10 +1196,10 @@ def delete_individual_note_file(request, id):
         id : stage file instance id
     """
     script = ""
-    file = StageFiles.objects.get(id=id)
-    cand_id = file.stagenote_set.all().first().candidate_id.id
-    file.delete()
-    messages.success(request, _("File deleted successfully"))
+    file = StageFiles.objects.filter(id=id).first()
+    if file:
+        file.delete()
+        messages.success(request, _("File deleted successfully"))
     return HttpResponse(script)
 
 
@@ -1471,7 +1492,7 @@ def candidate(request):
                     # breaks nav-bar hiding on every later edit-form open.
                     '\'<div id="candidateListNavBar"><div hx-get="/recruitment/nav-candidate/?" hx-trigger="load"></div></div>\' + '
                     '\'<div class="oh-checkpoint-badge mb-2" id="selectedInstances" data-ids="[]" data-clicked="" style="display: none"></div>\' + '
-                    '\'<div class="oh-wrapper" id="listContainer"><div class="animated-background"></div></div>\''
+                    '\'<div class="oh-wrapper" id="listContainer"></div>\''
                     ");"
                     "htmx.process($('#candidateMainContainer')[0]);"
                 )
@@ -2029,7 +2050,7 @@ def candidate_update(request, cand_id, **kwargs):
                                 "var tagRow = nav && nav.querySelector('#filterTagContainerSectionNav');"
                                 "if (tagRow) { tagRow.innerHTML = ''; }"
                                 "var list = document.getElementById('listContainer');"
-                                "if (list) { list.innerHTML = '<div class=\"animated-background\"></div>'; }"
+                                "if (list) { list.innerHTML = ''; }"
                                 "setTimeout(function () { "
                                 "var b = document.getElementById('applyFilter'); "
                                 "if (b) { b.click(); } }, 100);"
@@ -2061,7 +2082,7 @@ def candidate_update(request, cand_id, **kwargs):
                                 # the edit form from the second edit onward.
                                 '\'<div id="candidateListNavBar"><div hx-get="/recruitment/nav-candidate/?" hx-trigger="load"></div></div>\' + '
                                 '\'<div class="oh-checkpoint-badge mb-2" id="selectedInstances" data-ids="[]" data-clicked="" style="display: none"></div>\' + '
-                                '\'<div class="oh-wrapper" id="listContainer"><div class="animated-background"></div></div>\''
+                                '\'<div class="oh-wrapper" id="listContainer"></div>\''
                                 ");"
                                 "htmx.process($('#candidateMainContainer')[0]);"
                                 "}, 0);"
@@ -2230,7 +2251,9 @@ def form_send_mail(request, cand_id=None):
     if request.GET.get("stage_id"):
         stage_id = eval_validate(request.GET.get("stage_id"))
     if cand_id:
-        candidate_obj = Candidate.objects.get(id=cand_id)
+        candidate_obj = Candidate.objects.filter(id=cand_id).first()
+        if not candidate_obj:
+            return HttpResponse()
     candidates = Candidate.objects.all()
     if stage_id and isinstance(stage_id, int):
         candidates = candidates.filter(stage_id__id=stage_id)
@@ -2438,6 +2461,7 @@ def interview_edit(request, interview_id):
 
 
 @login_required
+@hx_request_required
 def get_interview_managers(request):
     cand_id = request.GET.get("candidate_id")
     form = ScheduleInterviewForm()
@@ -2524,12 +2548,12 @@ def send_acknowledgement(request):
         )
         for html in bodys:
             # due to not having solid template we first need to pass the context
-            template_bdy = template.Template(html)
+            template_bdy = template.Template(sanitize_mail_template_body(html))
             context = template.Context(
                 {
                     "instance": candidate,
                     "self": request.user.employee_get,
-                    "request": request,
+                    "request": build_safe_template_request(request),
                 }
             )
             render_bdy = template_bdy.render(context)
@@ -2541,12 +2565,12 @@ def send_acknowledgement(request):
                 )
             )
 
-        template_bdy = template.Template(bdy)
+        template_bdy = template.Template(sanitize_mail_template_body(bdy))
         context = template.Context(
             {
                 "instance": candidate,
                 "self": request.user.employee_get,
-                "request": request,
+                "request": build_safe_template_request(request),
             }
         )
         render_bdy = template_bdy.render(context)
@@ -2977,36 +3001,6 @@ def skill_zone_cand_edit(request, sz_cand_id):
     return render(request, template, {"form": form, "sz_cand_id": sz_cand_id})
 
 
-@login_required
-@manager_can_enter(perm="recruitment.delete_skillzonecandidate")
-def skill_zone_cand_delete(request, sz_cand_id):
-    """
-    function used to delete Talent pool candidate.
-
-    Parameters:
-    request (HttpRequest): The HTTP request object.
-    sz_cand_id : Talent pool candidate id
-
-    Returns:
-    GET : return Talent pool view template
-    """
-
-    try:
-        SkillZoneCandidate.objects.get(id=sz_cand_id).delete()
-        messages.success(request, _("Talent pool deleted successfully."))
-    except SkillZoneCandidate.DoesNotExist:
-        messages.error(request, _("Talent pool not found."))
-    except ProtectedError:
-        messages.error(request, _("Related entries exists"))
-    if request.META.get("HTTP_HX_REQUEST") == "true":
-        response = HttpResponse(status=204)
-        response["HX-Trigger"] = "skillZoneContainerReload"
-        return response
-    return redirect(skill_zone_view)
-
-
-@login_required
-@hx_request_required
 @manager_can_enter(perm="recruitment.view_skillzonecandidate")
 def skill_zone_cand_filter(request):
     """
@@ -3172,13 +3166,20 @@ def open_recruitments(request):
     return response
 
 
-@login_required
 @hx_request_required
 def recruitment_details(request, id):
     """
-    This method is used to render the recruitment details page
+    This method is used to render the recruitment details page.
+
+    Public/unauthenticated visitors can view this (it's reached from the
+    public open-recruitments page); recruitment_details.html itself gates
+    the sensitive applied/capacity numbers behind
+    perms.recruitment.view_recruitment.
     """
-    recruitment = Recruitment.default.get(id=id)
+    recruitment = Recruitment.default.filter(id=id).first()
+    if not recruitment:
+        messages.error(request, _("Recruitment not found."))
+        return HorillaRedirect(request)
     context = {
         "recruitment": recruitment,
     }
@@ -3412,6 +3413,11 @@ def delete_reject_reason(request):
     return HttpResponse(f"<script>{script}</script>")
 
 
+# Loaded once per worker process at import time (spaCy model load is slow;
+# never call spacy.load() inside a request-handling function).
+_resume_nlp = spacy.load("en_core_web_sm")
+
+
 def extract_text_with_font_info(pdf):
     """
     This method is used to extract text from the pdf and create a list of dictionaries containing details about the extracted text.
@@ -3420,7 +3426,7 @@ def extract_text_with_font_info(pdf):
     """
     pdf_bytes = pdf.read()
     pdf_doc = io.BytesIO(pdf_bytes)
-    doc = fitz.open("pdf", pdf_doc)
+    doc = pymupdf.open("pdf", pdf_doc)
     text_info = []
 
     for page_num in range(len(doc)):
@@ -3462,6 +3468,36 @@ def rank_text(text_info):
     return ranked_text
 
 
+# --- Legacy implementation (superseded below, kept for reference) ---
+# def dob_matching(dob):
+#     """
+#     This method is used to change the date format to YYYY-MM-DD
+#
+#     Args:
+#         dob: Date
+#
+#     Returns:
+#         Return date in YYYY-MM-DD
+#     """
+#     date_formats = [
+#         "%Y-%m-%d",
+#         "%Y/%m/%d",
+#         "%d-%m-%Y",
+#         "%d/%m/%Y",
+#         "%Y.%m.%d",
+#         "%d.%m.%Y",
+#     ]
+#
+#     for fmt in date_formats:
+#         try:
+#             parsed_date = datetime.strptime(dob, fmt)
+#             return parsed_date.strftime("%Y-%m-%d")
+#         except ValueError:
+#             continue
+#
+#     return dob
+
+
 def dob_matching(dob):
     """
     This method is used to change the date format to YYYY-MM-DD
@@ -3472,23 +3508,90 @@ def dob_matching(dob):
     Returns:
         Return date in YYYY-MM-DD
     """
-    date_formats = [
-        "%Y-%m-%d",
-        "%Y/%m/%d",
-        "%d-%m-%Y",
-        "%d/%m/%Y",
-        "%Y.%m.%d",
-        "%d.%m.%Y",
-    ]
+    try:
+        parsed_date = dateutil_parser.parse(dob, dayfirst=True, fuzzy=True)
+        return parsed_date.strftime("%Y-%m-%d")
+    except (ValueError, OverflowError):
+        return dob
 
-    for fmt in date_formats:
-        try:
-            parsed_date = datetime.strptime(dob, fmt)
-            return parsed_date.strftime("%Y-%m-%d")
-        except ValueError:
-            continue
 
-    return dob
+# --- Legacy implementation (superseded below, kept for reference) ---
+# def extract_info(pdf):
+#     """
+#     This method creates the contact information dictionary from the provided pdf file
+#     Args:
+#         pdf_file: pdf file
+#     """
+#     extracted_info = {
+#         "full_name": "",
+#         "address": "",
+#         "country": "",
+#         "state": "",
+#         "phone_number": "",
+#         "dob": "",
+#         "email_id": "",
+#         "zip": "",
+#     }
+#     if not pdf:
+#         return extracted_info
+#
+#     text_info = extract_text_with_font_info(pdf)
+#     ranked_text = rank_text(text_info)
+#
+#     phone_pattern = re.compile(r"\b\+?\d{1,2}\s?\d{9,10}\b")
+#     dob_pattern = re.compile(
+#         r"\b(?:\d{1,2}|\d{4})[-/.,]\d{1,2}[-/.,](?:\d{1,2}|\d{4})\b"
+#     )
+#     email_pattern = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b")
+#     zip_code_pattern = re.compile(r"\b\d{5,6}(?:-\d{4})?\b")
+#
+#     name_candidates = [
+#         item["text"]
+#         for item in ranked_text
+#         if item["font_size"] == max(item["font_size"] for item in ranked_text)
+#     ]
+#
+#     if name_candidates:
+#         extracted_info["full_name"] = " ".join(name_candidates)
+#
+#     for item in ranked_text:
+#         text = item["text"]
+#
+#         if not text:
+#             continue
+#
+#         if not extracted_info["phone_number"]:
+#             phone_match = phone_pattern.search(text)
+#             if phone_match:
+#                 extracted_info["phone_number"] = phone_match.group()
+#
+#         if not extracted_info["dob"]:
+#             dob_match = dob_pattern.search(text)
+#             if dob_match:
+#                 extracted_info["dob"] = dob_matching(dob_match.group())
+#
+#         if not extracted_info["zip"]:
+#             zip_match = zip_code_pattern.search(text)
+#             if zip_match:
+#                 extracted_info["zip"] = zip_match.group()
+#
+#         if not extracted_info["email_id"]:
+#             email_match = email_pattern.search(text)
+#             if email_match:
+#                 extracted_info["email_id"] = email_match.group()
+#
+#         if "address" in text.lower() and not extracted_info["address"]:
+#             extracted_info["address"] = text.replace("Address:", "").strip()
+#
+#         for item in text.split(" "):
+#             if item.capitalize() in country_arr:
+#                 extracted_info["country"] = item
+#
+#         for item in text.split(" "):
+#             if item.capitalize() in states:
+#                 extracted_info["state"] = item
+#
+#     return extracted_info
 
 
 def extract_info(pdf):
@@ -3506,6 +3609,7 @@ def extract_info(pdf):
         "dob": "",
         "email_id": "",
         "zip": "",
+        "portfolio": "",
     }
     if not pdf:
         return extracted_info
@@ -3513,21 +3617,93 @@ def extract_info(pdf):
     text_info = extract_text_with_font_info(pdf)
     ranked_text = rank_text(text_info)
 
-    phone_pattern = re.compile(r"\b\+?\d{1,2}\s?\d{9,10}\b")
+    if not ranked_text:
+        return extracted_info
+
+    # Use text_info (natural document order), not ranked_text (font-size sorted),
+    # since spaCy's NER needs coherent word order to detect entities correctly.
+    full_text = "\n".join(item["text"] for item in text_info if item["text"])
+    # added: line list, so a spaCy entity's char offset can be mapped back to
+    # its source line for the address fallback below.
+    lines = [item["text"] for item in text_info if item["text"]]
+
     dob_pattern = re.compile(
         r"\b(?:\d{1,2}|\d{4})[-/.,]\d{1,2}[-/.,](?:\d{1,2}|\d{4})\b"
     )
     email_pattern = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b")
     zip_code_pattern = re.compile(r"\b\d{5,6}(?:-\d{4})?\b")
+    dob_keyword_pattern = re.compile(r"\b(dob|date\s+of\s+birth|born)\b", re.IGNORECASE)
+    url_pattern = re.compile(
+        r"\b(?:https?://\S+|www\.\S+"
+        r"|(?:github|linkedin|gitlab|behance|dribbble)\.com/\S+)",
+        re.IGNORECASE,
+    )
 
-    name_candidates = [
-        item["text"]
-        for item in ranked_text
-        if item["font_size"] == max(item["font_size"] for item in ranked_text)
-    ]
+    max_font_size = max(item["font_size"] for item in ranked_text)
+    top_spans = [item for item in ranked_text if item["font_size"] == max_font_size]
+    name_doc = _resume_nlp(" ".join(item["text"] for item in top_spans))
+    person_names = [ent.text for ent in name_doc.ents if ent.label_ == "PERSON"]
+    if person_names:
+        extracted_info["full_name"] = " ".join(person_names)
+    else:
+        extracted_info["full_name"] = " ".join(item["text"] for item in top_spans)
 
-    if name_candidates:
-        extracted_info["full_name"] = " ".join(name_candidates)
+    # added: fallback address candidate, taken from the resume line containing
+    # the matched country/state entity, used only if the "Address:"-keyword
+    # pass above found nothing.
+    def _line_for_char_offset(offset):
+        """Map a spaCy entity's char offset in full_text back to its source line."""
+        pos = 0
+        for line in lines:
+            end = pos + len(line)
+            if pos <= offset <= end:
+                return line
+            pos = end + 1  # account for the "\n" joiner
+        return None
+
+    gpe_address_candidate = None
+
+    doc = _resume_nlp(full_text)
+    for ent in doc.ents:
+        if ent.label_ != "GPE":
+            continue
+        if not extracted_info["country"]:
+            try:
+                country_match = pycountry.countries.lookup(ent.text)
+                extracted_info["country"] = getattr(
+                    country_match, "common_name", country_match.name
+                )
+                # added: capture the containing line as an address candidate
+                if not gpe_address_candidate:
+                    candidate_line = _line_for_char_offset(ent.start_char)
+                    if (
+                        candidate_line
+                        and candidate_line.strip().lower() != ent.text.lower()
+                    ):
+                        gpe_address_candidate = candidate_line.strip()
+                continue
+            except LookupError:
+                pass
+        if not extracted_info["state"]:
+            try:
+                subdivision_match = pycountry.subdivisions.lookup(ent.text)
+                extracted_info["state"] = subdivision_match.name
+                # added: capture the containing line as an address candidate
+                if not gpe_address_candidate:
+                    candidate_line = _line_for_char_offset(ent.start_char)
+                    if (
+                        candidate_line
+                        and candidate_line.strip().lower() != ent.text.lower()
+                    ):
+                        gpe_address_candidate = candidate_line.strip()
+            except LookupError:
+                pass
+
+    phone_matches = list(phonenumbers.PhoneNumberMatcher(full_text, None))
+    if phone_matches:
+        extracted_info["phone_number"] = phonenumbers.format_number(
+            phone_matches[0].number, phonenumbers.PhoneNumberFormat.INTERNATIONAL
+        )
 
     for item in ranked_text:
         text = item["text"]
@@ -3535,14 +3711,9 @@ def extract_info(pdf):
         if not text:
             continue
 
-        if not extracted_info["phone_number"]:
-            phone_match = phone_pattern.search(text)
-            if phone_match:
-                extracted_info["phone_number"] = phone_match.group()
-
         if not extracted_info["dob"]:
             dob_match = dob_pattern.search(text)
-            if dob_match:
+            if dob_match and dob_keyword_pattern.search(text):
                 extracted_info["dob"] = dob_matching(dob_match.group())
 
         if not extracted_info["zip"]:
@@ -3558,13 +3729,15 @@ def extract_info(pdf):
         if "address" in text.lower() and not extracted_info["address"]:
             extracted_info["address"] = text.replace("Address:", "").strip()
 
-        for item in text.split(" "):
-            if item.capitalize() in country_arr:
-                extracted_info["country"] = item
+        if not extracted_info["portfolio"]:
+            url_match = url_pattern.search(text)
+            if url_match:
+                extracted_info["portfolio"] = url_match.group()
 
-        for item in text.split(" "):
-            if item.capitalize() in states:
-                extracted_info["state"] = item
+    # added: fall back to the spaCy-derived address candidate only if the
+    # explicit "Address:" keyword pass above found nothing.
+    if not extracted_info["address"] and gpe_address_candidate:
+        extracted_info["address"] = gpe_address_candidate
 
     return extracted_info
 
@@ -3680,7 +3853,15 @@ def view_bulk_resumes(request):
     This function returns the bulk_resume.html page to the modal
     """
     rec_id = eval_validate(str(request.GET.get("rec_id")))
-    resumes = Resume.objects.filter(recruitment_id=rec_id)
+    if not rec_id:
+        return HttpResponse()
+    # Recruitment.objects is company-scoped; Resume is not (it has no
+    # company_id of its own), so resolving the recruitment first is what
+    # keeps another company's resumes out of this list.
+    recruitment = Recruitment.objects.filter(id=rec_id).first()
+    if not recruitment:
+        return HttpResponse()
+    resumes = Resume.objects.filter(recruitment_id=recruitment)
 
     return render(
         request, "pipeline/bulk_resume.html", {"resumes": resumes, "rec_id": rec_id}
@@ -3695,7 +3876,9 @@ def add_bulk_resumes(request):
     This function is used to create bulk resume
     """
     rec_id = eval_validate(str(request.GET.get("rec_id")))
-    recruitment = Recruitment.objects.get(id=rec_id)
+    recruitment = Recruitment.objects.filter(id=rec_id).first()
+    if not recruitment:
+        return HttpResponse()
     if request.method == "POST":
         files = request.FILES.getlist("files")
         for file in files:
@@ -3703,6 +3886,7 @@ def add_bulk_resumes(request):
                 file=file,
                 recruitment_id=recruitment,
             )
+        CACHE.delete(f"matching_resumes_{rec_id}")
 
         url = reverse("view-bulk-resume")
         query_params = f"?rec_id={rec_id}"
@@ -3719,7 +3903,15 @@ def delete_resume_file(request):
     """
     ids = request.GET.getlist("ids")
     rec_id = request.GET.get("rec_id")
-    Resume.objects.filter(id__in=ids).delete()
+    # Scope the delete to a recruitment this user can actually reach.
+    # manager_can_enter admits any reporting manager, and Resume is not
+    # company-scoped, so an unscoped filter let a manager in one company
+    # delete another company's resumes by passing their ids.
+    recruitment = Recruitment.objects.filter(id=rec_id).first()
+    if not recruitment:
+        return HttpResponse(status=404)
+    Resume.objects.filter(id__in=ids, recruitment_id=recruitment).delete()
+    CACHE.delete(f"matching_resumes_{rec_id}")
 
     url = reverse("view-bulk-resume")
     query_params = f"?rec_id={rec_id}"
@@ -3727,28 +3919,66 @@ def delete_resume_file(request):
     return redirect(f"{url}{query_params}")
 
 
+# --- Legacy implementation (superseded below, kept for reference) ---
+# def extract_words_from_pdf(pdf_file):
+#     """
+#     This method is used to extract the words from the pdf file into a list.
+#     Args:
+#         pdf_file: pdf file
+#
+#     """
+#     pdf_document = fitz.open(pdf_file.path)
+#
+#     words = []
+#
+#     for page_num in range(len(pdf_document)):
+#         page = pdf_document.load_page(page_num)
+#         page_text = page.get_text()
+#
+#         page_words = re.findall(r"\b\w+\b", page_text.lower())
+#
+#         words.extend(page_words)
+#
+#     pdf_document.close()
+#
+#     return words
+
+
 def extract_words_from_pdf(pdf_file):
     """
-    This method is used to extract the words from the pdf file into a list.
+    This method is used to extract the raw text content from the pdf file.
     Args:
         pdf_file: pdf file
 
     """
-    pdf_document = fitz.open(pdf_file.path)
+    pdf_document = pymupdf.open(pdf_file.path)
 
-    words = []
+    text_chunks = []
 
     for page_num in range(len(pdf_document)):
         page = pdf_document.load_page(page_num)
-        page_text = page.get_text()
-
-        page_words = re.findall(r"\b\w+\b", page_text.lower())
-
-        words.extend(page_words)
+        text_chunks.append(page.get_text())
 
     pdf_document.close()
 
-    return words
+    return "\n".join(text_chunks).lower()
+
+
+def skill_match_count(text, skills, threshold=85):
+    """
+    This method counts how many of the given skills are present in the resume
+    text, using fuzzy matching so multi-word skills and near-variant spellings
+    (e.g. "Node.js" vs "NodeJS") are still counted as a match.
+
+    Args:
+        text: Full lowercased resume text
+        skills: Iterable of skill title strings
+        threshold: Minimum rapidfuzz partial_ratio score (0-100) to count as a match
+    """
+    if not text:
+        return 0
+    text = text.lower()
+    return sum(fuzz.partial_ratio(skill.lower(), text) >= threshold for skill in skills)
 
 
 @login_required
@@ -3762,38 +3992,49 @@ def matching_resumes(request, rec_id):
         rec_id: Recruitment ID
 
     """
-    recruitment = Recruitment.objects.filter(id=rec_id).first()
-    skills = recruitment.skills.values_list("title", flat=True)
-    resumes = recruitment.resume.all()
-    is_candidate = resumes.filter(is_candidate=True)
-    is_candidate_ids = set(is_candidate.values_list("id", flat=True))
+    cache_key = f"matching_resumes_{rec_id}"
+    ranked_resumes = CACHE.get(cache_key)
+    if ranked_resumes is None:
+        recruitment = Recruitment.objects.filter(id=rec_id).first()
+        if not recruitment:
+            return HttpResponse()
+        skills = recruitment.skills.values_list("title", flat=True)
+        resumes = recruitment.resume.all()
+        is_candidate = resumes.filter(is_candidate=True)
+        is_candidate_ids = set(is_candidate.values_list("id", flat=True))
 
-    resume_ranks = []
-    for resume in resumes:
-        words = extract_words_from_pdf(resume.file)
-        matching_skills_count = sum(skill.lower() in words for skill in skills)
+        resume_ranks = []
+        for resume in resumes:
+            text = extract_words_from_pdf(resume.file)
+            matching_skills_count = skill_match_count(text, skills)
 
-        item = {"resume": resume, "matching_skills_count": matching_skills_count}
-        if not len(words):
-            item["image_pdf"] = True
+            item = {"resume": resume, "matching_skills_count": matching_skills_count}
+            if not len(text):
+                item["image_pdf"] = True
 
-        resume_ranks.append(item)
+            resume_ranks.append(item)
 
-    candidate_resumes = [
-        rank for rank in resume_ranks if rank["resume"].id in is_candidate_ids
-    ]
-    non_candidate_resumes = [
-        rank for rank in resume_ranks if rank["resume"].id not in is_candidate_ids
-    ]
+        candidate_resumes = [
+            rank for rank in resume_ranks if rank["resume"].id in is_candidate_ids
+        ]
+        non_candidate_resumes = [
+            rank for rank in resume_ranks if rank["resume"].id not in is_candidate_ids
+        ]
 
-    non_candidate_resumes = sorted(
-        non_candidate_resumes, key=lambda x: x["matching_skills_count"], reverse=True
-    )
-    candidate_resumes = sorted(
-        candidate_resumes, key=lambda x: x["matching_skills_count"], reverse=True
-    )
+        non_candidate_resumes = sorted(
+            non_candidate_resumes,
+            key=lambda x: x["matching_skills_count"],
+            reverse=True,
+        )
+        candidate_resumes = sorted(
+            candidate_resumes, key=lambda x: x["matching_skills_count"], reverse=True
+        )
 
-    ranked_resumes = non_candidate_resumes + candidate_resumes
+        ranked_resumes = non_candidate_resumes + candidate_resumes
+        # A finite TTL, not timeout=None: the ranking is derived from resume
+        # files and the recruitment's skill list, both of which change without
+        # every edit path remembering to invalidate this key.
+        CACHE.set(cache_key, ranked_resumes, timeout=900)
 
     return render(
         request,
@@ -3915,7 +4156,9 @@ def document_create(request, id):
 
     Returns: return document_tab template
     """
-    candidate_id = Candidate.objects.get(id=id)
+    candidate_id = Candidate.objects.filter(id=id).first()
+    if not candidate_id:
+        return HttpResponse()
     form = CandidateDocumentForm(initial={"candidate_id": candidate_id})
     form.fields["candidate_id"].queryset = Candidate.objects.filter(id=id)
     if request.method == "POST":
@@ -3995,6 +4238,79 @@ def document_delete(request, id):
         return HorillaRedirect(request)
 
 
+def candidate_documents_visible_to(request):
+    """CandidateDocument rows the current requester is allowed to touch.
+
+    `candidate_login_required` only asserts that *some* candidate is logged in
+    (`"candidate_id" in request.session`), so a view resolving a document by
+    client-supplied id alone serves any candidate's file to any other -- the
+    ids are sequential, so one self-registered account can harvest every
+    applicant's resume and identity documents. Reported as
+    GHSA-p745-9729-g8jw.
+
+    Recruiters keep full access through the model permission; a candidate is
+    scoped to their own session id. Mirrors the scoping employee/views.py
+    already applies to document_delete.
+    """
+    queryset = CandidateDocument.objects.all()
+    if request.user.is_authenticated and request.user.has_perm(
+        "recruitment.view_candidatedocument"
+    ):
+        return queryset
+
+    candidate_id = request.session.get("candidate_id")
+    if candidate_id is None:
+        return queryset.none()
+    return queryset.filter(candidate_id__id=candidate_id)
+
+
+def candidate_reachable_by(request, cand_id):
+    """The Candidate the requester may act on, or None.
+
+    `candidate_login_required` asserts only that *some* candidate session
+    exists (`"candidate_id" in request.session`), never that it is the
+    candidate named in the URL. A view that resolves its target from `cand_id`
+    alone therefore lets any logged-in candidate act on any other candidate's
+    record. Reported as GHSA-v963-hrfx-34mw.
+
+    The portal request carries no authenticated employee, so no company scoping
+    applies to it either, and the write crosses tenants: a candidate registered
+    under one company can reach a candidate belonging to another. Self
+    registration through `application-form/` is open, so the privilege needed
+    is nil.
+
+    Staff access is unchanged -- the three staff tests below are the ones
+    `candidate_login_required` already performs, repeated here rather than
+    tightened, so recruiters and stage/recruitment managers keep the access
+    they have. Only the candidate branch is narrowed, from "any candidate" to
+    "this candidate".
+
+    Companion to `candidate_documents_visible_to`, which scoped the document
+    views for GHSA-p745-9729-g8jw. `candidate_add_notes` is the third view on
+    the same decorator and was missed by that fix.
+    """
+    candidate = Candidate.find(cand_id)
+    if candidate is None:
+        return None
+
+    user = request.user
+    if user.is_authenticated:
+        if user.has_perm("recruitment.view_candidate"):
+            return candidate
+        employee = getattr(user, "employee_get", None)
+        if employee is not None and (
+            employee.stage_set.exists() or employee.recruitment_set.exists()
+        ):
+            return candidate
+
+    session_candidate_id = request.session.get("candidate_id")
+    if session_candidate_id is not None and str(session_candidate_id) == str(
+        candidate.pk
+    ):
+        return candidate
+    return None
+
+
 @candidate_login_required
 @hx_request_required
 def file_upload(request, id):
@@ -4007,7 +4323,9 @@ def file_upload(request, id):
 
     Returns: return document_form template
     """
-    document_item = CandidateDocument.objects.get(id=id)
+    document_item = candidate_documents_visible_to(request).filter(id=id).first()
+    if not document_item:
+        return HttpResponse()
     form = CandidateDocumentUpdateForm(instance=document_item)
     if request.method == "POST":
         form = CandidateDocumentUpdateForm(
@@ -4037,7 +4355,9 @@ def view_file(request, id):
 
     Returns: return view_file template
     """
-    document_obj = CandidateDocument.objects.filter(id=id).first()
+    document_obj = candidate_documents_visible_to(request).filter(id=id).first()
+    if not document_obj:
+        return HttpResponse()
     context = {
         "document": document_obj,
     }
@@ -4127,7 +4447,9 @@ def candidate_add_notes(request, cand_id):
     This method renders template component to add candidate remark
     """
 
-    candidate = Candidate.find(cand_id)
+    # Same message whether the candidate does not exist or is not the caller's:
+    # a distinct "not yours" would confirm which sequential ids are real.
+    candidate = candidate_reachable_by(request, cand_id)
     if not candidate:
         return HorillaRedirect(
             request, message=_("No Candidate found matching the query.")
