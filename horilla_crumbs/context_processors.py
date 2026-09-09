@@ -53,7 +53,7 @@ def _resolve_menu_section(path, menus):
 
 
 def sync_session_ids(request, key, queryset):
-    ids = list(queryset.values_list("id", flat=True))
+    ids = list(queryset.order_by("id").values_list("id", flat=True))
     if request.session.get(key) != ids:
         request.session[key] = ids
 
