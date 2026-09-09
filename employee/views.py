@@ -3824,16 +3824,42 @@ def organisation_chart(request):
     manager = request.user.employee_get
 
     def top_of_chain(employee):
-        """Walk up the reporting chain and return the employee at the top of it."""
+        """Walk up the reporting chain, staying inside the employee's company.
+
+        The chart is company-scoped everywhere else in this view, so the walk
+        stops at a company boundary: without that, an employee of one company
+        who reports into another would be re-rooted onto that other company's
+        tree and shown staff they cannot otherwise see.
+
+        One query per hop, each pulling the next manager and their work info,
+        and a hard depth cap so a pathological chain cannot dominate the view.
+        """
+        max_depth = 30
+        start_company_id = getattr(
+            getattr(employee, "employee_work_info", None), "company_id_id", None
+        )
         seen = {employee.id}
-        while True:
-            work_info = getattr(employee, "employee_work_info", None)
+        for _ in range(max_depth):
+            work_info = (
+                EmployeeWorkInformation.objects.filter(employee_id=employee)
+                .select_related(
+                    "reporting_manager_id",
+                    "reporting_manager_id__employee_work_info",
+                )
+                .first()
+            )
             above = getattr(work_info, "reporting_manager_id", None)
             # Bad data can point a chain back at itself; stop rather than spin.
             if above is None or not above.is_active or above.id in seen:
                 return employee
+            above_company_id = getattr(
+                getattr(above, "employee_work_info", None), "company_id_id", None
+            )
+            if above_company_id != start_company_id:
+                return employee
             seen.add(above.id)
             employee = above
+        return employee
 
     # Rooting the chart at the logged-in employee gives anyone with no
     # subordinates a chart of exactly one node - themselves - which reads as a
