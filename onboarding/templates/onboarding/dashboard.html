@@ -573,7 +573,11 @@
             if (!data.candidates.length) { el.innerHTML = '<div class="on-info-panel__empty">{% trans "No onboarding candidates"|escapejs %}</div>'; return; }
             el.innerHTML = data.candidates.map(c => {
                 const initials = c.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
-                const avatarInner = c.profile ? `<img src="${c.profile}" alt="">` : initials;
+                const safeInitials = initials.replace(/'/g, "\\'");
+                // Falls back to the initials shown elsewhere in this list when the
+                // stored profile path has no file behind it (e.g. demo/fixture data
+                // seeded without matching media files) instead of a broken-image icon.
+                const avatarInner = c.profile ? `<img src="${c.profile}" alt="" onerror="this.outerHTML='${safeInitials}'">` : initials;
                 const color = c.progress >= 80 ? '#22c55e' : c.progress >= 40 ? '#f59e0b' : '#3b82f6';
                 return `<a href="/recruitment/candidate-view/${c.id}/" class="on-cand-item" style="text-decoration:none;color:inherit;">
                     <div class="on-cand-item__avatar">${avatarInner}</div>
