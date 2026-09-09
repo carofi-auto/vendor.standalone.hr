@@ -41,17 +41,13 @@ from base.methods import (
     generate_pdf,
     get_key_instances,
     get_pagination,
+    sanitize_mail_template_body,
     sortby,
 )
 from base.models import HorillaMailTemplate, JobPosition
 from employee.models import Employee, EmployeeBankDetails, EmployeeWorkInformation
 from horilla import settings
-from horilla.decorators import (
-    hx_request_required,
-    logger,
-    login_required,
-    permission_required,
-)
+from horilla.decorators import hx_request_required, login_required, permission_required
 from horilla.group_by import group_by_queryset as general_group_by
 from horilla.http.response import HorillaRedirect
 from horilla_auth.models import HorillaUser
@@ -292,7 +288,9 @@ def task_creation(request):
     POST : return onboarding view
     """
     stage_id = request.GET.get("stage_id")
-    stage = OnboardingStage.objects.get(id=stage_id)
+    stage = OnboardingStage.objects.filter(id=stage_id).first()
+    if not stage:
+        return HttpResponse()
     form = OnboardingViewTaskForm(initial={"stage_id": stage})
 
     if request.method == "POST":
@@ -535,15 +533,20 @@ def candidates_single_view(request, id, **kwargs):
                 _("%(recruitment)s has no stage..")
                 % {"recruitment": candidate.recruitment_id},
             )
+        # OnboardingTask lost its own recruitment_id when tasks moved under
+        # stages, so filtering on it raises FieldError for any recruitment that
+        # has tasks. Reach the recruitment through the task's stage instead.
         if tasks := OnboardingTask.objects.filter(
-            recruitment_id=candidate.recruitment_id
+            stage_id__recruitment_id=candidate.recruitment_id
         ):
             for task in tasks:
                 if not CandidateTask.objects.filter(
                     candidate_id=candidate, onboarding_task_id=task
                 ).exists():
                     CandidateTask(
-                        candidate_id=candidate, onboarding_task_id=task
+                        candidate_id=candidate,
+                        stage_id=task.stage_id,
+                        onboarding_task_id=task,
                     ).save()
 
     recruitment = candidate.recruitment_id
@@ -787,13 +790,9 @@ def candidate_filter(request):
 
 
 import logging
-import os
-import secrets
 from email.mime.image import MIMEImage
 
-from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
-from django.template.loader import render_to_string
 
 logger = logging.getLogger(__name__)
 
@@ -803,6 +802,7 @@ logger = logging.getLogger(__name__)
 def email_send(request):
     host = request.get_host()
     protocol = "https" if request.is_secure() else "http"
+    no_portal = request.GET.get("no_portal") == "True"
 
     candidates = request.POST.getlist("ids")
     other_attachments = request.FILES.getlist("other_attachments")
@@ -843,7 +843,7 @@ def email_send(request):
 
         # Generate PDFs
         for html in bodys:
-            template_bdy = template.Template(html)
+            template_bdy = template.Template(sanitize_mail_template_body(html))
             context = template.Context(
                 {"instance": candidate, "self": request.user.employee_get}
             )
@@ -859,7 +859,9 @@ def email_send(request):
 
         # Create / reset portal
         token = secrets.token_hex(15)
-        portal, _ = OnboardingPortal.objects.get_or_create(candidate_id=candidate)
+        portal, _createdcreated = OnboardingPortal.objects.get_or_create(
+            candidate_id=candidate
+        )
         portal.token = token
         portal.used = False
         portal.count = 0
@@ -915,18 +917,25 @@ def email_send(request):
         except Exception as e:
             logger.error(f"Company logo attach failed: {e}")
 
-        # Send mail
-        try:
-            email.send()
-            messages.success(request, _("Portal link sent to the candidate"))
-        except Exception as e:
-            logger.error(e)
-            messages.error(
+        # Send mail, unless the caller only wants onboarding started. The
+        # "Start Onboarding" action posts ?no_portal=True for exactly this.
+        if no_portal:
+            messages.success(
                 request,
-                _("Mail not sent to %(candidate_name)s")
-                % {"candidate_name": candidate.name},
+                _("%(candidate)s added to onboarding") % {"candidate": candidate.name},
             )
-            # continue
+        else:
+            try:
+                email.send()
+                messages.success(request, _("Portal link sent to the candidate"))
+            except Exception as e:
+                logger.error(e)
+                messages.error(
+                    request,
+                    _("Mail not sent to %(candidate_name)s")
+                    % {"candidate_name": candidate.name},
+                )
+                # continue
 
         # Mark onboarding started without triggering Candidate.save() validation
         # (which can fail with "Choose valid choice" on job_position_id when the
@@ -1118,7 +1127,6 @@ def kanban_view(request):
             "filter_dict": filter_dict,
             "stage_form": stage_form,
             "status": status,
-            "choices": choices,
             "pd": previous_data,
             "card": True,
         },
@@ -1897,7 +1905,9 @@ def onboarding_send_mail(request, candidate_id):
     """
     This method is used to send mail to the candidate from onboarding view
     """
-    candidate = Candidate.objects.get(id=candidate_id)
+    candidate = Candidate.objects.filter(id=candidate_id).first()
+    if not candidate:
+        return HttpResponse()
     candidate_mail = candidate.email
     response = render(
         request, "onboarding/send_mail_form.html", {"candidate": candidate}

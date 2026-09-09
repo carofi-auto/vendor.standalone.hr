@@ -4,7 +4,7 @@ Modern recruitment dashboard views — KPI summary + ApexCharts.
 Accessible at /recruitment/dashboard/modern/ alongside the existing dashboard.
 """
 
-from datetime import date
+from datetime import date, timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Q
@@ -45,6 +45,23 @@ def _parse_period(request):
     return from_date, to_date
 
 
+def _upcoming_interview_period(request):
+    """Like _parse_period, but defaults to a forward-looking window.
+
+    This widget shows *upcoming* interviews -- _parse_period's generic
+    [month-start, today] default (built for the dashboard's other,
+    backward-looking widgets) can never show anything scheduled in the
+    future, even though interviews are deliberately scheduled ahead. Only
+    applies when neither from_date nor to_date was explicitly requested, so
+    an actual date-range-picker selection is still honored exactly as
+    before.
+    """
+    if not request.GET.get("from_date") and not request.GET.get("to_date"):
+        today = date.today()
+        return today, today + timedelta(days=30)
+    return _parse_period(request)
+
+
 def _candidates_in_period(request):
     """Return Candidate queryset filtered to the requested period (by created_at)."""
     from recruitment.models import Candidate
@@ -79,6 +96,7 @@ def recruitment_kpi_data(request):
         if rec.vacancy is not None:
             total_vacancy += rec.vacancy
 
+    from_date, to_date = _parse_period(request)
     candidates = _candidates_in_period(request)
     total_candidates = candidates.count()
 
@@ -92,6 +110,7 @@ def recruitment_kpi_data(request):
         conversion_rate = round((total_hired / total_candidates) * 100, 1)
 
     acceptance_rate = 0
+    accepted = 0
     try:
         accepted = candidates.filter(offer_letter_status="accepted").count()
         if total_hired > 0:
@@ -113,7 +132,13 @@ def recruitment_kpi_data(request):
             "total_candidates": total_candidates,
             "conversion_rate": conversion_rate,
             "acceptance_rate": acceptance_rate,
+            "accepted_count": accepted,
             "onboarding_count": onboarding_count,
+            # Echoed back so the "Hired"/"Acceptance Rate" cards' click-
+            # throughs can filter to the exact same period the counts
+            # above were computed from, instead of showing all-time data.
+            "period_from_date": from_date.isoformat(),
+            "period_to_date": to_date.isoformat(),
         }
     )
 
@@ -264,7 +289,12 @@ def recruitment_time_to_hire(request):
             }
         )
 
-    return JsonResponse({"data": [d for d in data if d["avg_days"] is not None]})
+    # Every recruitment with >=1 hire is returned, even when none of its
+    # hires have a usable (joining_date, created_at) pair yet -- avg_days
+    # is null in that case rather than the recruitment being dropped
+    # entirely, so a recruitment with real hires never silently vanishes
+    # from the chart just because its join-date data is incomplete.
+    return JsonResponse({"data": data})
 
 
 @login_required
@@ -349,7 +379,7 @@ def recruitment_upcoming_interviews(request):
         return JsonResponse({"no_permission": True})
     from recruitment.models import InterviewSchedule
 
-    from_date, to_date = _parse_period(request)
+    from_date, to_date = _upcoming_interview_period(request)
     today = date.today()
     interviews = []
 

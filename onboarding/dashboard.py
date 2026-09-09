@@ -74,6 +74,7 @@ def onboarding_kpi_data(request):
     from onboarding.models import CandidateStage, CandidateTask
     from recruitment.models import Recruitment
 
+    from_date, to_date = _parse_period(request)
     period_candidates = _onboarding_candidates_in_period(request)
     total_candidates = period_candidates.count()
     active_recruitments = Recruitment.objects.filter(
@@ -89,14 +90,25 @@ def onboarding_kpi_data(request):
         round((completed_tasks / total_tasks * 100), 1) if total_tasks > 0 else 0
     )
 
-    # Candidates who completed onboarding (on final stage) — within the period
+    # Candidates who completed onboarding (reached the final stage) during the
+    # selected period, scoped by onboarding_end_date -- the date the final
+    # stage was actually reached -- not by candidate_id__in=period_candidates
+    # (creation date), since a candidate can be created in one period and
+    # only finish onboarding in a later one.
     completed_onboarding = CandidateStage.objects.filter(
+        onboarding_stage_id__is_final_stage=True,
+        onboarding_end_date__gte=from_date,
+        onboarding_end_date__lte=to_date,
+    ).count()
+
+    # Of this period's own new onboarding candidates, how many are still
+    # in progress (not yet on the final stage) -- kept separate from
+    # `completed_onboarding` above so this always stays <= total_candidates.
+    completed_of_period_starters = CandidateStage.objects.filter(
         onboarding_stage_id__is_final_stage=True,
         candidate_id__in=period_candidates,
     ).count()
-
-    # Candidates in progress (not on final stage)
-    in_progress = total_candidates - completed_onboarding
+    in_progress = total_candidates - completed_of_period_starters
 
     return JsonResponse(
         {
@@ -108,41 +120,92 @@ def onboarding_kpi_data(request):
             "completed_tasks": completed_tasks,
             "stuck_tasks": stuck_tasks,
             "task_completion": task_completion,
+            # Echoed back so the "Onboarding" card's click-through can
+            # filter to the exact same period the count above was
+            # computed from, instead of showing all-time candidates.
+            "period_from_date": from_date.isoformat(),
+            "period_to_date": to_date.isoformat(),
         }
     )
 
 
 @login_required
 def onboarding_stage_distribution(request):
-    """Candidates by onboarding stage."""
+    """Candidates grouped by onboarding stage name -- one tile per stage.
+
+    OnboardingStage rows are per-recruitment (every recruitment seeds its
+    own stage set -- see recruitment_expansion.py), so grouping by the
+    stage *row*, as this endpoint used to, renders one duplicate tile per
+    recruitment that happens to share a stage name (e.g. "Initial"
+    appearing once per recruitment instead of once, total). Grouping by
+    stage_title instead collapses that back to one tile per distinct step
+    (same fix as offboarding_pipeline in offboarding/dashboard.py).
+
+    This also sidesteps a second, sneakier bug: a plain
+    .values_list("onboarding_stage_id__stage_title", flat=True) is NOT
+    safe here either. HorillaCompanyManager.get_queryset() forces
+    .distinct() under company scoping, which Django compiles as a real SQL
+    `SELECT DISTINCT title`, silently deduplicating by VALUE rather than
+    by row the moment two different CandidateStage rows share a title --
+    undercounting exactly the case this fix is meant to aggregate
+    correctly. Pulling `pk` alongside every field defeats that, since pk
+    uniqueness keeps each row distinct regardless of which other columns
+    repeat.
+    """
     if not _has_onboarding_permission(request):
         return JsonResponse({"no_permission": True})
-    from onboarding.models import CandidateStage, OnboardingStage
+    from onboarding.models import CandidateStage
 
     period_candidates = _onboarding_candidates_in_period(request)
-    stages = []
+    rows = CandidateStage.objects.filter(
+        candidate_id__in=period_candidates
+    ).values_list(
+        "pk",
+        "onboarding_stage_id",
+        "onboarding_stage_id__stage_title",
+        "onboarding_stage_id__sequence",
+        "onboarding_stage_id__is_final_stage",
+        "onboarding_stage_id__recruitment_id__title",
+    )
 
-    try:
-        stage_qs = OnboardingStage.objects.all().order_by("sequence")
-        for stage in stage_qs:
-            count = CandidateStage.objects.filter(
-                onboarding_stage_id=stage,
-                candidate_id__in=period_candidates,
-            ).count()
-            if count > 0:
-                stages.append(
-                    {
-                        "id": stage.pk,
-                        "stage": stage.stage_title,
-                        "count": count,
-                        "is_final": stage.is_final_stage,
-                        "recruitment": (
-                            stage.recruitment_id.title if stage.recruitment_id else "—"
-                        ),
-                    }
+    groups = {}
+    for _pk, stage_id, title, sequence, is_final, recruitment_title in rows:
+        sequence = sequence if sequence is not None else 0
+        group = groups.setdefault(
+            title,
+            {
+                "id": stage_id,
+                "stage": title,
+                "count": 0,
+                "is_final": False,
+                "sequence": sequence,
+                "recruitments": set(),
+            },
+        )
+        group["count"] += 1
+        group["is_final"] = group["is_final"] or bool(is_final)
+        group["sequence"] = min(group["sequence"], sequence)
+        if recruitment_title:
+            group["recruitments"].add(recruitment_title)
+
+    stages = [
+        {
+            "id": group["id"],
+            "stage": group["stage"],
+            "count": group["count"],
+            "is_final": group["is_final"],
+            "recruitment": (
+                next(iter(group["recruitments"]))
+                if len(group["recruitments"]) == 1
+                else (
+                    f"{len(group['recruitments'])} recruitments"
+                    if group["recruitments"]
+                    else "—"
                 )
-    except Exception:
-        pass
+            ),
+        }
+        for group in sorted(groups.values(), key=lambda g: g["sequence"])
+    ]
 
     return JsonResponse({"stages": stages})
 
