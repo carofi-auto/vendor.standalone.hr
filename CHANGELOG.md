@@ -32,6 +32,86 @@ date and open a fresh Unreleased above it.
 ### Security      — vulnerabilities fixed; link the advisory and credit the reporter
 -->
 
+## [2.1.5] — 2026-09-09
+
+Bug-fix release. No security content and no migration — but it carries fixes
+for two problems that were reported by users and have been unavailable to them
+until now.
+
+### Fixed
+
+- **Dashboard panels stuck on "Loading…" forever.** `HorillaFilterSet` called
+  `self.data.getlist(...)`, which assumes a `QueryDict`. django-filter accepts
+  any mapping, and eight call sites pass a plain dict — the offline/online and
+  not-checked-in cards, their API equivalents, asset history and
+  reimbursements. Every one raised `AttributeError`, returned a 500, and left
+  the card it feeds spinning. Reported independently by **@owino600** in
+  [#1216](https://github.com/horilla/horilla-hr/issues/1216) and by a customer
+  after a v1→v2 migration; it affects every 2.1.x install, migrated or not.
+
+- **Horilla would not start on a Windows console.** A warning in
+  `horilla/config.py` contained an emoji, printed during `django.setup()` from
+  `horilla_ldap`'s `AppConfig.ready()`. On a cp1252 console — the Windows
+  default — encoding it raised `UnicodeEncodeError`, which propagated out of
+  startup and killed the process. Any database predating the LDAP app triggers
+  the warning path, so a v1→v2 migration hit it every time. Startup
+  diagnostics are now ASCII and go through `logging`, which absorbs an encoding
+  failure rather than letting it become fatal.
+
+- **A full table load and a session write on every page view.** The breadcrumb
+  context processor read every employee and every active candidate on every
+  request and rewrote their ids into the session each time. It is now scoped,
+  lazy, and writes only when the ids change. Reported and fixed by
+  **@Roshan931** ([#1180](https://github.com/horilla/horilla-hr/pull/1180)).
+
+- **The organisation chart showed a single node** for anyone with no direct
+  reports, which read as a page that had failed to load. It now roots at the
+  top of the viewer's reporting chain, stopping at a company boundary so a
+  cross-company reporting line cannot expose another company's tree. By
+  **@yuri-val** ([#1168](https://github.com/horilla/horilla-hr/pull/1168)).
+
+- **Every employee showed as "Offline", permanently,** when check-in/check-out
+  was disabled for the company. The indicator is now hidden rather than
+  asserting something false. By **@yuri-val**
+  ([#1169](https://github.com/horilla/horilla-hr/pull/1169)).
+
+- **Survey template descriptions were saved but never displayed** anywhere a
+  user could see them. By **@yuri-val**
+  ([#1171](https://github.com/horilla/horilla-hr/pull/1171)).
+
+- Candidate cards fall back to initials when a profile image is missing,
+  instead of showing a broken image.
+
+- Two `pre-commit` hooks failed on a clean checkout: a `ruff` B023 warning, and
+  `check-yaml` on Compose's `!override` merge tag.
+
+### Added
+
+- **The running version is now visible in the UI** — in the sidebar footer and
+  under Settings → System Preferences → About, with a link to that release's
+  notes. Until now the version existed only in build metadata, so "which
+  version are you on?" could not be answered from the screen. It is
+  deliberately *not* exposed on `/health/` or `/ready/`, which are
+  unauthenticated.
+
+- Policy documents with an uploaded file now preview inline rather than
+  offering a download. By **@yuri-val**
+  ([#1175](https://github.com/horilla/horilla-hr/pull/1175)).
+
+### Changed
+
+- Eighteen commits adding `escapejs` to translated strings used inside
+  JavaScript, plus missing `trans` tags and an i18n context processor.
+  Apostrophes in translations no longer break the scripts they appear in.
+
+### Upgrading
+
+No migration or configuration change is required.
+
+```bash
+docker pull horilla/horilla-hr:2.1.5
+```
+
 ## [2.1.4] — 2026-09-08
 
 Security release. **Upgrade from any 2.x.** Both flaws below are reachable by an
