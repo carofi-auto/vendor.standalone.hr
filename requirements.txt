@@ -1,7 +1,7 @@
 # Core Django
 Django~=5.2.17  # ~= keeps 5.2.x security patches (CVE-2025-64459 fixed in 5.2.8)
 django-environ==0.14.0
-psycopg2-binary==2.9.10
+psycopg2-binary
 
 # Django extensions
 django-apscheduler==0.7.0
@@ -37,9 +37,9 @@ PyJWT==2.13.0
 drf-yasg==1.21.15
 
 # Data processing
-numpy==1.26.4
+numpy
 openpyxl==3.1.5
-pandas==3.0.5
+pandas
 XlsxWriter==3.2.9
 
 # PDF handling
@@ -98,7 +98,7 @@ click==8.5.0
 phonenumbers==9.0.37
 pycountry==24.6.1
 python-bidi==0.6.11
-rapidfuzz==3.14.6
+rapidfuzz
 spacy==3.8.16
 https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl
 
@@ -108,7 +108,7 @@ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0
 bleach==6.4.0
 # bleach's CSS sanitizer (used by base.templatetags.basefilters.sanitize_html to
 # keep inline colour in rich text) imports tinycss2, which bleach does not
-# require -- it is the `bleach[css]` extra. It currently arrives only as a
+# require -- it is the bleach[css] extra. It currently arrives only as a
 # transitive dependency of svglib, which is itself not pinned here, so without
 # this line the filter breaks at import on a clean install.
 tinycss2==1.5.1
@@ -123,7 +123,7 @@ packaging==26.3
 msgpack==1.2.2
 # setuptools comes from the base image and is required at runtime by spacy
 # and thinc. 70.3.0 carries a path traversal (CVE-2025-47273), and
-# `pip install --upgrade pip` does not upgrade setuptools, so the image kept
+# pip install --upgrade pip does not upgrade setuptools, so the image kept
 # the old one. Neither spacy nor thinc caps the version.
 setuptools==84.0.0
 
