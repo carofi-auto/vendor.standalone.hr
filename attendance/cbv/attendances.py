@@ -134,7 +134,7 @@ class AttendancesListView(HorillaListView):
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
         (
             "employee_id__employee_work_info__employee_type_id",
-            _("Employement Type"),
+            _("Employment Type"),
         ),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
@@ -318,7 +318,7 @@ class _AttendanceTabNavBase(HorillaNavView):
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
         (
             "employee_id__employee_work_info__employee_type_id",
-            _("Employement Type"),
+            _("Employment Type"),
         ),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
@@ -344,7 +344,7 @@ class _AttendanceTabNavBase(HorillaNavView):
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
         (
             "employee_id__employee_work_info__employee_type_id",
-            _("Employement Type"),
+            _("Employment Type"),
         ),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
@@ -726,7 +726,7 @@ class AttendanceUpdateFormView(HorillaFormView):
 
     def form_valid(self, form: AttendanceUpdateForm) -> HttpResponse:
         if form.is_valid():
-            message = _("Attandance Updated")
+            message = _("Attendance Updated")
             form.save()
             messages.success(self.request, message)
             return self.HttpResponse(

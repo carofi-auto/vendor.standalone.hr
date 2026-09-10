@@ -365,7 +365,6 @@ class AssetCategoryNav(HorillaNavView):
             )
 
 
-@method_decorator(hx_request_required, name="dispatch")
 class AssetDeleteConfirmationView(HorillaDeleteConfirmationView):
     generic_delete_url_name = "generic-delete-asset-category"
 

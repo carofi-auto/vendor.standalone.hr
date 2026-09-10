@@ -109,7 +109,7 @@ class AttendanceActivityListView(HorillaListView):
         ("employee_id__employee_work_info__work_type_id", _("Work Type")),
         ("employee_id__employee_work_info__department_id", _("Department")),
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
-        ("employee_id__employee_work_info__employee_type_id", _("Employement Type")),
+        ("employee_id__employee_work_info__employee_type_id", _("Employment Type")),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
 
@@ -197,7 +197,7 @@ class AttendanceActivityNavView(HorillaNavView):
         ("employee_id__employee_work_info__work_type_id", _("Work Type")),
         ("employee_id__employee_work_info__department_id", _("Department")),
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
-        ("employee_id__employee_work_info__employee_type_id", _("Employement Type")),
+        ("employee_id__employee_work_info__employee_type_id", _("Employment Type")),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
     # Mirrors AttendanceActivityListView.nested_group_by_fields below --
@@ -222,7 +222,7 @@ class AttendanceActivityNavView(HorillaNavView):
         ("employee_id__employee_work_info__work_type_id", _("Work Type")),
         ("employee_id__employee_work_info__department_id", _("Department")),
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
-        ("employee_id__employee_work_info__employee_type_id", _("Employement Type")),
+        ("employee_id__employee_work_info__employee_type_id", _("Employment Type")),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
 

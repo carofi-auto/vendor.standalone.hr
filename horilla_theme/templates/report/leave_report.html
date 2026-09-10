@@ -757,7 +757,7 @@
                 let selectedModel = $("#model-select").val();
                 $.get("{% url 'report-check-export-access' %}", {model: modelPathMap[selectedModel]}, function (resp) {
                     if (!resp.allowed) {
-                        alert("{% trans 'You dont have access to export this data'|escapejs %}");
+                        alert(`{% trans "You don't have access to export this data"|escapejs %}`);
                         return;
                     }
                     var baseFilename = excelFilenameFor(selectedModel);

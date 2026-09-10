@@ -222,7 +222,7 @@ def check_approval_status(model, perm):
             if object.approved:
                 return Response(
                     {
-                        "error": _("Approved %(model)s can't preform this action ")
+                        "error": _("Approved %(model)s can't perform this action ")
                         % {"model": model.__name__}
                     },
                     status=400,
@@ -230,7 +230,7 @@ def check_approval_status(model, perm):
             if object.canceled:
                 return Response(
                     {
-                        "error": _("Canceled %(model)s can't preform this action ")
+                        "error": _("Canceled %(model)s can't perform this action ")
                         % {"model": model.__name__}
                     },
                     status=400,

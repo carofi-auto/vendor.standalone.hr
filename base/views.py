@@ -449,7 +449,7 @@ def load_demo_database(request):
                             call_command("loaddata", file_path)
                     except Exception as e:
                         messages.error(
-                            request, _("An error occured : %(e)s") % {"e": e}
+                            request, _("An error occurred : %(e)s") % {"e": e}
                         )
                     finally:
                         if tmp and path.exists(tmp):
@@ -8674,7 +8674,7 @@ def delete_penalities(request, penalty_id):
             request, message=_("No penalty account found matching the query.")
         )
     penalty.delete()
-    messages.success(request, _("Penalty deleted suucessfully"))
+    messages.success(request, _("Penalty deleted successfully"))
     return HttpResponse(
         "<script>$('.reload-record').click();$('#reloadMessagesButton').click();</script>"
     )

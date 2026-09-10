@@ -1014,7 +1014,7 @@ def leave_request_approve(request, id, emp_id=None):
     leave_request = LeaveRequest.find(id)
     if not leave_request:
         return HorillaRedirect(
-            request, message=_("No leave rquest found matching the query.")
+            request, message=_("No leave request found matching the query.")
         )
     employee_id = leave_request.employee_id
     if not request.user.is_superuser:
@@ -1907,6 +1907,8 @@ def leave_assign_bulk_delete(request):
     return JsonResponse({"message": "Success"})
 
 
+@login_required
+@manager_can_enter("leave.add_availableleave")
 def assign_leave_type_excel(_request):
     """
     Generate an empty Excel template for asisgn leave type to employee with predefined columns.
@@ -2580,7 +2582,7 @@ def user_request_update(request, id):
                     else:
                         form.add_error(
                             None,
-                            _("You dont have enough leave days to make the request.."),
+                            _("You don't have enough leave days to make the request.."),
                         )
             return render(
                 request,

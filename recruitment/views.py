@@ -413,7 +413,7 @@ def recruitment_pipeline(request):
                         )
 
                     return HorillaRedirect(request)
-                messages.info(request, _("You dont have access"))
+                messages.info(request, _("You don't have access"))
     return render(
         request,
         template,
@@ -597,7 +597,7 @@ def candidate_stage_update(request, cand_id):
             {"type": "success", "message": _("Candidate stage updated")}
         )
     return JsonResponse(
-        {"type": "danger", "message": _("Something went wrong, Try agian.")}
+        {"type": "danger", "message": _("Something went wrong, Try again.")}
     )
 
 

@@ -197,7 +197,7 @@ class AttendancesRequestListView(HorillaListView):
         ("minimum_hour", _("Min Hour")),
         ("employee_id__employee_work_info__department_id", _("Department")),
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
-        ("employee_id__employee_work_info__employee_type_id", _("Employement Type")),
+        ("employee_id__employee_work_info__employee_type_id", _("Employment Type")),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
 
@@ -395,7 +395,7 @@ class _AttendanceRequestTabNavBase(HorillaNavView):
         ("minimum_hour", _("Min Hour")),
         ("employee_id__employee_work_info__department_id", _("Department")),
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
-        ("employee_id__employee_work_info__employee_type_id", _("Employement Type")),
+        ("employee_id__employee_work_info__employee_type_id", _("Employment Type")),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
     # Mirrors AttendancesRequestListView.nested_group_by_fields below --

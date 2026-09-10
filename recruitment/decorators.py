@@ -5,11 +5,13 @@ Custom decorators for permission and manager checks in the application.
 """
 
 from functools import wraps
+from urllib.parse import urlencode
 
 from django.conf import settings
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
 from employee.models import Employee
 from horilla.config import logger
@@ -75,6 +77,13 @@ def manager_can_enter(function, perm=None, perms=None):
 
     def _function(request, *args, **kwargs):
         user = request.user
+        if not user.is_authenticated:
+            login_url = reverse("login")
+            params = urlencode(request.GET)
+            url = f"{login_url}?next={request.path}"
+            if params:
+                url += f"&{params}"
+            return redirect(url)
         employee = Employee.objects.filter(employee_user_id=user).first()
 
         is_manager = (

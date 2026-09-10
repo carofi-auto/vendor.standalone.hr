@@ -781,6 +781,8 @@ def document_create(request, emp_id=None):
 
 @hx_request_required
 def get_notify_field(request):
+    if not request.user.is_authenticated:
+        return redirect(f"{reverse('login')}?next={request.path}")
     expiry_date = request.GET.get("expiry_date")
     form = DocumentForm()
     if not expiry_date:
@@ -2772,7 +2774,7 @@ def employee_export(request):
     """
     if not has_export_access(request, Employee):
         return HorillaRedirect(
-            request, message=_("You dont have access to export this data")
+            request, message=_("You don't have access to export this data")
         )
 
     # Get the list of field names for your model
@@ -2916,7 +2918,7 @@ def work_info_import(request):
                     thread.start()
 
                 except Exception as e:
-                    messages.error(request, _("Error Occured {}").format(e))
+                    messages.error(request, _("Error Occurred {}").format(e))
                     logger.error(e)
 
             path_info = (
@@ -2968,7 +2970,7 @@ def work_info_export(request):
     """
     if not has_export_access(request, Employee):
         return HorillaRedirect(
-            request, message=_("You dont have access to export this data")
+            request, message=_("You don't have access to export this data")
         )
 
     if request.META.get("HTTP_HX_REQUEST"):

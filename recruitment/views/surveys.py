@@ -656,7 +656,7 @@ def create_template(request):
         request.user.has_perm("recruitment.add_surveytemplate")
         or request.user.has_perm("recruitment.change_surveytemplate")
     ):
-        messages.info(request, _("You dont have permission."))
+        messages.info(request, _("You don't have permission."))
         return HorillaRedirect(request)
 
     title = request.GET.get("title")

@@ -20,7 +20,7 @@ from django.db import transaction
 from django.db.models import Case, CharField, F, When
 from django.db.models.functions import Cast
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse, QueryDict
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
 from django.urls import resolve, reverse
 from django.utils.decorators import method_decorator
@@ -663,7 +663,7 @@ class HorillaListView(ListView):
         """
 
         if not self.bulk_update_accessibility():
-            return HttpResponse("You dont have permission")
+            return HttpResponse("You don't have permission")
         ids = eval_validate(request.POST.get("instance_ids", "[]"))
         form = self.get_bulk_form()
         form.verbose_name = form.verbose_name + f" ({len((ids))} {_('Records')})"
@@ -678,7 +678,7 @@ class HorillaListView(ListView):
         This method to handle bulk update form submission
         """
         if not self.bulk_update_accessibility():
-            return HttpResponse("You dont have permission")
+            return HttpResponse("You don't have permission")
 
         instance_ids = request.POST.get("instance_ids", "[]")
         instance_ids = eval_validate(instance_ids)
@@ -726,7 +726,7 @@ class HorillaListView(ListView):
         Method to serve bulk import sheet
         """
         if not self.import_accessibility():
-            messages.info(request, _("You dont have permission"))
+            messages.info(request, _("You don't have permission"))
             return HorillaFormView.HttpResponse()
         ids = eval_validate(request.POST["selected_ids"])
 
@@ -753,7 +753,7 @@ class HorillaListView(ListView):
         """
         try:
             if not self.import_accessibility():
-                messages.info(request, _("You dont have permission"))
+                messages.info(request, _("You don't have permission"))
             field_column_mapping = {
                 field: get_verbose_name_from_field_path(
                     self.model, field, self.import_related_model_column_mapping
@@ -2883,6 +2883,8 @@ def dispatch_profile_tab(request, tab_key: str, pk: int, *args, **kwargs):
     request (see HorillaProfileView._register_tabs), the same as it would be
     in every worker process.
     """
+    if not request.user.is_authenticated:
+        return redirect(f"{reverse('login')}?next={request.path}")
     view_func = HorillaProfileView._tab_view_registry.get(tab_key)
     if view_func is None:
         raise Http404(f"No profile tab registered for '{tab_key}'")

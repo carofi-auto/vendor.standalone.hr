@@ -357,6 +357,7 @@ class DocumentRequestNav(HorillaNavView):
     modern_filter = True
 
 
+@method_decorator(login_required, name="dispatch")
 @method_decorator(hx_request_required, name="dispatch")
 class DocumentRequestPipelineView(Pipeline):
     """

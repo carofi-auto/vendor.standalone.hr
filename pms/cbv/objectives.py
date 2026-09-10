@@ -726,7 +726,7 @@ class CreateEmployeeKeyResultFormView(HorillaFormView):
             return HorillaRedirect(request)
 
         if not self.has_key_result_permission():
-            messages.info(request, _("You dont have permission"))
+            messages.info(request, _("You don't have permission"))
             return HorillaRedirect(request)
         return super().dispatch(request, *args, **kwargs)
 

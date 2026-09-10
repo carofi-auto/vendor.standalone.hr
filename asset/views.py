@@ -1511,7 +1511,7 @@ def asset_export_excel(request):
     """asset export view"""
     if not has_export_access(request, Asset):
         return HorillaRedirect(
-            request, message=_("You dont have access to export this data")
+            request, message=_("You don't have access to export this data")
         )
 
     asset_export_filter = AssetExportFilter(request.GET, queryset=Asset.objects.all())

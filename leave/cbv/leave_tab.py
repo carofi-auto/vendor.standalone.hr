@@ -21,6 +21,11 @@ class IndividualLeaveTab(MainParentListView):
     template_name = "cbv/employee_individual/leave_tab.html"
 
     def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            # Let the parent's login_required-decorated dispatch handle the
+            # redirect to login, rather than short-circuiting with an empty
+            # response before authentication is even checked.
+            return super().dispatch(request, *args, **kwargs)
         if not Employee.objects.filter(id=kwargs.get("pk")).exists():
             return HttpResponse()
         return super().dispatch(request, *args, **kwargs)

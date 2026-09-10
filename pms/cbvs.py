@@ -146,6 +146,7 @@ class BonusPointSettingListView(views.HorillaListView):
 # ================Models for EmployeeBonusPoint==============
 
 
+@method_decorator(login_required, name="dispatch")
 class EmployeeBonusPointSectionView(views.HorillaSectionView):
     """
     EmployeeBonusPoint SectionView
@@ -197,7 +198,7 @@ class EmployeeBonusPointNavView(views.HorillaNavView):
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
         (
             "employee_id__employee_work_info__employee_type_id",
-            _("Employement Type"),
+            _("Employment Type"),
         ),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]

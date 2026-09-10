@@ -100,7 +100,7 @@ class AssignedleaveList(HorillaListView):
         ),
         ("employee_id__employee_work_info__department_id", _("Department")),
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
-        ("employee_id__employee_work_info__employee_type_id", _("Employement Type")),
+        ("employee_id__employee_work_info__employee_type_id", _("Employment Type")),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
 
@@ -132,7 +132,7 @@ class AssignedleaveList(HorillaListView):
         per selected record instead of replacing it.
         """
         if not self.bulk_update_accessibility():
-            return HttpResponse("You dont have permission")
+            return HttpResponse("You don't have permission")
 
         instance_ids = eval_validate(request.POST.get("instance_ids", "[]"))
         form = DynamicBulkUpdateForm(
@@ -265,7 +265,7 @@ class AssignedLeaveNavView(HorillaNavView):
         ),
         ("employee_id__employee_work_info__department_id", _("Department")),
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
-        ("employee_id__employee_work_info__employee_type_id", _("Employement Type")),
+        ("employee_id__employee_work_info__employee_type_id", _("Employment Type")),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
     # Mirrors AssignedleaveList.nested_group_by_fields below -- List and
@@ -288,7 +288,7 @@ class AssignedLeaveNavView(HorillaNavView):
         ),
         ("employee_id__employee_work_info__department_id", _("Department")),
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
-        ("employee_id__employee_work_info__employee_type_id", _("Employement Type")),
+        ("employee_id__employee_work_info__employee_type_id", _("Employment Type")),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
 

@@ -1462,7 +1462,7 @@ def payslip_export(request):
     """
     if not has_export_access(request, Payslip):
         return HorillaRedirect(
-            request, message=_("You dont have access to export this data")
+            request, message=_("You don't have access to export this data")
         )
 
     if request.META.get("HTTP_HX_REQUEST"):

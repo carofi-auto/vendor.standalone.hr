@@ -68,7 +68,7 @@ class MailLogTabList(HorillaListView):
             messages.error(request, _("Employee not found."))
             return HorillaRedirect(request)
         if not _can_view_mail_log(request, employee):
-            messages.info(request, _("You dont have access to the feature"))
+            messages.info(request, _("You don't have access to the feature"))
             return HorillaRedirect(request)
         return super().dispatch(request, *args, **kwargs)
 
@@ -116,7 +116,7 @@ class MailLogDetailView(HorillaDetailedView):
     def dispatch(self, request, *args, **kwargs):
         log = EmailLog.objects.filter(id=kwargs.get("pk")).first()
         if not _can_view_mail_log(request, _employee_for_log(log)):
-            messages.info(request, _("You dont have access to the feature"))
+            messages.info(request, _("You don't have access to the feature"))
             return HorillaRedirect(request)
         return super().dispatch(request, *args, **kwargs)
 

@@ -153,7 +153,7 @@ class BiometricCardView(HorillaCardView):
         ),
         (
             "sheduled--dot",
-            _("Sheduled"),
+            _("Scheduled"),
             """
             onclick="$('#applyFilter').closest('form').find('[name=is_scheduler]').val('true');
                 $('#applyFilter').click();

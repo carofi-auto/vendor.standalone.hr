@@ -311,7 +311,9 @@ def _recruitment_survey_queryset_for(request):
     queryset = RecruitmentSurvey.objects.all()
     if not request.user.has_perm("recruitment.view_recruitmentsurvey"):
         queryset = queryset.filter(
-            recruitment_ids__recruitment_managers=request.user.employee_get
+            recruitment_ids__recruitment_managers=getattr(
+                request.user, "employee_get", None
+            )
         ).distinct()
     return queryset
 

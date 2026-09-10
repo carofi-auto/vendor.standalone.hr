@@ -1085,7 +1085,7 @@ def export_data(request, model, form_class, filter_class, file_name, perm=None):
 
     if not has_export_access(request, model):
         return HorillaRedirect(
-            request, message=_("You dont have access to export this data")
+            request, message=_("You don't have access to export this data")
         )
 
     selected_columns = []

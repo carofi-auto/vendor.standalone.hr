@@ -94,7 +94,7 @@ form.addEventListener("submit", function (event) {
                     showCancelButton: true,
                     showDenyButton: true,
                     confirmButtonText: "Download error list & Skip Import",
-                    denyButtonText: "Downlod error list & Continue Import",
+                    denyButtonText: "Download error list & Continue Import",
                     cancelButtonText: i18nMessages.cancel,
                     confirmButtonColor: "#008000",
                     denyButtonColor: "#6c757d",

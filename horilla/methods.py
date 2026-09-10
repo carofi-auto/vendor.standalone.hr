@@ -82,7 +82,13 @@ def horilla_users_with_perms(permissions):
 
 def handle_no_permission(request, message=_("You don't have permission.")):
     messages.info(request, message)
-    if request.headers.get("HX-Request"):
+    # Sec-Fetch-Mode is set by the browser itself for a genuine top-level
+    # navigation and can't be spoofed by an htmx fetch() call, unlike the
+    # HX-Request header alone -- some browser setups send HX-Request even on
+    # a real address-bar visit, which would otherwise render the raw
+    # fragment instead of redirecting (e.g. to the login page).
+    is_real_navigation = request.headers.get("Sec-Fetch-Mode") == "navigate"
+    if request.headers.get("HX-Request") and not is_real_navigation:
         return render(request, "decorator_404.html")
 
     previous_url = request.META.get("HTTP_REFERER", "/")

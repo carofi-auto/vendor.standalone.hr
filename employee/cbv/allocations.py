@@ -15,8 +15,8 @@ from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.http import HttpResponse
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.shortcuts import redirect, render
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import View
@@ -932,12 +932,14 @@ if app_installed("asset"):
         """
         Return allocation method
         """
+        if not request.user.is_authenticated:
+            return redirect(f"{reverse('login')}?next={request.path}")
         asset_id = kwargs["asset_id"]
         if request.method == "POST":
             try:
                 asset_allocate_return(request, asset_id)
             except:
-                messages.error(request, _("An error occured"))
+                messages.error(request, _("An error occurred"))
             return HttpResponse(
                 """
                 <script>$("#reloadMessagesButton").click();$(".reload-record").click();$("#genericModal").removeClass('oh-modal--show');</script>

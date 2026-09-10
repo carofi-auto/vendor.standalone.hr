@@ -418,7 +418,7 @@ class MyLeaveRequestForm(HorillaFormView):
                 else:
                     form.add_error(
                         None,
-                        _("You dont have enough leave days to make the request"),
+                        _("You don't have enough leave days to make the request"),
                     )
             else:
                 if int(form.data["employee_id"]) == int(emp_id):
@@ -656,7 +656,7 @@ class MyLeaveRequestSingleForm(HorillaFormView):
                 else:
                     form.add_error(
                         None,
-                        _("You dont have enough leave days to make the request"),
+                        _("You don't have enough leave days to make the request"),
                     )
                     return self.form_invalid(form)
             else:

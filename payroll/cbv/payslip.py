@@ -337,7 +337,7 @@ class PayslipBulkExport(TemplateView):
     def get(self, request, *args, **kwargs):
         if not has_export_access(request, Payslip):
             return HorillaRedirect(
-                request, message=_("You dont have access to export this data")
+                request, message=_("You don't have access to export this data")
             )
         return super().get(request, *args, **kwargs)
 

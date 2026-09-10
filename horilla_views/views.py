@@ -844,7 +844,7 @@ def export_data(request, *args, **kwargs):
     # EXPORT ACCESS CONTROL
     # =====================================================
     if not has_export_access(request, model):
-        messages.info(request, _("You dont have access to export this data"))
+        messages.info(request, _("You don't have access to export this data"))
         return HorillaRedirect(request)
 
     # =====================================================

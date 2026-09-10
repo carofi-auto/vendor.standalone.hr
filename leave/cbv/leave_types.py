@@ -428,7 +428,7 @@ class LeaveTypeAssignForm(HorillaFormView):
                 else:
                     messages.info(
                         self.request,
-                        _("Compensatory leave type cant assigned manually"),
+                        _("Compensatory leave type can't assigned manually"),
                     )
 
             return self.HttpResponse()

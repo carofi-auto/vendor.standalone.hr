@@ -777,7 +777,7 @@ def quick_create_task(request, stage_id):
                 "hx_target": hx_target,
             },
         )
-    messages.info(request, _("You dont have permission."))
+    messages.info(request, _("You don't have permission."))
     return HorillaRedirect(request)
 
 
@@ -811,7 +811,7 @@ def create_task(request, stage_id):
             "task/new/forms/create_task.html",
             context={"form": form, "stage_id": stage_id},
         )
-    messages.info(request, _("You dont have permission."))
+    messages.info(request, _("You don't have permission."))
     return HorillaRedirect(request)
 
 
@@ -851,7 +851,7 @@ def create_task_in_project(request, project_id):
         return render(
             request, "task/new/forms/create_task_project.html", context=context
         )
-    messages.info(request, _("You dont have permission."))
+    messages.info(request, _("You don't have permission."))
     return HorillaRedirect(request)
 
 
@@ -990,7 +990,7 @@ def task_stage_change(request, task_id):
         or request.user.employee_get in task.task_members.all()
         or request.user.employee_get in project.managers.all()
     ):
-        messages.info(request, _("You dont have permission."))
+        messages.info(request, _("You don't have permission."))
         return HttpResponse("<script>$('#reloadMessagesButton').click();</script>")
 
     task.stage = stage
@@ -1118,7 +1118,7 @@ def drag_and_drop_task(request):
         messages.success(request, message)
         return JsonResponse({"change": change})
     change = True
-    messages.info(request, _("You dont have permission."))
+    messages.info(request, _("You don't have permission."))
     return JsonResponse({"change": change})
 
 
@@ -1788,7 +1788,7 @@ def time_sheet_update(request, time_sheet_id):
             },
         )
     else:
-        messages.error(request, _("You dont have permission."))
+        messages.error(request, _("You don't have permission."))
         return HorillaRedirect(request)
 
 

@@ -178,7 +178,7 @@ class MultipleApprovalConditionFormView(HorillaFormView):
                 MultipleApprovalManagers.objects.filter(
                     condition_id=self.form.instance
                 ).delete()
-                message = _("Multiple approval conditon Created Successfully")
+                message = _("Multiple approval condition Created Successfully")
                 condition_approval_managers = self.request.POST.getlist(
                     "multi_approval_manager"
                 )
@@ -253,7 +253,7 @@ class EditApprovalConditionFormView(MultipleApprovalConditionFormView):
                 MultipleApprovalManagers.objects.filter(
                     condition_id=self.form.instance
                 ).delete()
-                message = _("Multiple approval conditon updated Successfully")
+                message = _("Multiple approval condition updated Successfully")
                 for key, value in self.request.POST.items():
                     if key.startswith("multi_approval_manager"):
                         sequence += 1

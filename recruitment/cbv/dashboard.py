@@ -152,7 +152,7 @@ class OnGoingRecruitmentList(HorillaListView):
     show_toggle_form = False
 
     columns = [
-        (_("Recrutment"), "title"),
+        (_("Recruitment"), "title"),
         (_("Managers"), "managers"),
     ]
 

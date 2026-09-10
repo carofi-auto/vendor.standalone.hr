@@ -1992,13 +1992,13 @@ def activate_auto_payslip_generate(request):
         payslip_auto.auto_generate = True
         response = {
             "type": "success",
-            "message": _("Auto paslip generate activated successfully."),
+            "message": _("Auto payslip generate activated successfully."),
         }
     else:
         payslip_auto.auto_generate = False
         response = {
             "type": "success",
-            "message": _("Auto paslip generate deactivated successfully."),
+            "message": _("Auto payslip generate deactivated successfully."),
         }
     payslip_auto.save()
     return JsonResponse(response)

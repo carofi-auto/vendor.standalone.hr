@@ -439,9 +439,9 @@ def archive_key_result(request, pk):
     key_result.is_active = not key_result.is_active
     key_result.save()
     message = (
-        _("Key reuslt unarchived successfully")
+        _("Key result unarchived successfully")
         if key_result.is_active
-        else _("Key reuslt archived successfully")
+        else _("Key result archived successfully")
     )
     messages.success(request, message)
     return HttpResponse("")
@@ -562,7 +562,7 @@ def objective_manager_remove(request, obj_id, manager_id):
     """
     objective = get_object_or_404(Objective, id=obj_id)
     objective.managers.remove(manager_id)
-    messages.success(request, _("Manger removed successfully."))
+    messages.success(request, _("Manager removed successfully."))
     return HttpResponse(
         "<script> $('.reload-record').click(); $('#reloadMessagesButton').click();</script>"
     )
@@ -793,7 +793,7 @@ def objective_detailed_view(request, obj_id, **kwargs):
         or request.user.has_perm("pms.view_employeeobjective")
         or emp_objectives.filter(employee_id=request.user.employee_get).exists()
     ):
-        messages.info(request, _("You dont have permission."))
+        messages.info(request, _("You don't have permission."))
         return redirect("objective-list-view")
 
     previous_data = request.GET.urlencode()
@@ -869,7 +869,7 @@ def objective_detailed_view_activity(request, id):
         }
         return render(request, "okr/objective_detailed_view_activity.html", context)
     else:
-        messages.info(request, _("You dont have permission."))
+        messages.info(request, _("You don't have permission."))
         return HorillaRedirect(request)
 
 
@@ -1315,7 +1315,7 @@ def change_employee_objective_status(request):
             and (emp_objective.employee_id == request.user.employee_get)
         )
     ):
-        messages.info(request, _("You dont have permission"))
+        messages.info(request, _("You don't have permission"))
         return HttpResponse("<script>$('#reloadMessagesButton').click();</script>")
 
     status = request.GET.get("status")
@@ -1329,7 +1329,7 @@ def change_employee_objective_status(request):
             and (emp_objective.employee_id == request.user.employee_get)
         )
     ):
-        messages.info(request, _("You dont have permission."))
+        messages.info(request, _("You don't have permission."))
     else:
         if emp_objective.status != status:
             emp_objective.status = status
@@ -2239,7 +2239,7 @@ def get_feedback_overview(request, obj_id):
             context={"feedback_overview": feedback_overview},
         )
     if feedback:
-        messages.info(request, _("You dont have permission."))
+        messages.info(request, _("You don't have permission."))
     else:
         messages.info(request, _("Feedback does not exist."))
     return HorillaRedirect(request)
@@ -3516,7 +3516,7 @@ def delete_employee_keyresult(request, kr_id):
         or request.user.has_perm("pms.delete_employeekeyresult")
         or request.user.employee_get in objective.managers.all()
     ):
-        messages.info(request, _("You dont have permission"))
+        messages.info(request, _("You don't have permission"))
         return HorillaRedirect(request)
 
     emp_objective = emp_kr.employee_objective_id
@@ -3559,12 +3559,12 @@ def employee_keyresult_update_status(request, kr_id):
         status = request.POST.get("key_result_status")
         emp_kr.status = status
         emp_kr.save()
-        messages.success(request, _("Key result sattus changed to {}.").format(status))
+        messages.success(request, _("Key result status changed to {}.").format(status))
         return redirect(
             f"/pms/kr-table-view/{emp_kr.employee_objective_id.id}?&objective_id={emp_kr.employee_objective_id.objective_id.id}"
         )
 
-    messages.info(request, _("You dont have permission"))
+    messages.info(request, _("You don't have permission"))
     return HorillaRedirect(request)
 
 
@@ -3598,7 +3598,7 @@ def key_result_current_value_update(request):
             messages.success(request, _("Value updated"))
         else:
             messages.info(
-                request, _("You dont have permission to update the current value")
+                request, _("You don't have permission to update the current value")
             )
         # Return JSON response with updated progress
         return JsonResponse(

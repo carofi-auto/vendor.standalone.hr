@@ -234,6 +234,14 @@ def owner_can_enter(
         if not getattr(self, "request", None):
             self.request = request
 
+        if not request.user.is_authenticated:
+            login_url = reverse("login")
+            params = urlencode(request.GET)
+            url = f"{login_url}?next={request.path}"
+            if params:
+                url += f"&{params}"
+            return redirect(url)
+
         instance_id = None
         if kwargs:
             instance_id = kwargs[list(kwargs.keys())[0]]

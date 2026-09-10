@@ -476,7 +476,7 @@ class LeaveRequestApproveSerializer(serializers.ModelSerializer):
         )
         if not total_available_leave >= leave_request.requested_days:
             raise serializers.ValidationError(
-                _("%(employee)s dont have enough leave days to approve the request..")
+                _("%(employee)s don't have enough leave days to approve the request..")
                 % {"employee": employee_id}
             )
         data["available_leave"] = available_leave

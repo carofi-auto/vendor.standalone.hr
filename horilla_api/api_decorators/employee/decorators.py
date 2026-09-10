@@ -70,7 +70,7 @@ def enter_if_accessible(function, feature, perm=None, method=None):
             return function(self, *args, **kwargs)
 
         return Response(
-            {"error": _("You dont have access to the feature")},
+            {"error": _("You don't have access to the feature")},
             status=status.HTTP_403_FORBIDDEN,
         )
 

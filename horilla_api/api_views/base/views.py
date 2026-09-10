@@ -525,7 +525,7 @@ class IndividualRotatingWorktypesView(APIView):
 
     def get(self, request, pk=None):
         if individual_permssion_check(request) == False:
-            return Response({"error": _("you have no permssion to view")}, status=400)
+            return Response({"error": _("you have no permission to view")}, status=400)
         if pk:
             rotating_work_type_assign = object_check(RotatingWorkTypeAssign, pk)
             if rotating_work_type_assign is None:
@@ -641,7 +641,7 @@ class IndividualWorkTypeRequestView(APIView):
 
     def get(self, request, pk=None):
         if individual_permssion_check(request) == False:
-            return Response({"error": _("you have no permssion to view")}, status=400)
+            return Response({"error": _("you have no permission to view")}, status=400)
 
         # individual object workflow
         if pk:
@@ -817,7 +817,7 @@ class IndividualRotatingShiftView(APIView):
 
     def get(self, request, pk=None):
         if individual_permssion_check(request) == False:
-            return Response({"error": _("you have no permssion to view")}, status=400)
+            return Response({"error": _("you have no permission to view")}, status=400)
 
         if pk:
             rotating_shift_assign = object_check(RotatingShiftAssign, pk)
@@ -914,7 +914,7 @@ class IndividualShiftRequestView(APIView):
 
     def get(self, request, pk=None):
         if individual_permssion_check(request) == False:
-            return Response({"error": _("you have no permssion to view")}, status=400)
+            return Response({"error": _("you have no permission to view")}, status=400)
 
         if pk:
             shift_request = object_check(ShiftRequest, pk)

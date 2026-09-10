@@ -970,7 +970,7 @@ def candidate_stage_update(request, cand_id):
             {"type": "success", "message": _("Candidate stage updated")}
         )
     return JsonResponse(
-        {"type": "danger", "message": _("Something went wrong, Try agian.")}
+        {"type": "danger", "message": _("Something went wrong, Try again.")}
     )
 
 
@@ -1666,7 +1666,7 @@ def interview_employee_remove(request, interview_id, employee_id):
         )
 
     interview.employee_id.remove(employee_id)
-    messages.success(request, _("Interviewer removed succesfully."))
+    messages.success(request, _("Interviewer removed successfully."))
     interview.save()
     # return redirect(interview_filter_view)
     return HttpResponse("<script> $('#applyFilter').click();</script>")
@@ -3097,7 +3097,7 @@ def to_skill_zone(request, cand_id):
         request.user.has_perm("recruitment.change_candidate")
         or request.user.has_perm("recruitment.add_skillzonecandidate")
     ):
-        messages.info(request, _("You dont have permission."))
+        messages.info(request, _("You don't have permission."))
         return HorillaRedirect(request)
 
     candidate = Candidate.objects.get(id=cand_id)
@@ -3166,7 +3166,6 @@ def open_recruitments(request):
     return response
 
 
-@hx_request_required
 def recruitment_details(request, id):
     """
     This method is used to render the recruitment details page.
@@ -3176,6 +3175,12 @@ def recruitment_details(request, id):
     the sensitive applied/capacity numbers behind
     perms.recruitment.view_recruitment.
     """
+    # This endpoint returns only the sidebar fragment loaded via HTMX from
+    # the open-recruitments page; a genuine top-level browser navigation
+    # (e.g. someone bookmarking/sharing this exact URL) should land on that
+    # real public page instead of a bare "Method Not Allowed" error.
+    if request.headers.get("Sec-Fetch-Mode") == "navigate":
+        return redirect(reverse("open-recruitments"))
     recruitment = Recruitment.default.filter(id=id).first()
     if not recruitment:
         messages.error(request, _("Recruitment not found."))
@@ -3746,6 +3751,8 @@ def resume_completion(request):
     """
     This function is returns the data for completing the candidate creation form
     """
+    if not request.user.is_authenticated:
+        return redirect(f"{reverse('login')}?next={request.path}")
     resume_file = request.FILES.get("resume")
     contact_info = extract_info(resume_file)
 

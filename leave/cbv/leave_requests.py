@@ -224,7 +224,7 @@ class LeaveRequestsListView(HorillaListView):
         ),
         ("employee_id__employee_work_info__department_id", _("Department")),
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
-        ("employee_id__employee_work_info__employee_type_id", _("Employement Type")),
+        ("employee_id__employee_work_info__employee_type_id", _("Employment Type")),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
 
@@ -315,7 +315,7 @@ class LeaveRequestsNavView(HorillaNavView):
         ),
         ("employee_id__employee_work_info__department_id", _("Department")),
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
-        ("employee_id__employee_work_info__employee_type_id", _("Employement Type")),
+        ("employee_id__employee_work_info__employee_type_id", _("Employment Type")),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
     # Mirrors LeaveRequestsListView.nested_group_by_fields below -- List
@@ -338,7 +338,7 @@ class LeaveRequestsNavView(HorillaNavView):
         ),
         ("employee_id__employee_work_info__department_id", _("Department")),
         ("employee_id__employee_work_info__job_position_id", _("Job Position")),
-        ("employee_id__employee_work_info__employee_type_id", _("Employement Type")),
+        ("employee_id__employee_work_info__employee_type_id", _("Employment Type")),
         ("employee_id__employee_work_info__company_id", _("Company")),
     ]
 
@@ -668,7 +668,7 @@ class LeaveClashListView(LeaveRequestsListView):
         col
         for col in LeaveRequestsListView.columns
         if col[1] not in ["leave_clash_col", "penality_col", "actions_col"]
-    ] + [(_("Clased Due To"), "clashed_due_to")]
+    ] + [(_("Clashed Due To"), "clashed_due_to")]
 
     row_status_class = ""
     row_status_indications = None

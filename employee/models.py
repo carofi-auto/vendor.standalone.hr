@@ -1155,7 +1155,7 @@ class BonusPoint(HorillaModel):
 
     CONDITIONS = [
         ("==", _("equals")),
-        (">", _("grater than")),
+        (">", _("greater than")),
         ("<", _("less than")),
         (">=", _("greater than or equal")),
         ("<=", _("less than or equal")),
