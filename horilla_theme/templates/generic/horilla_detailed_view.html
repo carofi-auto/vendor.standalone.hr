@@ -1,6 +1,6 @@
 {% load static i18n %}
 {% load generic_template_filters %}
-<div class="modal-box px-5 bg-white w-full max-w-md md:min-w-[700px] rounded-lg shadow-card p-0 transition-all duration-300 opacity-100 scale-100">
+<div class="modal-box px-5 bg-white w-full max-w-md md:min-w-[700px] rounded-lg shadow-card p-0 transition-all duration-300 opacity-100 scale-100 max-h-[85vh] overflow-y-auto">
     <div class="p-5" id="detailViewContainer">
         <div class="flex justify-between items-center mb-2">
             <h2 class="text-md font-semibold">{{ title }}</h2>
@@ -77,11 +77,11 @@
             {% for col in body %}
                 {% if not col.2 %}
                     <div class="col-span-1 md:col-span-{{ cols|get_item:col.1|default:6 }} mb-2 flex gap-5">
-                        <span class="font-medium text-xs text-[#565E6C] w-32">
+                        <span class="font-medium text-xs text-[#565E6C] w-32 flex-shrink-0">
                             {{ col.0 }}
                         </span>
-                        <div class="text-xs font-semibold flex gap-5">
-                            : <span>
+                        <div class="text-xs font-semibold flex gap-5 min-w-0">
+                            : <span class="max-h-32 overflow-y-auto">
                                 {{ object|getattribute:col.1|selected_format:request.user.employee_get.employee_work_info.company_id|linkify:request.user|safe }}
                             </span>
                         </div>

@@ -32,7 +32,15 @@
             href="{% if white_label_company.icon %}{{white_label_company.icon.url}} {% else %}{% static 'favicons/favicon-16x16.png' %}{% endif %}"
         >
 
-        <script src='{% static "horilla_theme/assets/js/tailwindcdn.js" %}'></script>
+        {% comment %} defer, not removed: tailwind.css below is a periodically
+           re-exported snapshot, not a build-pipeline output kept in sync on
+           every template change, so this runtime JIT compiler is still the
+           source of truth for any utility class added since that snapshot.
+           `defer` only delays execution past HTML parsing (this compiler
+           scans the DOM via MutationObserver, so it doesn't need to run
+           before other content loads) -- it doesn't change what gets
+           styled. {% endcomment %}
+        <script src='{% static "horilla_theme/assets/js/tailwindcdn.js" %}' defer></script>
         {% include "horilla_theme/components/header_scripts.html" %}
 
         <link
@@ -63,7 +71,7 @@
            happily cache. {% endcomment %}
         <link
             rel="stylesheet"
-            href="{% static 'horilla_theme/assets/css/v1_styles.css' %}?v=3"
+            href="{% static 'horilla_theme/assets/css/v1_styles.css' %}?v=7"
         >
         <link rel="stylesheet" href="{% static 'build/css/pivottable.min.css' %}">
         {% with theme=theme_obj %}
@@ -158,8 +166,21 @@
                 /* Text color */
                 .oh-tabs__movable-header,
                 .sidebox ul li a:hover,
-                .breadcrumb li a:hover {
+                .breadcrumb li a:hover,
+                /* Current crumb: global.css hardcodes the default red here, so
+                   it needs the theme shade like the hover state above. */
+                .breadcrumb li.oh-breadcrumb-current {
                     color: {{ theme.primary_600|default:"#E54F38" }};
+                }
+
+                /* Pill tab group (.mytab): global.css hardcodes the default red
+                   for both the outer border and the active tab's fill. */
+                .mytab {
+                    border-color: {{ theme.primary_600|default:"#E54F38" }};
+                }
+
+                .mytab .tab-button.active {
+                    background: {{ theme.primary_600|default:"#E54F38" }};
                 }
 
                 /* ── Theme-aware Tailwind primary-* utilities ─────────────────────
@@ -188,10 +209,16 @@
                 .hover\:text-primary-600:hover { color: {{ theme.primary_600|default:"#E54F38" }}; }
                 .focus\:border-primary-600:focus { border-color: {{ theme.primary_600|default:"#E54F38" }}; }
 
-                /* Active list/grid view-toggle button (.oh-view-btn--active) —
-                   its border was hardcoded red in v1_styles.css. */
-                .oh-view-btn--active {
-                    border: 1px solid {{ theme.primary_600|default:"#E54F38" }} !important;
+                /* Quick filter pills (Offline/Online etc., generic/quick_actions.html)
+                   submit and get swapped out of the DOM immediately on click, so a
+                   Tailwind focus:/active: utility class often loses the timing race
+                   against that swap and never paints. Plain :focus/:active here
+                   applies unconditionally rather than depending on the class being
+                   picked up before the element is replaced. */
+                .oh-row-status-indication:focus,
+                .oh-row-status-indication:active {
+                    outline: none;
+                    border-color: {{ theme.primary_600|default:"#E54F38" }} !important;
                 }
 
                 /* ── List-view row selection follows the theme ────────────────────

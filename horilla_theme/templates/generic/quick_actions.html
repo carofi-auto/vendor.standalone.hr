@@ -126,7 +126,7 @@
                 <div class="relative flex-shrink-0" x-data="{ open: false }">
                     <button
                         @click="open = !open"
-                        class="px-4 py-2 bg-white border border-[#e6e6e6] rounded-md text-xs flex gap-1 items-center whitespace-nowrap"
+                        class="px-4 py-2 bg-white border border-primary-500 hover:border-primary-600 rounded-md text-xs flex gap-1 items-center whitespace-nowrap transition duration-300"
                     >
                         <ion-icon name="funnel-outline"></ion-icon>
                         {% blocktrans with counter=stored_filters|length %}Filter ({{ counter }}){% endblocktrans %}
@@ -146,7 +146,7 @@
             {% if not hide_row_status_indications %}
                 {% for indication in row_status_indications %}
                     <button
-                        class="px-4 py-2 bg-[white] border border-[#e6e6e6] rounded-md text-xs flex gap-2 items-center flex-shrink-0 whitespace-nowrap"
+                        class="oh-row-status-indication px-4 py-2 bg-[white] border border-primary-500 hover:border-primary-600 rounded-md text-xs flex gap-2 items-center flex-shrink-0 whitespace-nowrap transition duration-300"
                         {{ indication.2|safe }}
                     >
                         <span class="h-3 w-3 rounded-full flex {{ indication.0 }}"></span>{{ indication.1 }}
@@ -156,7 +156,7 @@
         </div>
     {% endif %}
         {% if queryset.has_previous or queryset.has_next %}
-            <div class="hlv-pagination inline-flex items-center h-8 gap-0.5 bg-white border border-[#e6e6e6] rounded-md px-1 flex-shrink-0">
+            <div class="hlv-pagination inline-flex items-center h-8 gap-0.5 bg-white border border-primary-500 rounded-md px-1 flex-shrink-0">
                 <button
                     type="button"
                     class="w-7 h-7 flex items-center justify-center rounded text-xs leading-none transition duration-300 {% if queryset.has_previous %}text-[#666] hover:bg-[#f5f5f5]{% else %}text-[#ccc] cursor-not-allowed{% endif %}"

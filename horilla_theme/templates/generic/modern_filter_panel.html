@@ -115,7 +115,7 @@
         height: 16px;
         padding: 0 4px;
         border-radius: 999px;
-        background: var(--oh-filter-accent, #e54f38);
+        background: var(--oh-filter-accent, var(--primary-600, #e54f38));
         color: #fff;
         font-size: 10px;
         font-weight: 700;
@@ -177,7 +177,7 @@
     }
     .oh-filter-panel__search input:focus {
         outline: none;
-        border-color: var(--oh-filter-accent, #e54f38);
+        border-color: var(--oh-filter-accent, var(--primary-600, #e54f38));
         background: #fff;
     }
     .oh-filter-panel__body {
@@ -213,7 +213,7 @@
         align-items: center;
         gap: 5px;
         border: none;
-        background: var(--oh-filter-accent, #e54f38);
+        background: var(--oh-filter-accent, var(--primary-600, #e54f38));
         color: #fff;
         font-size: 12.5px;
         font-weight: 600;
@@ -233,17 +233,29 @@
         border: none;
         margin-top: 0 !important;
     }
+    {% comment %}
+    The Group By / nested Group By accordion (appended in
+    horilla_nav.html/inline_nav.html, right after the filter body's own
+    include of filter_body_template) is never a true DOM sibling of the
+    LAST accordion inside that include -- every filter body template wraps
+    its own accordions in a legacy .oh-dropdown__filter-body div, so Group
+    By's real previous sibling is that wrapper div, not .oh-accordion. The
+    adjacent-sibling selector below silently never matches it, so it needs
+    the explicit .oh-accordion--top-divider class instead of relying on
+    DOM position.
+
+    Any Django template tag written here as plain prose (not wrapped in
+    this comment tag) still gets parsed and executed -- a CSS /* comment
+    */ or HTML comment is just text to Django's own template lexer, which
+    scans the whole file for tag delimiters regardless of surrounding
+    markup. An earlier version of this note spelled out the include tag by
+    name in a CSS comment, which Django ran for real and crashed with
+    TemplateDoesNotExist on any page whose context had no
+    filter_body_template to include. Keep any tag names mentioned in prose
+    inside a real {% comment %} block, as here.
+    {% endcomment %}
     .oh-filter-modern .oh-accordion + .oh-accordion,
     .oh-filter-modern .oh-accordion--top-divider {
-        /* The Group By / nested Group By accordion (appended in
-           horilla_nav.html/inline_nav.html, right after
-           the filter_body_template include) is never a true DOM sibling
-           of the LAST accordion inside that include -- every filter body
-           template wraps its own accordions in a legacy
-           .oh-dropdown__filter-body div, so Group By's real previous
-           sibling is that wrapper div, not .oh-accordion. The adjacent-
-           sibling selector above silently never matches it, so it needs
-           this explicit class instead of relying on DOM position. */
         margin-top: 4px !important;
         padding-top: 14px;
         border-top: 1px solid #EAE8E3;
@@ -362,7 +374,7 @@
         pointer-events: none;
     }
     .oh-segmented__item input:checked ~ span {
-        color: var(--oh-filter-accent, #e54f38);
+        color: var(--oh-filter-accent, var(--primary-600, #e54f38));
     }
     .oh-segmented__item:has(input:checked) {
         background: rgb(229 79 56 / 8%);
@@ -431,7 +443,7 @@
         margin-top: 8px;
         border: none;
         background: none;
-        color: var(--oh-filter-accent, #e54f38);
+        color: var(--oh-filter-accent, var(--primary-600, #e54f38));
         font-size: 12.5px;
         font-weight: 600;
         cursor: pointer;
@@ -481,14 +493,14 @@
     .oh-filter-modern .oh-input:focus,
     .oh-filter-modern .oh-input:focus-visible,
     .oh-filter-modern select:focus {
-        border: 1px solid var(--oh-filter-accent, #e54f38) !important;
+        border: 1px solid var(--oh-filter-accent, var(--primary-600, #e54f38)) !important;
         box-shadow: 0 0 0 3px rgb(219 109 98 / 12%) !important;
     }
     .oh-filter-modern input[type="checkbox"],
     .oh-filter-modern input[type="radio"] {
         width: 15px;
         height: 15px;
-        accent-color: var(--oh-filter-accent, #e54f38);
+        accent-color: var(--oh-filter-accent, var(--primary-600, #e54f38));
         flex-shrink: 0;
     }
     /* Nudges the checkbox down to sit level with a wrapped label's first
@@ -522,7 +534,7 @@
     }
     .oh-filter-modern .select2-container--default.select2-container--focus .select2-selection--single,
     .oh-filter-modern .select2-container--default.select2-container--open .select2-selection--single {
-        border: 1px solid var(--oh-filter-accent, #e54f38) !important;
+        border: 1px solid var(--oh-filter-accent, var(--primary-600, #e54f38)) !important;
         box-shadow: 0 0 0 3px rgb(219 109 98 / 12%);
     }
     .oh-filter-modern .select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -549,7 +561,7 @@
         padding: 5px 8px;
     }
     .oh-filter-modern .select2-results__option--highlighted {
-        background: var(--oh-filter-accent, #e54f38) !important;
+        background: var(--oh-filter-accent, var(--primary-600, #e54f38)) !important;
     }
 
     .oh-filter-modern .filterButton {

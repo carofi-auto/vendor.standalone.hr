@@ -151,7 +151,7 @@
                 <div class="relative">
                     <input
                         type="text"
-                        class="text-color-600 ps-8 p-1.5 pb-2 placeholder:text-xs w-full border border-dark-50 rounded-md focus-visible:outline-0 placeholder:text-dark-100 text-sm [transition:.3s] focus:border-primary-600"
+                        class="text-color-600 ps-8 p-1.5 pb-2 placeholder:text-xs w-full border border-primary-500 rounded-md focus-visible:outline-0 placeholder:text-dark-100 text-sm [transition:.3s] focus:border-primary-600"
                         name="search"
                         aria-label="{% trans 'Search Input' %}"
                         placeholder="{% trans 'Search' %}"
@@ -495,7 +495,11 @@
                     {% trans "Actions" %}
                 </button>
 
-                <div class="dropdown-content absolute z-30 bg-white rounded-lg [box-shadow:0px_0px_20px_0px_rgb(0_0_0_/_8%)] min-w-[150px] py-2 right-0">
+                {# See the matching note in generic/inline_nav.html: this is #}
+                {# hidden with opacity/visibility rather than display, so an #}
+                {# uncapped long action list adds its full height to the #}
+                {# page's scroll area even while closed. #}
+                <div class="dropdown-content absolute z-30 bg-white rounded-lg [box-shadow:0px_0px_20px_0px_rgb(0_0_0_/_8%)] min-w-[150px] py-2 right-0 max-h-[60vh] overflow-y-auto">
                     <ul class="text-sm">
                         {% for action in actions %}
                             <li>
@@ -527,7 +531,16 @@
         {% endif %}
     </div>
 </div>
-<div id="filterTagContainerSectionNav" class="oh-titlebar-container__filters mb-2 mt-0 oh-wrapper"></div>
+{% if search_url or filter_body_template %}
+    {# A Nav with neither has nothing that could ever produce a filter tag to show/clear here - #}
+    {# omitting it (rather than always rendering an inert placeholder) matters when a page has #}
+    {# more than one Nav instance: generic/filter_tags.html's own script targets this id with an #}
+    {# unscoped `$("#filterTagContainerSectionNav")`, binding to the FIRST match in DOM order - a #}
+    {# stray empty placeholder from a search/filter-less Nav earlier on the page (e.g. a page-level #}
+    {# Nav next to a per-tab one that owns the actual Search+Filter) would silently steal that slot #}
+    {# from the Nav that actually has something to show. #}
+    <div id="filterTagContainerSectionNav" class="oh-titlebar-container__filters mb-2 mt-0 oh-wrapper"></div>
+{% endif %}
 
 <script>
     $(document).ready(function () {

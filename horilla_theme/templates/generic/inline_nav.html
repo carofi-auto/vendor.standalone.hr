@@ -14,6 +14,13 @@
         nested_group_by_fields, actions, create_attrs, apply_first_filter,
         modern_filter, applied_filter_count
 
+    An entry in `actions` may instead be a GROUP - {"group": <label>,
+    "actions": [<action>, ...]} - which renders as one collapsible row
+    rather than a flat row per action. Use it when the action list scales
+    with record count (see stage_pipeline_actions() in the recruitment
+    pipeline); a flat list of hundreds of rows makes this Nav's response
+    large and slow enough to leave the whole toolbar missing on first load.
+
     modern_filter opts into the same offcanwas slide-over panel as
     horilla_nav.html (.oh-filter-modern styles, generic/modern_filter_panel.
     html) instead of the classic anchored dropdown below -- mirrors that
@@ -26,6 +33,39 @@
     content (see e.g. requests/requests.html's #requestsContent), never
     left stacked alongside another instance of itself.
 {% endcomment %}
+<style>
+    /* Styling for grouped actions lives here rather than as per-element
+       utility classes: with one group per record, repeating a long class
+       list on every summary/row is what made the markup dominate this
+       Nav's response size. */
+    .ohActGroup > summary {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .375rem 1rem;
+        font-size: .75rem;
+        white-space: nowrap;
+        cursor: pointer;
+        transition: color .3s;
+        list-style: none;
+    }
+    .ohActGroup > summary::-webkit-details-marker { display: none; }
+    .ohActGroup > summary ion-icon {
+        font-size: .875rem;
+        flex-shrink: 0;
+        transition: transform .2s;
+    }
+    .ohActGroup[open] > summary ion-icon { transform: rotate(90deg); }
+    .ohActGroup > ul > li > a {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: .375rem 1rem .375rem 2.5rem;
+        font-size: .75rem;
+        white-space: nowrap;
+        transition: color .3s;
+    }
+</style>
 {% if modern_filter %}
     {% include 'generic/modern_filter_panel.html' %}
     {% comment %}
@@ -48,7 +88,17 @@
                 id="filterForm{{ search_swap_target|cut:'#' }}"
                 onsubmit="event.preventDefault()"
                 hx-get="{{ search_url }}"
-                hx-trigger="{% if default_group_by %}submit{% else %}load, submit{% endif %}"
+                {# `apply_first_filter` means "this page's content is already #}
+                {# fetched by whoever embedded this Nav - only submit from    #}
+                {# here". generic/horilla_nav.html has always gated its load  #}
+                {# trigger on it; this template checked only default_group_by,#}
+                {# so a Nav with apply_first_filter set still fired a `load`   #}
+                {# fetch into its own swap target. Where a shell already loads #}
+                {# that same target (the pipeline's per-tab shell does), the   #}
+                {# result was every row fetched twice and the already-rendered #}
+                {# content blanked and rebuilt when this late-arriving Nav     #}
+                {# fired. #}
+                hx-trigger="{% if default_group_by or apply_first_filter %}submit{% else %}load, submit{% endif %}"
                 hx-replace-url="false"
                 hx-target="{{ search_swap_target }}"
                 hx-on:submit="htmxLoadIndicator(this);"
@@ -60,7 +110,7 @@
                 <div class="relative">
                     <input
                         type="text"
-                        class="text-color-600 ps-8 p-1.5 pb-2 placeholder:text-xs w-full border border-dark-50 rounded-md focus-visible:outline-0 placeholder:text-dark-100 text-sm [transition:.3s] focus:border-primary-600"
+                        class="text-color-600 ps-8 p-1.5 pb-2 placeholder:text-xs w-full border border-primary-500 rounded-md focus-visible:outline-0 placeholder:text-dark-100 text-sm [transition:.3s] focus:border-primary-600"
                         name="search"
                         aria-label="{% trans 'Search Input' %}"
                         placeholder="{% trans 'Search' %}"
@@ -377,17 +427,52 @@
                     >
                     {% trans "Actions" %}
                 </button>
-                <div class="dropdown-content absolute z-10 bg-white rounded-lg [box-shadow:0px_0px_20px_0px_rgb(0_0_0_/_8%)] min-w-[150px] py-2 right-0 font-normal">
+                {# max-h + overflow-y-auto: .dropdown-content is hidden with #}
+                {# opacity/visibility (global.css), NOT display, so it stays #}
+                {# in layout even while closed and a long list still adds its #}
+                {# full height to the page's scrollable area - a Nav whose #}
+                {# actions cover many records (e.g. the pipeline's per-stage #}
+                {# actions) left a tall empty scroll gap under the content. #}
+                {# Capping it also makes such a list usable rather than #}
+                {# running it off-screen. Inert for short menus, which never #}
+                {# reach the cap. #}
+                <div class="dropdown-content absolute z-10 bg-white rounded-lg [box-shadow:0px_0px_20px_0px_rgb(0_0_0_/_8%)] min-w-[150px] py-2 right-0 font-normal max-h-[60vh] overflow-y-auto">
                     <ul class="text-sm">
                         {% for action in actions %}
-                            <li>
-                                <a
-                                    class="px-4 py-1.5 hover:text-primary-600 transition duration-300 text-xs gap-4 items-center flex w-full"
-                                    {{ action.attrs|safe }}
-                                >
-                                    {{ action.action }}
-                                </a>
-                            </li>
+                            {% if action.group %}
+                                {# Grouped entry: one collapsible <details> per #}
+                                {# group instead of a flat row per action. A     #}
+                                {# Nav whose actions scale with record count     #}
+                                {# (the pipeline's per-stage ones) otherwise     #}
+                                {# renders hundreds of rows. Closed by default,  #}
+                                {# so the browser lays out only the summaries.   #}
+                                {# Styling lives in the scoped <style> above,    #}
+                                {# not per-element classes: repeating a long     #}
+                                {# class list on every row is what made this     #}
+                                {# dropdown's markup dominate the response.      #}
+                                <li>
+                                    <details class="ohActGroup">
+                                        <summary class="hover:text-primary-600">
+                                            <ion-icon name="chevron-forward-outline"></ion-icon>
+                                            {{ action.group }}
+                                        </summary>
+                                        <ul>
+                                            {% for sub in action.actions %}
+                                                <li><a class="hover:text-primary-600" {{ sub.attrs|safe }}>{{ sub.action }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </details>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <a
+                                        class="px-4 py-1.5 hover:text-primary-600 transition duration-300 text-xs gap-4 items-center flex w-full"
+                                        {{ action.attrs|safe }}
+                                    >
+                                        {{ action.action }}
+                                    </a>
+                                </li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 </div>
@@ -423,11 +508,26 @@
         });
 
         setTimeout(() => {
-            $inlineNavForm.find(".oh-view-btn--active").click();
+            var $activeViewBtn = $inlineNavForm.find(".oh-view-btn--active");
+            {% if apply_first_filter %}
+            // Content is already fetched by whoever embedded this Nav, so
+            // only adopt the active view type's URL - don't fetch with it.
+            // Clicking the button (as the non-apply_first_filter path below
+            // does) runs its own onclick, which rewrites the form's hx-get
+            // AND clicks #applyFilter - re-fetching content that is already
+            // on the page. Do just the rewrite half here, so a later search
+            // or filter still submits to the right view's URL.
+            var activeViewUrl = $activeViewBtn.attr("data-url");
+            if (activeViewUrl) {
+                $inlineNavForm.attr("hx-get", activeViewUrl);
+            }
+            {% else %}
+            $activeViewBtn.click();
+            {% endif %}
             {% if default_group_by %}
             $inlineNavForm[0].requestSubmit();
             {% elif apply_first_filter %}
-            if (!$inlineNavForm.find(".oh-view-btn--active").length) {
+            if (!$activeViewBtn.length) {
                 $inlineNavForm.find("#applyFilter").click()
             }
             {% endif %}
