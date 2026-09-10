@@ -102,7 +102,7 @@ def delete_permission(function):
             return function(request, *args, **kwargs)
 
         return handle_no_permission(
-            request, message=_("You dont have permission for delete.")
+            request, message=_("You don't have permission for delete.")
         )
 
     return _function
@@ -140,7 +140,7 @@ def duplicate_permission(function):
             return function(request, *args, **kwargs)
 
         return handle_no_permission(
-            request, message=_("You dont have permission for duplicate action.")
+            request, message=_("You don't have permission for duplicate action.")
         )
 
     return _function

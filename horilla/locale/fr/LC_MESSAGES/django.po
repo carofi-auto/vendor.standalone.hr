@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: horilla-hrms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-09 16:12+0530\n"
+"POT-Creation-Date: 2026-09-10 10:51+0530\n"
 "PO-Revision-Date: 2026-08-04 09:08+0000\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
@@ -24,7 +24,7 @@ msgstr "Vue par défaut des employés"
 msgid "Default Employee Detailed View"
 msgstr "Vue détaillée des employés par défaut"
 
-msgid "You dont have access to the feature"
+msgid "You don't have access to the feature"
 msgstr "Vous n'avez pas accès à la fonctionnalité"
 
 msgid "Employee"
@@ -1010,7 +1010,7 @@ msgstr "Actifs importés avec succès"
 msgid "File Error"
 msgstr "Erreur de fichier"
 
-msgid "You dont have access to export this data"
+msgid "You don't have access to export this data"
 msgstr "Vous n'avez pas accès à l'exportation de ces données"
 
 msgid "There are no assets to export."
@@ -1035,7 +1035,7 @@ msgid "You cannot delete this Batch number."
 msgstr "Vous ne pouvez pas supprimer ce numéro de lot."
 
 msgid "asset"
-msgstr "asset"
+msgstr "Actifs"
 
 msgid "Oops!! No Asset found..."
 msgstr "Oups!! Aucune ressource trouvée..."
@@ -1073,7 +1073,7 @@ msgstr "Pays"
 msgid "Reporting Manager"
 msgstr "Gestionnaire de rapports"
 
-msgid "Employement Type"
+msgid "Employment Type"
 msgstr "Type d'emploi"
 
 msgid "Check-in / Check-out Log"
@@ -1187,7 +1187,7 @@ msgstr "Présence ajoutée"
 msgid "Edit Attendance"
 msgstr "Modifier la présence"
 
-msgid "Attandance Updated"
+msgid "Attendance Updated"
 msgstr "Attandance mise à jour"
 
 msgid "Leave Type"
@@ -1318,9 +1318,6 @@ msgstr "Heures OT non approuvées"
 
 msgid "Hours Balance"
 msgstr "Solde d'heures"
-
-msgid "Employment Type"
-msgstr "Type d'emploi"
 
 msgid "Over time"
 msgstr "Au fil du temps"
@@ -1993,7 +1990,9 @@ msgstr "Demande de mise à jour de présence en attente !"
 msgid ""
 "An attendance request exists for updating this attendance prior to "
 "validation."
-msgstr "Une demande de présence existe pour mettre à jour cette présence avant validation."
+msgstr ""
+"Une demande de présence existe pour mettre à jour cette présence avant "
+"validation."
 
 msgid "View Request"
 msgstr "Voir la demande"
@@ -2050,9 +2049,6 @@ msgstr "Désélectionner toutes les présences"
 
 msgid "Export Attendance"
 msgstr "Exporter la présence"
-
-msgid "Attendnace Date"
-msgstr "Date de présence"
 
 msgid "No group result found."
 msgstr "Aucun résultat de groupe trouvé."
@@ -3646,7 +3642,7 @@ msgstr "Règles d'approbation multiples"
 msgid "Create Multiple Approval Condition"
 msgstr "Créer une condition d'approbation multiple"
 
-msgid "Multiple approval conditon Created Successfully"
+msgid "Multiple approval condition Created Successfully"
 msgstr "Conditon d'approbation multiple créé avec succès"
 
 msgid "Update Multiple Approval Condition"
@@ -3655,7 +3651,7 @@ msgstr "Mettre à jour la condition d'approbation multiple"
 msgid "Approval Manager"
 msgstr "Gestionnaire d'approbation"
 
-msgid "Multiple approval conditon updated Successfully"
+msgid "Multiple approval condition updated Successfully"
 msgstr "Conditon d'approbation multiple mis à jour avec succès"
 
 msgid "Roster Planner"
@@ -3973,9 +3969,6 @@ msgstr "Tous les départs — voir le rapport standard pour le détail"
 
 msgid "Unassigned"
 msgstr "Non assigné"
-
-msgid "You dont have permission."
-msgstr "Vous n'avez pas la permission."
 
 msgid "Your account is not linked to an employee record."
 msgstr "Votre compte n'est pas lié à un dossier d'employé."
@@ -5787,7 +5780,7 @@ msgstr "erreurs. Voulez-vous télécharger la liste des erreurs ?"
 msgid "Download error list & Skip Import"
 msgstr "Télécharger la liste des erreurs et ignorer l'importation"
 
-msgid "Downlod error list & Continue Import"
+msgid "Download error list & Continue Import"
 msgstr "Télécharger la liste des erreurs et poursuivre l'importation"
 
 msgid "Rotating Shifts Imported Successfully"
@@ -6324,7 +6317,7 @@ msgstr "Type de travail précédent"
 msgid "Is permenent work type"
 msgstr "Est un type de travail permenent"
 
-msgid "There are no work type requets to display."
+msgid "There are no work type requests to display."
 msgstr "Il n'y a pas de requètes de type de travail à afficher."
 
 msgid "monday"
@@ -6805,7 +6798,7 @@ msgid "dashboard"
 msgstr "Tableau de bord"
 
 msgid "pipeline"
-msgstr "pipeline"
+msgstr "Pipeline"
 
 msgid "recruitment-survey-question-template-view"
 msgstr "recrutement-sondage-template-question-vue"
@@ -6820,7 +6813,7 @@ msgid "stage-view"
 msgstr "scène-vue"
 
 msgid "view-onboarding-dashboard"
-msgstr "view-onboarding-dashboard"
+msgstr "Tableau de bord"
 
 msgid "cbv-pipeline"
 msgstr "Cbv-pipeline"
@@ -6850,7 +6843,7 @@ msgid "rotating-work-type-assign"
 msgstr "rotation-type-assignation de travail"
 
 msgid "view-payroll-dashboard"
-msgstr "view-payroll-dashboard"
+msgstr "Tableau de bord"
 
 msgid "view-contract"
 msgstr "voir-contrat"
@@ -6877,16 +6870,16 @@ msgid "attendance-overtime-view"
 msgstr "Vue d'ensemble de la présence"
 
 msgid "attendance-activity-view"
-msgstr "affichage de l'activité de présence"
+msgstr "Journal des pointages"
 
 msgid "late-come-early-out-view"
-msgstr "vue tardivement-venue-tôt-hors-ligne"
+msgstr "Retard et départ anticipé"
 
 msgid "view-my-attendance"
 msgstr "voir-mon-présence-vue"
 
 msgid "leave-dashboard"
-msgstr "quitter-le tableau de bord"
+msgstr "Tableau de bord"
 
 msgid "leave-employee-dashboard"
 msgstr "quitter-employé-tableau de bord"
@@ -6898,19 +6891,19 @@ msgid "user-request-view"
 msgstr "affichage de la requête utilisateur"
 
 msgid "type-view"
-msgstr "type-view"
+msgstr "Quitter les Types"
 
 msgid "assign-view"
-msgstr "affichage de l'assignation"
+msgstr "Soldes de congés"
 
 msgid "request-view"
 msgstr "demande-vue"
 
 msgid "holiday-view"
-msgstr "Vue vacances"
+msgstr "Jours fériés"
 
 msgid "company-leave-view"
-msgstr "entreprise-quitter-voir"
+msgstr "Jours de repos hebdomadaires"
 
 msgid "dashboard-view"
 msgstr "vue tableau de bord"
@@ -6919,7 +6912,7 @@ msgid "objective-list-view"
 msgstr "vue liste-objectif"
 
 msgid "feedback-view"
-msgstr "vue de commentaires"
+msgstr "Évaluation à 360°"
 
 msgid "period-view"
 msgstr "période-vue"
@@ -6955,13 +6948,13 @@ msgid "asset-batch-view"
 msgstr "visualisation par lots d'actifs"
 
 msgid "create-deduction"
-msgstr "create-deduction"
+msgstr "Création"
 
 msgid "create-allowance"
 msgstr "allocation de création"
 
 msgid "pms"
-msgstr "pms"
+msgstr "Performances"
 
 msgid "leave"
 msgstr "quitter"
@@ -6976,7 +6969,7 @@ msgid "employee"
 msgstr "employé"
 
 msgid "employee-settings"
-msgstr ""
+msgstr "Configuration"
 
 msgid "onboarding"
 msgstr "embarquement"
@@ -7027,7 +7020,7 @@ msgid "currency"
 msgstr "Devise"
 
 msgid "leave-allocation-request-view"
-msgstr "quittez la vue de demande d'allocation"
+msgstr "Quitter la demande d'allocation"
 
 msgid "employee-view-update"
 msgstr "mise à jour de la vue de l'employé"
@@ -7045,13 +7038,13 @@ msgid "feedback-creation"
 msgstr "création de commentaires"
 
 msgid "helpdesk"
-msgstr "helpdesk"
+msgstr "Assistance"
 
 msgid "faq-category-view"
-msgstr "faq-catégorie-vue"
+msgstr "Foire aux questions"
 
 msgid "faq-view"
-msgstr "faq-view"
+msgstr "Foire aux questions"
 
 msgid "ticket-view"
 msgstr "affichage du ticket"
@@ -7117,13 +7110,13 @@ msgid "offboarding"
 msgstr "hors-bord"
 
 msgid "offboarding-pipeline"
-msgstr "offboarding-pipeline"
+msgstr "Pipeline"
 
 msgid "pagination-settings-view"
 msgstr "pagination-paramètres-vue"
 
 msgid "organisation-chart"
-msgstr "organisation-chart"
+msgstr "Graphique d'organisation"
 
 msgid "document-request-view"
 msgstr "vue demande de document"
@@ -7147,10 +7140,10 @@ msgid "candidate-update"
 msgstr "mise à jour du candidat"
 
 msgid "create-payslip"
-msgstr "create-payslip"
+msgstr "Bulletin de paie"
 
 msgid "work-records"
-msgstr "enregistrement-travail"
+msgstr "Statut de travail quotidien"
 
 msgid "edit-profile"
 msgstr "modifier-profil"
@@ -7210,7 +7203,7 @@ msgid "asset-history"
 msgstr "historique des actifs"
 
 msgid "restrict-view"
-msgstr "restreindre la vue"
+msgstr "Périodes de restriction des congés"
 
 msgid "auto-payslip-settings-view"
 msgstr "Réglages de la feuille de paiement automatique"
@@ -7222,7 +7215,7 @@ msgid "employee-past-leave-restriction"
 msgstr "restriction-laissez-pas-employé"
 
 msgid "track-late-come-early-out"
-msgstr "track-late-come-early-out"
+msgstr "Suivi des retards et départs anticipés"
 
 msgid "enable-biometric-attendance"
 msgstr "présence-biométrique enable-"
@@ -7237,7 +7230,7 @@ msgid "skills-view"
 msgstr "vue des compétences"
 
 msgid "employee-bonus-point"
-msgstr "point de bonification de l'employé"
+msgstr "Points Bonus"
 
 msgid "mail-automations"
 msgstr "automatisations de courrier"
@@ -7270,7 +7263,7 @@ msgid "backup"
 msgstr "Sauvegarde"
 
 msgid "gdrive"
-msgstr "gdrive"
+msgstr "Sauvegarde Google Drive"
 
 msgid "horilla-theme"
 msgstr "Thème horilla"
@@ -7315,79 +7308,79 @@ msgid "whatsapp-credential-view"
 msgstr "Informations d’identification de l’app"
 
 msgid "meet"
-msgstr ""
+msgstr "Rencontre Google"
 
 msgid "gmeet-view"
-msgstr ""
+msgstr "Vue Google Meet"
 
 msgid "whatsapp"
-msgstr ""
+msgstr "WhatsApp"
 
 msgid "color-theme-view"
-msgstr ""
+msgstr "Thème de couleur"
 
 msgid "survey-template-preview"
-msgstr ""
+msgstr "Aperçu du modèle d'enquête"
 
 msgid "theme"
-msgstr ""
+msgstr "Thème"
 
 msgid "objective-template-list-view"
-msgstr ""
+msgstr "Modèle d'objectif"
 
 msgid "roster"
-msgstr ""
+msgstr "Planificateur de roulement"
 
 msgid "view-biometric-devices"
-msgstr ""
+msgstr "Appareils biométriques"
 
 msgid "biometric"
-msgstr ""
+msgstr "Biométrie"
 
 msgid "audit-history"
-msgstr ""
+msgstr "Audit et historique"
 
 msgid "policies-discipline"
-msgstr ""
+msgstr "Politiques et discipline"
 
 msgid "work-schedules"
-msgstr ""
+msgstr "Horaires de travail"
 
 msgid "requests"
-msgstr ""
+msgstr "Demandes"
 
 msgid "tours"
-msgstr ""
+msgstr "Visites de produits"
 
 msgid "templates-periods"
-msgstr ""
+msgstr "Modèles et périodes"
 
 msgid "system-preferences-view"
-msgstr ""
+msgstr "Préférences Système"
 
 msgid "default-export-access"
-msgstr ""
+msgstr "Accès à l'exportation par défaut"
 
 msgid "attendance-rule-view"
-msgstr ""
+msgstr "Règle de présence"
 
 msgid "leave-rules-view"
-msgstr ""
+msgstr "Règles de congé"
 
 msgid "encashment-settings-view"
-msgstr ""
+msgstr "Paramètres d'encaissement"
 
 msgid "offboarding-rules-view"
-msgstr ""
+msgstr "Règles de désintégration"
 
 msgid "company-leaves-view"
-msgstr ""
+msgstr "Jours de repos hebdomadaires"
 
 msgid "mail-templates-view"
-msgstr ""
+msgstr "Modèle de courriel"
 
 msgid "mail-automations-view"
-msgstr ""
+msgstr "Automatisation des e-mails"
 
 msgid "Employee Work Info"
 msgstr "Informations sur le travail des employés"
@@ -7453,7 +7446,7 @@ msgid "Feedback Status"
 msgstr "Statut du commentaire"
 
 #, python-format
-msgid "An error occured : %(e)s"
+msgid "An error occurred : %(e)s"
 msgstr "Une erreur s'est produite : %(e)s"
 
 #, python-format
@@ -8060,7 +8053,7 @@ msgstr "Lit de la société non trouvé."
 msgid "No penalty account found matching the query."
 msgstr "Aucun compte de pénalité trouvé correspondant à la requête."
 
-msgid "Penalty deleted suucessfully"
+msgid "Penalty deleted successfully"
 msgstr "Pénalité supprimée avec succès"
 
 msgid "Missing app_label"
@@ -8093,7 +8086,7 @@ msgstr "Type de périphérique"
 msgid "Not-Connected"
 msgstr "Non connecté"
 
-msgid "Sheduled"
+msgid "Scheduled"
 msgstr "Planifié"
 
 msgid "Live Capture"
@@ -8640,7 +8633,7 @@ msgstr "Demande d'actif créée pour les catégories sélectionnées"
 msgid "Select categories to request, or requests already exist"
 msgstr "Sélectionnez des catégories à demander, ou des demandes existent déjà"
 
-msgid "An error occured"
+msgid "An error occurred"
 msgstr "Une erreur est survenue"
 
 msgid "Employee assigned to group"
@@ -9007,7 +9000,7 @@ msgstr "Politique de confidentialité"
 msgid "equals"
 msgstr "est égal à"
 
-msgid "grater than"
+msgid "greater than"
 msgstr "griller plus que"
 
 msgid "less than"
@@ -9403,7 +9396,7 @@ msgstr "Demain"
 msgid "Active Employees"
 msgstr "Employés actifs"
 
-msgid "Incactive Employees"
+msgid "Inactive Employees"
 msgstr "Employés inactifs"
 
 msgid "Employee Chart"
@@ -9637,7 +9630,7 @@ msgstr ""
 msgid "Leave Unit"
 msgstr "Quitter l'unité"
 
-msgid "Set the amout for one leave encashment"
+msgid "Set the amount for one leave encashment"
 msgstr "Définir l'amout pour un campement de congé"
 
 msgid ""
@@ -10136,7 +10129,7 @@ msgstr ""
 "Excel."
 
 #, python-brace-format
-msgid "Error Occured {}"
+msgid "Error Occurred {}"
 msgstr "Une erreur s'est produite {}"
 
 #, python-format
@@ -10798,7 +10791,7 @@ msgstr "Un nouveau commentaire a été créé."
 msgid "The comment updated successfully."
 msgstr "Le commentaire a bien été mis à jour."
 
-msgid "The comment needs to be atleast 2 charactors."
+msgid "The comment needs to be at least 2 characters."
 msgstr "Le commentaire doit avoir au moins 2 caractères."
 
 #, python-brace-format
@@ -10841,10 +10834,10 @@ msgstr "L'automatisation « %(faq_obj_question)s » existe déjà."
 msgid "File(s) uploaded successfully."
 msgstr "Fichier(s) téléchargé(s) avec succès."
 
-msgid "You dont have permission for delete."
+msgid "You don't have permission for delete."
 msgstr "Vous n'êtes pas autorisé à supprimer."
 
-msgid "You dont have permission for duplicate action."
+msgid "You don't have permission for duplicate action."
 msgstr "Vous n'êtes pas autorisé à effectuer une action en double."
 
 msgid "The database is already initialized."
@@ -10898,11 +10891,11 @@ msgid "You cannot approve or reject your own request."
 msgstr "Vous ne pouvez pas approuver ou rejeter votre propre demande."
 
 #, python-format
-msgid "Approved %(model)s can't preform this action "
+msgid "Approved %(model)s can't perform this action "
 msgstr "%(model)s approuvé(e) ne peut pas effectuer cette action "
 
 #, python-format
-msgid "Canceled %(model)s can't preform this action "
+msgid "Canceled %(model)s can't perform this action "
 msgstr "%(model)s annulé(e) ne peut pas effectuer cette action "
 
 msgid "No permission"
@@ -10957,7 +10950,7 @@ msgid "Nothing to approve."
 msgstr "Rien à approuver."
 
 #, python-format
-msgid "%(employee)s dont have enough leave days to approve the request.."
+msgid "%(employee)s don't have enough leave days to approve the request.."
 msgstr ""
 "%(employee)s n'a pas assez de jours de congé pour approuver la demande.."
 
@@ -11061,7 +11054,7 @@ msgstr "WorkType introuvable"
 msgid "WorkTypeRequest not found"
 msgstr "WorkTypeRequest introuvable"
 
-msgid "you have no permssion to view"
+msgid "you have no permission to view"
 msgstr "vous n'avez pas la permission de consulter"
 
 msgid "RotatingWorkTypeAssign not found"
@@ -12253,7 +12246,7 @@ msgstr "Retour d'actif"
 msgid "Attendance Analytics"
 msgstr "Présence Analytique"
 
-msgid "Minius Leave"
+msgid "Minus Leave"
 msgstr "Congé négatif"
 
 msgid "Deduct From Carryforward"
@@ -12997,9 +12990,6 @@ msgstr "Voulez-vous supprimer cette feuille de temps ?"
 msgid "View Timesheet Chart"
 msgstr "Voir la feuille de temps"
 
-msgid "Current Shift sss"
-msgstr "Équipe actuelle sss"
-
 msgid "Reallocate Shift"
 msgstr "Réaffecter l'équipe"
 
@@ -13009,7 +12999,7 @@ msgstr "Congé compensatoire"
 msgid "Compensatory Leave Request"
 msgstr "Demande de congés compensatoires"
 
-msgid "By enabling this compensatory leave feature will avilable on Leave."
+msgid "By enabling this compensatory leave feature will available on Leave."
 msgstr ""
 "En activant cette fonction de congé compensatoire sera disponible en "
 "quittant."
@@ -13412,7 +13402,7 @@ msgstr "Autres enregistrements connexes"
 msgid "I have took manual action for the protected records"
 msgstr "J'ai pris des mesures manuelles pour les dossiers protégés"
 
-msgid "I acknowledge, i wont be able to revert this"
+msgid "I acknowledge, I won't be able to revert this"
 msgstr "Je reconnais, je ne pourrai pas revenir en arrière"
 
 msgid "Confirming to delete the related and protected records"
@@ -13823,9 +13813,6 @@ msgstr "Choisir une icône"
 msgid "Do you need to encash pending leave days?"
 msgstr "Avez-vous besoin d'encapsuler des jours de congés en attente ?"
 
-msgid "Carryforwrad Leave Days"
-msgstr "Jours de congé de Carry<unk> rad"
-
 msgid "Total Leave Taken"
 msgstr "Congé total pris"
 
@@ -13921,9 +13908,6 @@ msgid ""
 msgstr ""
 "En activant cette option, les utilisateurs normaux peuvent demander leur "
 "démission"
-
-msgid "Activites"
-msgstr "Activites"
 
 msgid "Add Key Result"
 msgstr "Ajouter un résultat clé"
@@ -14196,8 +14180,8 @@ msgstr "Score"
 msgid "Need verification"
 msgstr "Besoin de vérification"
 
-msgid "Candidated Added"
-msgstr "Candidature ajoutée"
+msgid "Candidate Added"
+msgstr "Candidat ajouté"
 
 msgid "Create Candidate"
 msgstr "Créer un candidat"
@@ -15177,9 +15161,6 @@ msgstr "Numéro de contact"
 msgid "Relation"
 msgstr "Relation"
 
-msgid "Current Shifeet"
-msgstr "Équipe actuelle"
-
 msgid "Add task"
 msgstr "Ajouter une tâche"
 
@@ -15491,9 +15472,6 @@ msgstr "Enregistrements sélectionnés mis à jour"
 msgid "No records selected"
 msgstr "Aucun enregistrement sélectionné"
 
-msgid "You dont have permission"
-msgstr "Vous n'avez pas l'autorisation"
-
 msgid "No record found..."
 msgstr "Aucun enregistrement trouvé..."
 
@@ -15512,7 +15490,7 @@ msgstr "Allocation"
 msgid "I Have took manual action for the protected records"
 msgstr "J'ai pris des mesures manuelles pour les dossiers protégés"
 
-msgid "I acknowledge, I wont be able to revert this "
+msgid "I acknowledge, I won't be able to revert this "
 msgstr "Je reconnais, je ne pourrai pas revenir en arrière "
 
 msgid "Group by"
@@ -15697,7 +15675,7 @@ msgstr "La demande de départ a été mise à jour avec succès"
 msgid "Leave request created successfully"
 msgstr "Demande de départ créée avec succès"
 
-msgid "Clased Due To"
+msgid "Closed Due To"
 msgstr "Classé en raison de"
 
 msgid "Deducted FromCFD"
@@ -15749,7 +15727,7 @@ msgstr "Quitter le type assigné avec succès"
 msgid "leave type is already assigned to the employee"
 msgstr "le type de congé est déjà affecté à l'employé"
 
-msgid "Compensatory leave type cant assigned manually"
+msgid "Compensatory leave type can't assigned manually"
 msgstr "Le type de congé compensatoire n'a pas pu être assigné manuellement"
 
 msgid "My Leave requests"
@@ -15761,7 +15739,7 @@ msgstr "Quitter la mise à jour de la demande"
 msgid "Leave request updated successfully"
 msgstr "Demande de départ mise à jour avec succès"
 
-msgid "You dont have enough leave days to make the request"
+msgid "You don't have enough leave days to make the request"
 msgstr "Vous n'avez pas assez de jours de congé pour faire la demande"
 
 msgid "There is already a leave request for this date range"
@@ -16304,8 +16282,16 @@ msgid_plural ""
 "\n"
 "                The selected dates include company holidays: %(names)s.\n"
 "            "
-msgstr[0] "\n                Les dates sélectionnées incluent un jour férié de l'entreprise : %(names)s.\n            "
-msgstr[1] "\n                Les dates sélectionnées incluent des jours fériés de l'entreprise : %(names)s.\n            "
+msgstr[0] ""
+"\n"
+"                Les dates sélectionnées incluent un jour férié de "
+"l'entreprise : %(names)s.\n"
+"            "
+msgstr[1] ""
+"\n"
+"                Les dates sélectionnées incluent des jours fériés de "
+"l'entreprise : %(names)s.\n"
+"            "
 
 msgid "Select All Requests"
 msgstr "Sélectionner toutes les demandes"
@@ -16319,12 +16305,12 @@ msgstr "Demandes d'exportation"
 msgid "Clashed Due To"
 msgstr "Classé à cause de"
 
-msgid "No clashed requestes available for cancelled or rejected leaves."
+msgid "No clashed requests available for cancelled or rejected leaves."
 msgstr ""
 "Aucune requête en conflit n'est disponible pour les congés annulés ou "
 "rejetés."
 
-msgid "No clashed requestes found"
+msgid "No clashed requests found"
 msgstr "Aucune requête rencontrée trouvée"
 
 msgid "Leave Request Report"
@@ -16536,7 +16522,7 @@ msgstr "Laisser la demande supprimée avec succès..."
 msgid "Leave request not found."
 msgstr "Demande de congé non trouvée."
 
-msgid "No leave rquest found matching the query."
+msgid "No leave request found matching the query."
 msgstr "Aucune demande de congé trouvée correspondant à la requête."
 
 msgid "You cannot approve your own leave request."
@@ -16657,7 +16643,7 @@ msgstr "Jours restreints non trouvés"
 msgid "Leave request updated successfully.."
 msgstr "Demande de départ mise à jour avec succès.."
 
-msgid "You dont have enough leave days to make the request.."
+msgid "You don't have enough leave days to make the request.."
 msgstr "Vous n'avez pas assez de jours de congé pour faire la demande."
 
 msgid "You can't update this leave request..."
@@ -16788,9 +16774,6 @@ msgstr "La restriction des demandes de congé à date passée a été activée"
 
 msgid "Past Date Leave Request Restriction has been disabled"
 msgstr "La restriction des demandes de congé à date passée a été désactivée"
-
-msgid "No leave request found matching the query."
-msgstr "Aucune demande de congé trouvée correspondant à la requête."
 
 msgid "Condition added successfully."
 msgstr "Condition ajoutée avec succès."
@@ -17270,9 +17253,6 @@ msgstr "La demande de démission a été %(status)s"
 msgid "Resignation Request setting has been {} successfully."
 msgstr "Le paramètre de demande de résignation a été {} avec succès."
 
-msgid "Scheduled"
-msgstr "Planifié"
-
 msgid "Candidaate"
 msgstr "Candidaate"
 
@@ -17423,7 +17403,7 @@ msgstr "Voulez-vous ajouter ce candidat à l'étape d'intégration ?"
 msgid "Start Onboarding"
 msgstr "Démarrer l'intégration"
 
-msgid "Added to Onobarding"
+msgid "Added to Onboarding"
 msgstr "Ajouté à Onobarding"
 
 msgid "Already Added!"
@@ -17969,14 +17949,11 @@ msgstr "Date de livraison"
 msgid "Installment Start Date"
 msgstr "Date de début du versement"
 
-msgid "Toatal Installments"
-msgstr "Versements totaux"
+msgid "Total Installments"
+msgstr "Total des versements"
 
 msgid "Progress Bar"
 msgstr "Barre de progression"
-
-msgid "Total Installments"
-msgstr "Total des versements"
 
 #, python-format
 msgid "%(title)s Updated Successfully"
@@ -18832,13 +18809,13 @@ msgstr "Allocation sur"
 msgid "View Attachments"
 msgstr "Voir les pièces jointes"
 
-msgid "Requsted for"
+msgid "Requested for"
 msgstr "Requis pour"
 
 msgid "Bonus points to encash."
 msgstr "Points bonus pour encapsuler."
 
-msgid "Requsted for total"
+msgid "Requested for total"
 msgstr "Requis pour le total"
 
 msgid "days to encash."
@@ -19082,10 +19059,10 @@ msgstr "Requête invalide. Paramètres requis manquants."
 msgid "Payslip auto generate setting not found."
 msgstr "Paramètre de génération automatique des bulletins de paie introuvable."
 
-msgid "Auto paslip generate activated successfully."
+msgid "Auto payslip generate activated successfully."
 msgstr "Générer automatiquement le paslip avec succès."
 
-msgid "Auto paslip generate deactivated successfully."
+msgid "Auto payslip generate deactivated successfully."
 msgstr "La génération automatique du paslip a été désactivée avec succès."
 
 msgid "Active 'Payslip auto generate' cannot delete."
@@ -19644,7 +19621,7 @@ msgstr "Échéance le : "
 msgid "Answered employees: "
 msgstr "Employés répondus : "
 
-msgid "Employees not answerd yet: "
+msgid "Employees not answered yet: "
 msgstr "Les employés ne répondent pas encore : "
 
 msgid "Cyclic feedback period: "
@@ -19791,9 +19768,6 @@ msgstr " Jours"
 msgid "Employee Key Results"
 msgstr "Résultats clés des employés"
 
-msgid "Descrption"
-msgstr "Décrption"
-
 msgid "There are currently no key results to consider."
 msgstr "Il n'y a actuellement aucun résultat clé à considérer."
 
@@ -19926,10 +19900,10 @@ msgstr "Résultat de la clé %(key_result)s mis à jour avec succès"
 msgid "No Key Result found matching the query."
 msgstr "Aucun résultat clé trouvé correspondant à la requête."
 
-msgid "Key reuslt unarchived successfully"
+msgid "Key result unarchived successfully"
 msgstr "Reuslt de la clé désarchivée avec succès"
 
-msgid "Key reuslt archived successfully"
+msgid "Key result archived successfully"
 msgstr "Reuslt de la clé archivée avec succès"
 
 #, python-format
@@ -19945,7 +19919,7 @@ msgstr ""
 msgid "No Objective found matching the query."
 msgstr "Aucun objectif trouvé correspondant à la requête."
 
-msgid "Manger removed successfully."
+msgid "Manager removed successfully."
 msgstr "Manger supprimé avec succès."
 
 msgid "Key result removed successfully."
@@ -20181,13 +20155,13 @@ msgid "No Employee Key Result found matching the query."
 msgstr "Aucun résultat clé d'employé trouvé correspondant à la requête."
 
 #, python-brace-format
-msgid "Key result sattus changed to {}."
+msgid "Key result status changed to {}."
 msgstr "Le sattus de la clé a été changé à {}."
 
 msgid "Value updated"
 msgstr "Valeur mise à jour"
 
-msgid "You dont have permission to update the current value"
+msgid "You don't have permission to update the current value"
 msgstr "Vous n'êtes pas autorisé à mettre à jour la valeur actuelle"
 
 msgid "No Meetings found matching the query."
@@ -20500,9 +20474,6 @@ msgstr ""
 "Il n'y a actuellement aucune tâche disponible; veuillez en créer une "
 "nouvelle."
 
-msgid "Mangers"
-msgstr "Mangeurs"
-
 msgid " Task"
 msgstr " Tâche"
 
@@ -20724,9 +20695,6 @@ msgstr "N° de candidats"
 
 msgid "Initial"
 msgstr "Initiale"
-
-msgid "Recrutment"
-msgstr "Recrutement"
 
 msgid "Interview Date"
 msgstr "Date de l'entrevue"
@@ -21323,9 +21291,6 @@ msgstr " Reprendre"
 msgid " Actions"
 msgstr " Actions"
 
-msgid "This field is requied"
-msgstr "Ce champ est requis"
-
 msgid "Are you sure you want to delete this candidate?"
 msgstr "Êtes-vous sûr de vouloir supprimer ce candidat ?"
 
@@ -21619,9 +21584,6 @@ msgstr "Voulez-vous supprimer ce vivier de talents ?"
 msgid "Add candidate"
 msgstr "Ajouter un candidat"
 
-msgid "Reasom"
-msgstr "Rasom"
-
 msgid "You have no Candidate."
 msgstr "Vous n'avez pas de candidat."
 
@@ -21701,7 +21663,7 @@ msgstr "Candidat ajouté."
 msgid "Stage added."
 msgstr "Étape ajoutée."
 
-msgid "You dont have access"
+msgid "You don't have access"
 msgstr "Vous n'avez pas accès"
 
 msgid "Stage updated."
@@ -21722,7 +21684,7 @@ msgstr "Séquence mise à jour."
 msgid "Candidate stage updated"
 msgstr "Étape de candidature mise à jour"
 
-msgid "Something went wrong, Try agian."
+msgid "Something went wrong, Try again."
 msgstr "Une erreur s'est produite. Essayez agian."
 
 msgid "Note deleted"
@@ -21942,16 +21904,13 @@ msgstr "Aucun fichier d'étape trouvé correspondant à la requête."
 msgid "Candidate view status updated"
 msgstr "État de la vue des candidats mis à jour"
 
-msgid "Candidate Added"
-msgstr "Candidat ajouté"
-
 msgid "Job position field is required"
 msgstr "Le champ Poste est obligatoire"
 
 msgid "No Meeting found matching the query"
 msgstr "Aucune réunion trouvée correspondant à la requête"
 
-msgid "Interviewer removed succesfully."
+msgid "Interviewer removed successfully."
 msgstr "L'intervieweur a été supprimé avec succès."
 
 msgid "Candidate Does not exists.."
@@ -24168,10 +24127,10 @@ msgstr "Sélectionner toutes les lignes"
 msgid "Unselect All Rows"
 msgstr "Désélectionner toutes les lignes"
 
-msgid "You Dont Have Permission"
+msgid "You Don't Have Permission"
 msgstr "Vous n'avez pas la permission"
 
-msgid "You dont have permission to the feature"
+msgid "You don't have permission to the feature"
 msgstr "Vous n'avez pas la permission d'accéder à la fonctionnalité"
 
 msgid "Setting Up Your Workspace"
@@ -24261,7 +24220,9 @@ msgstr "Accès refusé !"
 msgid ""
 "Your login credentials are currently blocked. Please contact HR "
 "administrators for assistance."
-msgstr "Vos identifiants de connexion sont actuellement bloqués. Veuillez contacter les administrateurs RH pour obtenir de l'aide."
+msgstr ""
+"Vos identifiants de connexion sont actuellement bloqués. Veuillez contacter "
+"les administrateurs RH pour obtenir de l'aide."
 
 msgid "Jan 03, 2023, at 11:13AM"
 msgstr "3 janv. 2023, à 11h13"
@@ -24368,7 +24329,7 @@ msgstr "Numéro de téléphone"
 msgid "Phone Number ID"
 msgstr "ID du numéro de téléphone"
 
-msgid "Bussiness ID"
+msgid "Business ID"
 msgstr "Identifiant professionnel"
 
 msgid "Token"
@@ -24386,13 +24347,13 @@ msgstr "Créer WhatsApp"
 msgid "Update Credentials"
 msgstr "Mettre à jour les identifiants"
 
-msgid "Crediential updated successfully"
+msgid "Credential updated successfully"
 msgstr "Identifiants mis à jour avec succès"
 
-msgid "Crediential created successfully"
+msgid "Credential created successfully"
 msgstr "Identifiants créés avec succès"
 
-msgid "Crediential deleted."
+msgid "Credential deleted."
 msgstr "Identifiant supprimé."
 
 msgid "Message sent successfully"

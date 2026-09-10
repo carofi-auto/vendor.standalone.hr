@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: horilla-hrms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-09 16:12+0530\n"
+"POT-Creation-Date: 2026-09-10 10:51+0530\n"
 "PO-Revision-Date: 2026-08-04 09:08+0000\n"
 "Last-Translator: \n"
 "Language-Team: Arabic\n"
@@ -25,7 +25,7 @@ msgstr "عرض الموظف الافتراضي"
 msgid "Default Employee Detailed View"
 msgstr "التفاصيل الافتراضية للموظف"
 
-msgid "You dont have access to the feature"
+msgid "You don't have access to the feature"
 msgstr "ليس لديك صلاحية الوصول إلى هذه الميزة"
 
 msgid "Employee"
@@ -1009,7 +1009,7 @@ msgstr "تم استيراد الأصول بنجاح"
 msgid "File Error"
 msgstr "خطأ في الملف"
 
-msgid "You dont have access to export this data"
+msgid "You don't have access to export this data"
 msgstr "ليس لديك صلاحية لتصدير هذه البيانات"
 
 msgid "There are no assets to export."
@@ -1034,7 +1034,7 @@ msgid "You cannot delete this Batch number."
 msgstr "لا يمكنك حذف رقم الدفعة هذا."
 
 msgid "asset"
-msgstr "الأصل"
+msgstr "الأصول"
 
 msgid "Oops!! No Asset found..."
 msgstr "عذراً! لم يتم العثور على أصل..."
@@ -1072,7 +1072,7 @@ msgstr "الدولة"
 msgid "Reporting Manager"
 msgstr "المدير المباشر"
 
-msgid "Employement Type"
+msgid "Employment Type"
 msgstr "نوع التوظيف"
 
 msgid "Check-in / Check-out Log"
@@ -1186,7 +1186,7 @@ msgstr "تم إضافة الحضور"
 msgid "Edit Attendance"
 msgstr "تعديل الحضور"
 
-msgid "Attandance Updated"
+msgid "Attendance Updated"
 msgstr "تم تحديث الحضور"
 
 msgid "Leave Type"
@@ -1317,9 +1317,6 @@ msgstr "ساعات وقت إضافي غير معتمدة"
 
 msgid "Hours Balance"
 msgstr "رصيد الساعات"
-
-msgid "Employment Type"
-msgstr "نوع التوظيف"
 
 msgid "Over time"
 msgstr "وقت إضافي"
@@ -2040,9 +2037,6 @@ msgstr "إلغاء تحديد جميع سجلات الحضور"
 
 msgid "Export Attendance"
 msgstr "تصدير سجلات الحضور"
-
-msgid "Attendnace Date"
-msgstr "تاريخ الحضور"
 
 msgid "No group result found."
 msgstr "لم يتم العثور على نتائج للتجميع."
@@ -3610,7 +3604,7 @@ msgstr "قواعد الموافقة المتعددة"
 msgid "Create Multiple Approval Condition"
 msgstr "إنشاء شرط موافقة متعدد"
 
-msgid "Multiple approval conditon Created Successfully"
+msgid "Multiple approval condition Created Successfully"
 msgstr "تم إنشاء شرط الموافقة المتعدد بنجاح"
 
 msgid "Update Multiple Approval Condition"
@@ -3619,7 +3613,7 @@ msgstr "تحديث شرط موافقة متعدد"
 msgid "Approval Manager"
 msgstr "مدير الموافقة"
 
-msgid "Multiple approval conditon updated Successfully"
+msgid "Multiple approval condition updated Successfully"
 msgstr "تم تحديث شرط الموافقة المتعدد بنجاح"
 
 msgid "Roster Planner"
@@ -3933,9 +3927,6 @@ msgstr "جميع المغادرات — راجع التقرير القياسي �
 
 msgid "Unassigned"
 msgstr "غير مُعيَّن"
-
-msgid "You dont have permission."
-msgstr "ليس لديك صلاحية."
 
 msgid "Your account is not linked to an employee record."
 msgstr "حسابك غير مرتبط بسجل الموظف."
@@ -5675,7 +5666,7 @@ msgstr "أخطاء. هل تريد تنزيل قائمة الأخطاء؟"
 msgid "Download error list & Skip Import"
 msgstr "تنزيل قائمة الأخطاء وتخطي الاستيراد"
 
-msgid "Downlod error list & Continue Import"
+msgid "Download error list & Continue Import"
 msgstr "تنزيل قائمة الأخطاء ومتابعة الاستيراد"
 
 msgid "Rotating Shifts Imported Successfully"
@@ -6192,7 +6183,7 @@ msgstr "نوع العمل السابق"
 msgid "Is permenent work type"
 msgstr "هل هو نوع عمل دائم"
 
-msgid "There are no work type requets to display."
+msgid "There are no work type requests to display."
 msgstr "لا توجد طلبات نوع عمل للعرض."
 
 msgid "monday"
@@ -6745,16 +6736,16 @@ msgid "attendance-overtime-view"
 msgstr "عرض وقت الإضافي للحضور"
 
 msgid "attendance-activity-view"
-msgstr "عرض نشاط الحضور"
+msgstr "سجل الحضور والانصراف"
 
 msgid "late-come-early-out-view"
-msgstr "عرض تأخر الدخول / انصراف مبكر"
+msgstr "التأخير والانصراف المبكر"
 
 msgid "view-my-attendance"
 msgstr "عرض حضوري"
 
 msgid "leave-dashboard"
-msgstr "لوحة تحكم الإجازة"
+msgstr "لوحة التحكم"
 
 msgid "leave-employee-dashboard"
 msgstr "لوحة تحكم إجازة الموظف"
@@ -6769,16 +6760,16 @@ msgid "type-view"
 msgstr "عرض الأنواع"
 
 msgid "assign-view"
-msgstr "عرض التعيينات"
+msgstr "أرصدة الإجازات"
 
 msgid "request-view"
 msgstr "عرض الطلبات"
 
 msgid "holiday-view"
-msgstr "عرض العطل"
+msgstr "العطلات الرسمية"
 
 msgid "company-leave-view"
-msgstr "عرض إجازات الشركة"
+msgstr "أيام الإجازة الأسبوعية"
 
 msgid "dashboard-view"
 msgstr "عرض لوحة التحكم"
@@ -6787,7 +6778,7 @@ msgid "objective-list-view"
 msgstr "عرض قائمة الأهداف"
 
 msgid "feedback-view"
-msgstr "عرض التعليقات (Feedback)"
+msgstr "التعليق"
 
 msgid "period-view"
 msgstr "عرض الفترات"
@@ -6844,7 +6835,7 @@ msgid "employee"
 msgstr "الموظف"
 
 msgid "employee-settings"
-msgstr ""
+msgstr "التكوين"
 
 msgid "onboarding"
 msgstr "الانضمام للعمل"
@@ -6895,7 +6886,7 @@ msgid "currency"
 msgstr "العملة"
 
 msgid "leave-allocation-request-view"
-msgstr "عرض طلب تخصيص الإجازة"
+msgstr "طلب تخصيص الإجازة"
 
 msgid "employee-view-update"
 msgstr "تحديث/عرض الموظف"
@@ -6913,10 +6904,10 @@ msgid "feedback-creation"
 msgstr "إنشاء تعليق (Feedback)"
 
 msgid "helpdesk"
-msgstr "خدمة العملاء"
+msgstr "مكتب المساعدة"
 
 msgid "faq-category-view"
-msgstr "عرض فئات الأسئلة الشائعة"
+msgstr "الأسئلة الشائعة"
 
 msgid "faq-view"
 msgstr "عرض الأسئلة الشائعة"
@@ -7018,7 +7009,7 @@ msgid "create-payslip"
 msgstr "إنشاء كشف راتب"
 
 msgid "work-records"
-msgstr "سجلات العمل"
+msgstr "حالة العمل اليومية"
 
 msgid "edit-profile"
 msgstr "تعديل الملف الشخصي"
@@ -7078,7 +7069,7 @@ msgid "asset-history"
 msgstr "سجل الأصل"
 
 msgid "restrict-view"
-msgstr "تقييد العرض"
+msgstr "فترات حظر الإجازة"
 
 msgid "auto-payslip-settings-view"
 msgstr "إعدادات إنشاء كشف الراتب التلقائي"
@@ -7105,7 +7096,7 @@ msgid "skills-view"
 msgstr "عرض المهارات"
 
 msgid "employee-bonus-point"
-msgstr "نقاط المكافأة للموظف"
+msgstr "نقاط المكافأة"
 
 msgid "mail-automations"
 msgstr "أتمتة البريد"
@@ -7183,79 +7174,79 @@ msgid "whatsapp-credential-view"
 msgstr "عرض بيانات اعتماد WhatsApp"
 
 msgid "meet"
-msgstr ""
+msgstr "اجتماع علي منصه جوجل"
 
 msgid "gmeet-view"
-msgstr ""
+msgstr "عرض Google Meet"
 
 msgid "whatsapp"
-msgstr ""
+msgstr "WhatsApp"
 
 msgid "color-theme-view"
-msgstr ""
+msgstr "موضوع اللون"
 
 msgid "survey-template-preview"
-msgstr ""
+msgstr "معاينة قالب الاستطلاع"
 
 msgid "theme"
-msgstr ""
+msgstr "السمة"
 
 msgid "objective-template-list-view"
-msgstr ""
+msgstr "قالب الهدف"
 
 msgid "roster"
-msgstr ""
+msgstr "مخطط الجداول"
 
 msgid "view-biometric-devices"
-msgstr ""
+msgstr "الأجهزة البيومترية"
 
 msgid "biometric"
-msgstr ""
+msgstr "القياسات الحيوية"
 
 msgid "audit-history"
-msgstr ""
+msgstr "التدقيق والتاريخ"
 
 msgid "policies-discipline"
-msgstr ""
+msgstr "السياسات والانضباط"
 
 msgid "work-schedules"
-msgstr ""
+msgstr "جداول العمل"
 
 msgid "requests"
-msgstr ""
+msgstr "الطلبات"
 
 msgid "tours"
-msgstr ""
+msgstr "جولات المنتج"
 
 msgid "templates-periods"
-msgstr ""
+msgstr "القوالب والفترات"
 
 msgid "system-preferences-view"
-msgstr ""
+msgstr "تفضيلات النظام"
 
 msgid "default-export-access"
-msgstr ""
+msgstr "وصول التصدير الافتراضي"
 
 msgid "attendance-rule-view"
-msgstr ""
+msgstr "قاعدة الحضور"
 
 msgid "leave-rules-view"
-msgstr ""
+msgstr "ترك القواعد"
 
 msgid "encashment-settings-view"
-msgstr ""
+msgstr "إعدادات الصرف"
 
 msgid "offboarding-rules-view"
-msgstr ""
+msgstr "قواعد الخروج من الطائرة"
 
 msgid "company-leaves-view"
-msgstr ""
+msgstr "أيام الإجازة الأسبوعية"
 
 msgid "mail-templates-view"
-msgstr ""
+msgstr "قالب البريد"
 
 msgid "mail-automations-view"
-msgstr ""
+msgstr "أتمتة البريد"
 
 msgid "Employee Work Info"
 msgstr "معلومات عمل الموظف"
@@ -7321,7 +7312,7 @@ msgid "Feedback Status"
 msgstr "حالة التعليق (Feedback)"
 
 #, python-format
-msgid "An error occured : %(e)s"
+msgid "An error occurred : %(e)s"
 msgstr "حدث خطأ : %(e)s"
 
 #, python-format
@@ -7905,7 +7896,7 @@ msgstr "إجازة الشركة غير موجودة."
 msgid "No penalty account found matching the query."
 msgstr "لم يتم العثور على حساب جزاءات مطابق للاستعلام."
 
-msgid "Penalty deleted suucessfully"
+msgid "Penalty deleted successfully"
 msgstr "تم حذف الغرامة بنجاح"
 
 msgid "Missing app_label"
@@ -7938,7 +7929,7 @@ msgstr "نوع الجهاز"
 msgid "Not-Connected"
 msgstr "غير متصل"
 
-msgid "Sheduled"
+msgid "Scheduled"
 msgstr "مجدول"
 
 msgid "Live Capture"
@@ -8456,7 +8447,7 @@ msgstr "تم إنشاء طلب أصل للفئات المحددة"
 msgid "Select categories to request, or requests already exist"
 msgstr "اختر الفئات المطلوبة، أو أن الطلبات موجودة بالفعل"
 
-msgid "An error occured"
+msgid "An error occurred"
 msgstr "حدث خطأ"
 
 msgid "Employee assigned to group"
@@ -8820,7 +8811,7 @@ msgstr "السياسة"
 msgid "equals"
 msgstr "يساوي"
 
-msgid "grater than"
+msgid "greater than"
 msgstr "أكبر من"
 
 msgid "less than"
@@ -9209,7 +9200,7 @@ msgstr "غداً"
 msgid "Active Employees"
 msgstr "الموظفون النشطون"
 
-msgid "Incactive Employees"
+msgid "Inactive Employees"
 msgstr "الموظفون غير النشطين"
 
 msgid "Employee Chart"
@@ -9442,7 +9433,7 @@ msgstr "حدد المبلغ المستحق لكل نقطة مكافأة عند �
 msgid "Leave Unit"
 msgstr "وحدة الإجازة"
 
-msgid "Set the amout for one leave encashment"
+msgid "Set the amount for one leave encashment"
 msgstr "حدد المبلغ لاستبدال إجازة واحدة"
 
 msgid ""
@@ -9934,7 +9925,7 @@ msgid "Unsupported file format. Please upload a CSV or Excel file."
 msgstr "تنسيق ملف غير مدعوم. يرجى رفع ملف CSV أو Excel."
 
 #, python-brace-format
-msgid "Error Occured {}"
+msgid "Error Occurred {}"
 msgstr "حدث خطأ {}"
 
 #, python-format
@@ -10593,7 +10584,7 @@ msgstr "تم إنشاء تعليق جديد."
 msgid "The comment updated successfully."
 msgstr "تم تحديث التعليق بنجاح."
 
-msgid "The comment needs to be atleast 2 charactors."
+msgid "The comment needs to be at least 2 characters."
 msgstr "يجب أن يكون التعليق مكوناً من حرفين على الأقل."
 
 #, python-brace-format
@@ -10635,10 +10626,10 @@ msgstr "الأتمتة '%(faq_obj_question)s' موجودة بالفعل."
 msgid "File(s) uploaded successfully."
 msgstr "تم رفع الملف (الملفات) بنجاح."
 
-msgid "You dont have permission for delete."
+msgid "You don't have permission for delete."
 msgstr "ليس لديك إذن بالحذف."
 
-msgid "You dont have permission for duplicate action."
+msgid "You don't have permission for duplicate action."
 msgstr "ليس لديك إذن بإجراء مكرر."
 
 msgid "The database is already initialized."
@@ -10687,11 +10678,11 @@ msgid "You cannot approve or reject your own request."
 msgstr "لا يمكنك الموافقة على طلبك الخاص أو رفضه."
 
 #, python-format
-msgid "Approved %(model)s can't preform this action "
+msgid "Approved %(model)s can't perform this action "
 msgstr "لا يمكن لـ %(model)s المعتمد تنفيذ هذا الإجراء "
 
 #, python-format
-msgid "Canceled %(model)s can't preform this action "
+msgid "Canceled %(model)s can't perform this action "
 msgstr "لا يمكن لـ %(model)s الملغى تنفيذ هذا الإجراء "
 
 msgid "No permission"
@@ -10744,7 +10735,7 @@ msgid "Nothing to approve."
 msgstr "لا شيء للموافقة عليه."
 
 #, python-format
-msgid "%(employee)s dont have enough leave days to approve the request.."
+msgid "%(employee)s don't have enough leave days to approve the request.."
 msgstr "لا يملك %(employee)s أيام إجازة كافية لاعتماد الطلب.."
 
 msgid "If 'is_fixed' is True, 'amount' must be a positive number."
@@ -10843,7 +10834,7 @@ msgstr "لم يتم العثور على WorkType"
 msgid "WorkTypeRequest not found"
 msgstr "لم يتم العثور على WorkTypeRequest"
 
-msgid "you have no permssion to view"
+msgid "you have no permission to view"
 msgstr "ليس لديك صلاحية للعرض"
 
 msgid "RotatingWorkTypeAssign not found"
@@ -12014,7 +12005,7 @@ msgstr "إرجاع الأصل"
 msgid "Attendance Analytics"
 msgstr "تحليلات الحضور والانصراف"
 
-msgid "Minius Leave"
+msgid "Minus Leave"
 msgstr "إجازة بالسالب"
 
 msgid "Deduct From Carryforward"
@@ -12743,9 +12734,6 @@ msgstr "هل تريد حذف سجل الوقت هذا؟"
 msgid "View Timesheet Chart"
 msgstr "عرض مخطط جدول الزمن"
 
-msgid "Current Shift sss"
-msgstr "الوردية الحالية"
-
 msgid "Reallocate Shift"
 msgstr "إعادة تخصيص الوردية"
 
@@ -12755,7 +12743,7 @@ msgstr "الإجازة التعويضية"
 msgid "Compensatory Leave Request"
 msgstr "طلب إجازة تعويضية"
 
-msgid "By enabling this compensatory leave feature will avilable on Leave."
+msgid "By enabling this compensatory leave feature will available on Leave."
 msgstr "بتمكين هذا، ستتوفر ميزة الإجازة التعويضية في قسم الإجازات."
 
 msgid "Total Vacancies"
@@ -13150,7 +13138,7 @@ msgstr "سجلات أخرى مرتبطة"
 msgid "I have took manual action for the protected records"
 msgstr "لقد اتخذت إجراءً يدوياً للسجلات المحمية"
 
-msgid "I acknowledge, i wont be able to revert this"
+msgid "I acknowledge, I won't be able to revert this"
 msgstr "أقر بأنني لن أتمكن من التراجع عن هذا"
 
 msgid "Confirming to delete the related and protected records"
@@ -13557,9 +13545,6 @@ msgstr "اختر أيقونة"
 msgid "Do you need to encash pending leave days?"
 msgstr "هل تحتاج إلى استبدال أيام الإجازة المعلقة نقداً؟"
 
-msgid "Carryforwrad Leave Days"
-msgstr "أيام الإجازة المحمولة"
-
 msgid "Total Leave Taken"
 msgstr "إجمالي الإجازات المستخدمة"
 
@@ -13653,9 +13638,6 @@ msgstr "طلب استقالة"
 msgid ""
 "By enabling this normal users can request for their resignation progress"
 msgstr "بتمكين هذا، يمكن للمستخدمين العاديين طلب متابعة استقالتهم"
-
-msgid "Activites"
-msgstr "الأنشطة"
 
 msgid "Add Key Result"
 msgstr "إضافة نتائج رئيسية"
@@ -13924,8 +13906,8 @@ msgstr "الدرجة"
 msgid "Need verification"
 msgstr "بحاجة للتحقق"
 
-msgid "Candidated Added"
-msgstr "تمت إضافة مرشح"
+msgid "Candidate Added"
+msgstr "تمت إضافة المرشح"
 
 msgid "Create Candidate"
 msgstr "إنشاء مرشح"
@@ -14880,9 +14862,6 @@ msgstr "رقم الاتصال"
 msgid "Relation"
 msgstr "صلة القرابة"
 
-msgid "Current Shifeet"
-msgstr "الوردية الحالية"
-
 msgid "Add task"
 msgstr "إضافة مهمة"
 
@@ -15181,9 +15160,6 @@ msgstr "تم تحديث السجلات المحددة"
 msgid "No records selected"
 msgstr "لم يتم تحديد أي سجلات"
 
-msgid "You dont have permission"
-msgstr "ليس لديك إذن"
-
 msgid "No record found..."
 msgstr "لم يتم العثور على سجل..."
 
@@ -15202,7 +15178,7 @@ msgstr "التخصيص"
 msgid "I Have took manual action for the protected records"
 msgstr "لقد اتخذت إجراءً يدوياً للسجلات المحمية"
 
-msgid "I acknowledge, I wont be able to revert this "
+msgid "I acknowledge, I won't be able to revert this "
 msgstr "أعترف بأنني لن أتمكن من العودة إلى هذا "
 
 msgid "Group by"
@@ -15383,7 +15359,7 @@ msgstr "تم تحديث طلب الإجازة بنجاح"
 msgid "Leave request created successfully"
 msgstr "تم إنشاء طلب الإجازة بنجاح"
 
-msgid "Clased Due To"
+msgid "Closed Due To"
 msgstr "التعارض بسبب"
 
 msgid "Deducted FromCFD"
@@ -15435,7 +15411,7 @@ msgstr "تم تعيين نوع الإجازة بنجاح"
 msgid "leave type is already assigned to the employee"
 msgstr "نوع الإجازة مُعين بالفعل للموظف"
 
-msgid "Compensatory leave type cant assigned manually"
+msgid "Compensatory leave type can't assigned manually"
 msgstr "لا يمكن تعيين نوع الإجازة التعويضية يدوياً"
 
 msgid "My Leave requests"
@@ -15447,7 +15423,7 @@ msgstr "تحديث طلب الإجازة"
 msgid "Leave request updated successfully"
 msgstr "تم تحديث طلب الإجازة بنجاح"
 
-msgid "You dont have enough leave days to make the request"
+msgid "You don't have enough leave days to make the request"
 msgstr "ليس لديك أيام إجازة كافية لتنفيذ الطلب"
 
 msgid "There is already a leave request for this date range"
@@ -15977,12 +15953,30 @@ msgid_plural ""
 "\n"
 "                The selected dates include company holidays: %(names)s.\n"
 "            "
-msgstr[0] "\n                تتضمن التواريخ المحددة عطلات رسمية للشركة: %(names)s.\n            "
-msgstr[1] "\n                تتضمن التواريخ المحددة عطلة رسمية للشركة: %(names)s.\n            "
-msgstr[2] "\n                تتضمن التواريخ المحددة عطلتين رسميتين للشركة: %(names)s.\n            "
-msgstr[3] "\n                تتضمن التواريخ المحددة عطلات رسمية للشركة: %(names)s.\n            "
-msgstr[4] "\n                تتضمن التواريخ المحددة عطلة رسمية للشركة: %(names)s.\n            "
-msgstr[5] "\n                تتضمن التواريخ المحددة عطلات رسمية للشركة: %(names)s.\n            "
+msgstr[0] ""
+"\n"
+"                تتضمن التواريخ المحددة عطلات رسمية للشركة: %(names)s.\n"
+"            "
+msgstr[1] ""
+"\n"
+"                تتضمن التواريخ المحددة عطلة رسمية للشركة: %(names)s.\n"
+"            "
+msgstr[2] ""
+"\n"
+"                تتضمن التواريخ المحددة عطلتين رسميتين للشركة: %(names)s.\n"
+"            "
+msgstr[3] ""
+"\n"
+"                تتضمن التواريخ المحددة عطلات رسمية للشركة: %(names)s.\n"
+"            "
+msgstr[4] ""
+"\n"
+"                تتضمن التواريخ المحددة عطلة رسمية للشركة: %(names)s.\n"
+"            "
+msgstr[5] ""
+"\n"
+"                تتضمن التواريخ المحددة عطلات رسمية للشركة: %(names)s.\n"
+"            "
 
 msgid "Select All Requests"
 msgstr "تحديد جميع الطلبات"
@@ -15996,10 +15990,10 @@ msgstr "تصدير الطلبات"
 msgid "Clashed Due To"
 msgstr "التعارض بسبب"
 
-msgid "No clashed requestes available for cancelled or rejected leaves."
+msgid "No clashed requests available for cancelled or rejected leaves."
 msgstr "لا توجد طلبات متعارضة متاحة للإجازات الملغاة أو المرفوضة."
 
-msgid "No clashed requestes found"
+msgid "No clashed requests found"
 msgstr "لم يتم العثور على طلبات متعارضة"
 
 msgid "Leave Request Report"
@@ -16203,7 +16197,7 @@ msgstr "تم حذف طلب الإجازة بنجاح.."
 msgid "Leave request not found."
 msgstr "طلب الإجازة غير موجود."
 
-msgid "No leave rquest found matching the query."
+msgid "No leave request found matching the query."
 msgstr "لم يتم العثور على طلب إجازة مطابق للاستعلام."
 
 msgid "You cannot approve your own leave request."
@@ -16320,7 +16314,7 @@ msgstr "لم يتم العثور على أيام مقيدة"
 msgid "Leave request updated successfully.."
 msgstr "تم تحديث طلب الإجازة بنجاح.."
 
-msgid "You dont have enough leave days to make the request.."
+msgid "You don't have enough leave days to make the request.."
 msgstr "ليس لديك أيام إجازة كافية لتنفيذ الطلب.."
 
 msgid "You can't update this leave request..."
@@ -16449,9 +16443,6 @@ msgstr "تم تفعيل تقييد طلبات الإجازة بتاريخ ساب
 
 msgid "Past Date Leave Request Restriction has been disabled"
 msgstr "تم تعطيل تقييد طلبات الإجازة بتاريخ سابق"
-
-msgid "No leave request found matching the query."
-msgstr "لم يتم العثور على طلب إجازة مطابق للاستعلام."
 
 msgid "Condition added successfully."
 msgstr "تمت إضافة الشرط بنجاح."
@@ -16922,9 +16913,6 @@ msgstr "طلب الاستقالة كان %(status)s"
 msgid "Resignation Request setting has been {} successfully."
 msgstr "تم {} إعداد طلب الاستقالة بنجاح."
 
-msgid "Scheduled"
-msgstr "مجدول"
-
 msgid "Candidaate"
 msgstr "المرشح"
 
@@ -17073,7 +17061,7 @@ msgstr "هل تريد إضافة هذا المرشح إلى مرحلة الان�
 msgid "Start Onboarding"
 msgstr "بدء عملية الإدماج"
 
-msgid "Added to Onobarding"
+msgid "Added to Onboarding"
 msgstr "تمت الإضافة إلى الانضمام للعمل"
 
 msgid "Already Added!"
@@ -17612,14 +17600,11 @@ msgstr "تاريخ التوفير"
 msgid "Installment Start Date"
 msgstr "تاريخ بدء الأقساط"
 
-msgid "Toatal Installments"
+msgid "Total Installments"
 msgstr "إجمالي الأقساط"
 
 msgid "Progress Bar"
 msgstr "شريط التقدم"
-
-msgid "Total Installments"
-msgstr "إجمالي الأقساط"
 
 #, python-format
 msgid "%(title)s Updated Successfully"
@@ -18444,13 +18429,13 @@ msgstr "البدل على"
 msgid "View Attachments"
 msgstr "عرض المرفقات"
 
-msgid "Requsted for"
+msgid "Requested for"
 msgstr "مطلوب لـ"
 
 msgid "Bonus points to encash."
 msgstr "نقاط مكافأة للاستبدال نقداً."
 
-msgid "Requsted for total"
+msgid "Requested for total"
 msgstr "مطلوب لإجمالي"
 
 msgid "days to encash."
@@ -18688,10 +18673,10 @@ msgstr "طلب غير صالح. معاملات مطلوبة مفقودة."
 msgid "Payslip auto generate setting not found."
 msgstr "لم يتم العثور على إعداد الإنشاء التلقائي لقسيمة الراتب."
 
-msgid "Auto paslip generate activated successfully."
+msgid "Auto payslip generate activated successfully."
 msgstr "تم تفعيل إنشاء كشف الراتب التلقائي بنجاح."
 
-msgid "Auto paslip generate deactivated successfully."
+msgid "Auto payslip generate deactivated successfully."
 msgstr "تم تعطيل إنشاء كشف الراتب التلقائي بنجاح."
 
 msgid "Active 'Payslip auto generate' cannot delete."
@@ -19240,7 +19225,7 @@ msgstr "الواجب في: "
 msgid "Answered employees: "
 msgstr "أجاب العمال على ما يلي: "
 
-msgid "Employees not answerd yet: "
+msgid "Employees not answered yet: "
 msgstr "الموظفون لم يجيبوا بعد: "
 
 msgid "Cyclic feedback period: "
@@ -19387,9 +19372,6 @@ msgstr " أيام"
 msgid "Employee Key Results"
 msgstr "النتائج الرئيسية للموظف"
 
-msgid "Descrption"
-msgstr "الوصف"
-
 msgid "There are currently no key results to consider."
 msgstr "لا توجد نتائج رئيسية للنظر فيها حالياً."
 
@@ -19522,10 +19504,10 @@ msgstr "تم تحديث النتيجة الرئيسية %(key_result)s بنجا�
 msgid "No Key Result found matching the query."
 msgstr "لم يتم العثور على نتيجة رئيسية مطابقة للاستعلام."
 
-msgid "Key reuslt unarchived successfully"
+msgid "Key result unarchived successfully"
 msgstr "تم إلغاء أرشفة النتيجة الرئيسية بنجاح"
 
-msgid "Key reuslt archived successfully"
+msgid "Key result archived successfully"
 msgstr "تمت أرشفة النتيجة الرئيسية بنجاح"
 
 #, python-format
@@ -19539,7 +19521,7 @@ msgstr "لا يمكنك حذف الهدف %(objective)s، توجد مدخلات 
 msgid "No Objective found matching the query."
 msgstr "لم يتم العثور على هدف مطابق للاستعلام."
 
-msgid "Manger removed successfully."
+msgid "Manager removed successfully."
 msgstr "تمت إزالة المدير بنجاح."
 
 msgid "Key result removed successfully."
@@ -19765,13 +19747,13 @@ msgid "No Employee Key Result found matching the query."
 msgstr "لم يتم العثور على نتيجة رئيسية لموظف مطابقة للاستعلام."
 
 #, python-brace-format
-msgid "Key result sattus changed to {}."
+msgid "Key result status changed to {}."
 msgstr "تم تغيير حالة النتيجة الرئيسية إلى {}."
 
 msgid "Value updated"
 msgstr "تم تحديث القيمة"
 
-msgid "You dont have permission to update the current value"
+msgid "You don't have permission to update the current value"
 msgstr "ليس لديك إذن لتحديث القيمة الحالية"
 
 msgid "No Meetings found matching the query."
@@ -20075,9 +20057,6 @@ msgstr "هل تريد حذف هذا المرشح؟"
 msgid "There are currently no available tasks; please create a new one."
 msgstr "لا توجد مهام متاحة حالياً؛ يرجى إنشاء مهمة جديدة."
 
-msgid "Mangers"
-msgstr "المدراء"
-
 msgid " Task"
 msgstr " مهمة"
 
@@ -20299,9 +20278,6 @@ msgstr "عدد المرشحين"
 
 msgid "Initial"
 msgstr "ابتدائي"
-
-msgid "Recrutment"
-msgstr "التوظيف"
 
 msgid "Interview Date"
 msgstr "تاريخ المقابلة"
@@ -20886,9 +20862,6 @@ msgstr " استئناف"
 msgid " Actions"
 msgstr " الإجراءات"
 
-msgid "This field is requied"
-msgstr "هذا الحقل مطلوب"
-
 msgid "Are you sure you want to delete this candidate?"
 msgstr "هل تريد حذف هذا المرشح؟"
 
@@ -21172,9 +21145,6 @@ msgstr "هل تريد حذف مجموعة المواهب هذه؟"
 msgid "Add candidate"
 msgstr "إضافة مرشح"
 
-msgid "Reasom"
-msgstr "السبب"
-
 msgid "You have no Candidate."
 msgstr "ليس لديك أي مرشح."
 
@@ -21254,7 +21224,7 @@ msgstr "تمت إضافة المرشح."
 msgid "Stage added."
 msgstr "تمت إضافة المرحلة."
 
-msgid "You dont have access"
+msgid "You don't have access"
 msgstr "ليس لديك صلاحية"
 
 msgid "Stage updated."
@@ -21275,7 +21245,7 @@ msgstr "تم تحديث التسلسل."
 msgid "Candidate stage updated"
 msgstr "تم تحديث مرحلة المرشح"
 
-msgid "Something went wrong, Try agian."
+msgid "Something went wrong, Try again."
 msgstr "حدث خطأ ما، حاول مرة أخرى."
 
 msgid "Note deleted"
@@ -21493,16 +21463,13 @@ msgstr "لم يتم العثور على ملفات مرحلة مطابقة لل�
 msgid "Candidate view status updated"
 msgstr "تم تحديث حالة عرض المرشح"
 
-msgid "Candidate Added"
-msgstr "تمت إضافة المرشح"
-
 msgid "Job position field is required"
 msgstr "حقل الوظيفة مطلوب"
 
 msgid "No Meeting found matching the query"
 msgstr "لم يتم العثور على اجتماع مطابق للاستعلام"
 
-msgid "Interviewer removed succesfully."
+msgid "Interviewer removed successfully."
 msgstr "تمت إزالة المحاور بنجاح."
 
 msgid "Candidate Does not exists.."
@@ -23686,10 +23653,10 @@ msgstr "تحديد جميع الصفوف"
 msgid "Unselect All Rows"
 msgstr "إلغاء تحديد جميع الصفوف"
 
-msgid "You Dont Have Permission"
+msgid "You Don't Have Permission"
 msgstr "ليس لديك صلاحية"
 
-msgid "You dont have permission to the feature"
+msgid "You don't have permission to the feature"
 msgstr "ليس لديك صلاحية للوصول إلى الميزة"
 
 msgid "Setting Up Your Workspace"
@@ -23779,7 +23746,9 @@ msgstr "تم رفض الوصول!"
 msgid ""
 "Your login credentials are currently blocked. Please contact HR "
 "administrators for assistance."
-msgstr "بيانات تسجيل الدخول الخاصة بك محظورة حاليًا. يرجى التواصل مع مسؤولي الموارد البشرية للحصول على المساعدة."
+msgstr ""
+"بيانات تسجيل الدخول الخاصة بك محظورة حاليًا. يرجى التواصل مع مسؤولي الموارد "
+"البشرية للحصول على المساعدة."
 
 msgid "Jan 03, 2023, at 11:13AM"
 msgstr "3 يناير 2023، الساعة 11:13 ص"
@@ -23886,7 +23855,7 @@ msgstr "رقم الهاتف"
 msgid "Phone Number ID"
 msgstr "معرف رقم الهاتف"
 
-msgid "Bussiness ID"
+msgid "Business ID"
 msgstr "معرف العمل"
 
 msgid "Token"
@@ -23904,13 +23873,13 @@ msgstr "إنشاء واتساب"
 msgid "Update Credentials"
 msgstr "تحديث بيانات الاعتماد"
 
-msgid "Crediential updated successfully"
+msgid "Credential updated successfully"
 msgstr "تم تحديث بيانات الاعتماد بنجاح"
 
-msgid "Crediential created successfully"
+msgid "Credential created successfully"
 msgstr "تم إنشاء بيانات الاعتماد بنجاح"
 
-msgid "Crediential deleted."
+msgid "Credential deleted."
 msgstr "تم حذف بيانات الاعتماد."
 
 msgid "Message sent successfully"
