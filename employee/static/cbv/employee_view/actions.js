@@ -74,7 +74,7 @@ form.addEventListener("submit", function (event) {
 
                     if (json.success_count > 0) {
                         Swal.fire({
-                            text: `${json.success_count} Employees Imported Successfully`,
+                            text: json.success_count + " " + gettext("Employees Imported Successfully"),
                             icon: "success",
                             showConfirmButton: false,
                             timer: 3000,
@@ -89,12 +89,12 @@ form.addEventListener("submit", function (event) {
             }
             if (!$(".file-xlsx-validation").length) {
                 swal.fire({
-                    text: `You have ${errorCount} errors. Do you want to download the error list?`,
+                    text: gettext("You have") + " " + errorCount + " " + gettext("errors. Do you want to download the error list?"),
                     icon: "error",
                     showCancelButton: true,
                     showDenyButton: true,
-                    confirmButtonText: "Download error list & Skip Import",
-                    denyButtonText: "Download error list & Continue Import",
+                    confirmButtonText: gettext("Download error list & Skip Import"),
+                    denyButtonText: gettext("Download error list & Continue Import"),
                     cancelButtonText: i18nMessages.cancel,
                     confirmButtonColor: "#008000",
                     denyButtonColor: "#6c757d",
@@ -132,7 +132,7 @@ form.addEventListener("submit", function (event) {
                                 },
                                 success: function (response, textStatus, xhr) {
                                     Swal.fire({
-                                        text: `Employees Imported Successfully`,
+                                        text: gettext("Employees Imported Successfully"),
                                         icon: "success",
                                         showConfirmButton: false,
                                         timer: 3000,
