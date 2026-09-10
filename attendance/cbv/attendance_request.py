@@ -213,7 +213,10 @@ class AttendanceRequestListTab(AttendancesRequestListView):
         self.view_id = "attendance-requests-container"
         self.search_url = reverse("attendance-request-list-tab")
 
-    template_name = "cbv/attendance_request/attendance_request_tab.html"
+    # Renders through the shared generic list table (like the All Attendances
+    # tab); the per-field request highlighting that used to justify a forked
+    # template now comes from this per-cell class hook.
+    cell_class_method = "request_cell_classes"
 
     columns = [
         col for col in AttendancesRequestListView.columns if col[1] != "status_col"

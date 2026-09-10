@@ -328,6 +328,59 @@ class Attendance(HorillaModel):
         if self.request_type == "created_request":
             return 'style="background-color: #FFE4B3"'
 
+    # Per-column CSS classes for the "Requested Attendances" list. Consumed by
+    # HorillaListView.cell_class_method, which looks the rendered column's
+    # attribute name up in this dict. Kept here (rather than as per-column
+    # {% if %} branches in a forked list template) so the tab renders through
+    # the shared generic table and cannot drift from it again.
+    REQUEST_CELL_FORMAT_CLASSES = {
+        "attendance_date": "dateformat_changer",
+        "attendance_clock_in": "timeformat_changer",
+        "attendance_clock_in_date": "dateformat_changer",
+        "attendance_clock_out": "timeformat_changer",
+        "attendance_clock_out_date": "dateformat_changer",
+    }
+    REQUEST_DIFF_FIELDS = [
+        "attendance_date",
+        "attendance_day",
+        "attendance_clock_in",
+        "attendance_clock_in_date",
+        "attendance_clock_out",
+        "attendance_clock_out_date",
+        "shift_id",
+        "work_type_id",
+        "minimum_hour",
+        "attendance_worked_hour",
+        "attendance_overtime",
+    ]
+
+    def request_cell_classes(self):
+        """
+        Map column attribute -> CSS classes for the attendance request list.
+
+        `diff-cell` shades the fields this request actually wants changed, so a
+        reviewer can see at a glance what differs. `requested_fields` re-parses
+        the requested JSON on every call, and the template resolves this once
+        per rendered column, so memoise the whole map per instance.
+        """
+        cached = getattr(self, "_request_cell_classes", None)
+        if cached is not None:
+            return cached
+        highlight_all = self.request_type == "create_request"
+        changed = set() if highlight_all else set(self.requested_fields())
+        classes = {}
+        for field in self.REQUEST_DIFF_FIELDS:
+            names = []
+            if highlight_all or field in changed:
+                names.append("diff-cell")
+            format_class = self.REQUEST_CELL_FORMAT_CLASSES.get(field)
+            if format_class:
+                names.append(format_class)
+            if names:
+                classes[field] = " ".join(names)
+        self._request_cell_classes = classes
+        return classes
+
     def status_col(self):
         """
         This method for get custome coloumn for rating.
