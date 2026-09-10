@@ -99,6 +99,11 @@ urlpatterns = [
         exit_process.OffboardingPipelineNav.as_view(),
         name="offboarding-pipeline-nav",
     ),
+    path(
+        "offboarding-pipeline-tab-nav/<int:pk>/",
+        exit_process.OffboardingPipelineTabNav.as_view(),
+        name="offboarding-pipeline-tab-nav",
+    ),
     # path("add-employee/", views.add_employee, name="add-employee"),
     path(
         "add-employee/",

@@ -11,26 +11,18 @@
 
     {% include "generic/components.html" %}
 
-    <div
-        class="oh-checkpoint-badge mb-2"
-        id="selectedInstances"
-        data-ids="[]"
-        data-clicked=""
-        style="display: none"
-    >
-    </div>
-
-    {% if nav_url %}
-        <div
-            hx-get="{{nav_url}}?{{request.GET.urlencode}}"
-            hx-trigger="load"
-        >
-        </div>
-    {% endif %}
-
+    {% comment %}
+    No page-level Nav here, matching /recruitment/cbv-pipeline/: that page
+    renders its tab view alone and lets each tab's own Nav carry the title,
+    Create button and Search+Filter. OffboardingPipelineNav's title/Create/
+    view-type controls now live on OffboardingPipelineTabNav (the per-tab
+    Nav) instead.
+    {% endcomment %}
     <div
         class="oh-wrapper"
         id="{{view_container_id}}"
+        hx-get="{{ view_url }}"
+        hx-trigger="load"
     >
     </div>
 

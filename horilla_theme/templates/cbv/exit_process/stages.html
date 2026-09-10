@@ -17,24 +17,12 @@
         </span>
 
         <div class="flex items-center gap-4">
+          {# Per-stage actions (Add Employee/Edit/Delete) now render as   #}
+          {# their own "Actions" button inside this stage's own body     #}
+          {# (cbv/exit_process/quick_actions.html), not here - only the  #}
+          {# fold chevron stays in the header, mirroring Recruitment's   #}
+          {# cbv/pipeline/stages.html.                                   #}
           <ion-icon name="chevron-down-outline" class="movable-toggle-icon icon text-lg"></ion-icon>
-
-          <div onclick="event.stopPropagation()" class="relative inline-block dropdown-wrapper" role="button" title="{% trans 'Actions' %}">
-            <button class="cursor-pointer dropdown-toggle w-[20px]" onclick="event.stopPropagation(); var m = $(this).next('.dropdown-menu'); $('.dropdown-menu').not(m).addClass('hidden'); m.toggleClass('hidden');">
-              <i class="fa-solid fa-ellipsis-vertical text-black"></i>
-            </button>
-            <div class="dropdown-menu absolute right-0 min-w-[100px] bg-white rounded-lg shadow-card py-2 hidden z-50 transition-all duration-200" style="min-width:120px !important;">
-              <ul class="text-xs text-dark-600">
-                {% for action in actions %}
-                {% if action.accessibility|accessibility:group %}
-                <li>
-                  <a {{action.attrs|format:group|safe}} class="block w-full text-left px-3 py-1 text-dark-600 hover:text-primary-600 transition duration-300 cursor-pointer">{{action.action}}</a>
-                </li>
-                {% endif %}
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
         </div>
       </div>
       <div
