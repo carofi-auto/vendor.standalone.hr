@@ -130,7 +130,7 @@ function handleValidDrop(groupId, objectId, row) {
 			error: function (xhr) {
 				Toast.fire({
 					icon: "error",
-					title: "Failed to update sequence: " + xhr.responseJSON?.error || "Unknown error",
+					title: gettext("Failed to update sequence: ") + xhr.responseJSON?.error || "Unknown error",
 					position: "top-end",
 				});
 			},
@@ -175,7 +175,7 @@ function handleSortableUpdate(event, ui, container) {
 			else if (!response.error) {
 				Toast.fire({
 					icon: "success",
-					title: "Sequence updated",
+					title: gettext("Sequence updated"),
 					position: "top-end",
 				});
 			}
@@ -190,7 +190,7 @@ function handleSortableUpdate(event, ui, container) {
 		error: function (xhr) {
 			Toast.fire({
 				icon: "error",
-				title: "Failed to update sequence: " + xhr.responseJSON?.error || "Unknown error",
+				title: gettext("Failed to update sequence: ") + xhr.responseJSON?.error || "Unknown error",
 				position: "top-end",
 			});
 		}

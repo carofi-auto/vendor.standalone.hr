@@ -471,8 +471,8 @@ function validateFile(element, fileTarget, reload = false) {
     if (!allowedExtensions.exec(filePath)) {
         Swal.fire({
             icon: "error",
-            title: "Invalid File",
-            text: "Please upload a valid XLSX file.",
+            title: gettext("Invalid File"),
+            text: gettext("Please upload a valid XLSX file."),
             customClass: {
                 popup: "file-xlsx-validation",
             },
