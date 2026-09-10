@@ -2,6 +2,22 @@
 {% load static i18n widget_tweaks basefilters %}
 
 {% block content %}
+<style>
+  /* v1_styles.css clamps `.accordion-panel .heightContainer` to 300px for
+     every accordion in the app. Here each panel holds a full key-result
+     table (30+ rows is normal), so that clamp squeezed ~1400px of rows into
+     a 300px window nested inside #emp_objective_card's own scroller -- two
+     scrollbars, and the sticky header pushed out of view. Drop the inner
+     clamp so the table gets a workable window. It keeps overflow-y:auto, so
+     it stays the sticky header's scroll container -- the header only sticks
+     if this element is the one scrolling. The card above no longer scrolls
+     (see the markup), leaving one scroller per concern instead of two
+     nested. Scoped to this page so other accordions keep the global 300px. */
+  #emp_objective_card .accordion-panel .heightContainer,
+  #emp_objective_card .accordion-panel .hlv-container .heightContainer {
+    max-height: min(60vh, 620px) !important;
+  }
+</style>
 <!-- Sidebar & Header Loaders -->
 <div id="sidebar"></div>
   <div class="bg-[#F6F6F6]">
@@ -74,7 +90,10 @@
 
         <!-- Content (HTMX) -->
         {% if objective.employee_objective.all %}
-        <div class="bg-white p-3 rounded-md shadow-card max-h-[calc(100vh_-_270px)] overflow-y-auto"
+        {# No max-height/overflow here: each expanded panel's table scrolls in #}
+        {# its own heightContainer (so its sticky header works). A scroller    #}
+        {# here too would nest them and push that header out of view.          #}
+        <div class="bg-white p-3 rounded-md shadow-card"
             id="emp_objective_card"
             hx-get="{% url 'emp-objective-search' objective.id %}?{{request.GET.urlencode}}"
             hx-trigger="load">
