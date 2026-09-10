@@ -52,11 +52,13 @@ Published for `linux/amd64` and `linux/arm64` as
 [`horilla/horilla-hr`](https://hub.docker.com/r/horilla/horilla-hr):
 
 ```bash
-docker pull horilla/horilla-hr:2.0.0
+docker pull horilla/horilla-hr:2.1.5
 ```
 
 Pin an exact version in production rather than `latest`, so a deploy cannot
-pick up a new major release unattended. The
+pick up a new release unattended; see
+[all tags](https://hub.docker.com/r/horilla/horilla-hr/tags) for the current
+one. The
 [repository overview](https://hub.docker.com/r/horilla/horilla-hr) documents
 every environment variable, the volumes to back up, and a working Compose file.
 
