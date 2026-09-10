@@ -1310,6 +1310,12 @@ def employee_creation(request, token):
                 return redirect("user-creation", token)
             if not getattr(user, "pk", None):
                 user.save()
+            # This user was constructed directly from the portal's account-creation
+            # form, never through authenticate(), so it has no `.backend` attribute.
+            # login() requires one whenever more than one AUTHENTICATION_BACKENDS is
+            # configured (always true here -- see horilla/settings/base.py) and
+            # otherwise raises ValueError, hard-crashing the final onboarding step.
+            user.backend = "base.auth_backends.CompanyScopedBackend"
             login(request, user)
             employee_personal_info = form.save(commit=False)
             employee_personal_info.employee_user_id = user
