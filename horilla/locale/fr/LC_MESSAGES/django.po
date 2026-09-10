@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: horilla-hrms\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-08 09:19+0530\n"
+"POT-Creation-Date: 2026-09-09 16:12+0530\n"
 "PO-Revision-Date: 2026-08-04 09:08+0000\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
@@ -72,14 +72,14 @@ msgstr "Limiter l'accès par défaut à la fonction horilla"
 msgid "Actions"
 msgstr "Actions"
 
+msgid "Are you sure?"
+msgstr "Êtes-vous sûr(e) ?"
+
 msgid "You won't be able to revert this!"
 msgstr "Vous ne pourrez pas revenir en arrière !"
 
-msgid "Yes"
-msgstr "Oui"
-
-msgid "Clear it"
-msgstr "Nettoyer"
+msgid "Yes, Clear it"
+msgstr "Oui, effacer"
 
 msgid "Clear Filter"
 msgstr "Effacer le filtre"
@@ -1427,6 +1427,9 @@ msgstr "Validé ?"
 msgid "Any"
 msgstr "Tout"
 
+msgid "Yes"
+msgstr "Oui"
+
 msgid "No"
 msgstr "Non"
 
@@ -1927,9 +1930,6 @@ msgstr "Voir les activités"
 msgid "Activity"
 msgstr "Activité"
 
-msgid "Are you sure?"
-msgstr "Êtes-vous sûr(e) ?"
-
 msgid "This does not satisfy the minimum OT requirement!"
 msgstr "Cela ne répond pas à la condition minimale d'OT !"
 
@@ -1986,6 +1986,17 @@ msgstr "Au travail"
 
 msgid "No validated attendance to show."
 msgstr "Pas de présence validée à afficher."
+
+msgid "Pending Attendance Update Request!"
+msgstr "Demande de mise à jour de présence en attente !"
+
+msgid ""
+"An attendance request exists for updating this attendance prior to "
+"validation."
+msgstr "Une demande de présence existe pour mettre à jour cette présence avant validation."
+
+msgid "View Request"
+msgstr "Voir la demande"
 
 #, python-format
 msgid ""
@@ -5492,6 +5503,9 @@ msgstr "Retard"
 msgid "Recent Payslips"
 msgstr "Bulletins de paie récents"
 
+msgid "Net pay vs gross pay — click to view"
+msgstr "Salaire net et salaire brut — cliquez pour afficher"
+
 msgid "My Goals"
 msgstr "Mes objectifs"
 
@@ -5683,8 +5697,8 @@ msgstr "Ignoré"
 #, python-format
 msgid "%(n)s error"
 msgid_plural "%(n)s errors"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(n)s erreur"
+msgstr[1] "%(n)s erreurs"
 
 msgid "Done"
 msgstr "Fait"
@@ -5760,6 +5774,24 @@ msgstr "Aucun employé assigné à des changements de rotation."
 
 msgid "Import Rotating Shift"
 msgstr "Importer Shift en rotation"
+
+msgid "Employees Imported Successfully"
+msgstr "Employés importés avec succès"
+
+msgid "You have"
+msgstr "Vous avez"
+
+msgid "errors. Do you want to download the error list?"
+msgstr "erreurs. Voulez-vous télécharger la liste des erreurs ?"
+
+msgid "Download error list & Skip Import"
+msgstr "Télécharger la liste des erreurs et ignorer l'importation"
+
+msgid "Downlod error list & Continue Import"
+msgstr "Télécharger la liste des erreurs et poursuivre l'importation"
+
+msgid "Rotating Shifts Imported Successfully"
+msgstr "Rotations d'équipes importées avec succès"
 
 msgid "False"
 msgstr "Faux"
@@ -5984,6 +6016,18 @@ msgstr "Formatage et localisation"
 
 msgid "Data & Access Controls"
 msgstr "Contrôles des données et d'accès"
+
+msgid "About"
+msgstr "À propos"
+
+msgid "Horilla HR"
+msgstr "Horilla HR"
+
+msgid "Quote this version when reporting a problem."
+msgstr "Indiquez cette version lors du signalement d'un problème."
+
+msgid "Release notes"
+msgstr "Notes de version"
 
 msgid "HR setup checklist"
 msgstr "Liste de configuration RH"
@@ -8723,9 +8767,6 @@ msgstr "ID de l'employé"
 msgid "Date of Joining"
 msgstr "Date d'adhésion"
 
-msgid "About"
-msgstr "À propos"
-
 msgid "Work Type & Shift"
 msgstr "Type de travail et poste"
 
@@ -9212,6 +9253,13 @@ msgstr "Mettre à jour en masse les employés"
 msgid "Export Data"
 msgstr "Exporter les données"
 
+msgid ""
+"All non-active contracts of the employee will also be deleted. Do you want "
+"to continue ?"
+msgstr ""
+"Tous les contrats non actifs de l'employé seront également supprimés. Voulez-"
+"vous continuer ?"
+
 msgid "This employee is already related in,"
 msgstr "Cet employé est déjà lié à,"
 
@@ -9346,16 +9394,8 @@ msgstr "Nouvelles embauches"
 msgid "No employees"
 msgstr "Aucun employé"
 
-#, python-brace-format
-msgid "${emp.name}"
-msgstr ""
-
 msgid "No upcoming birthdays"
 msgstr "Aucun anniversaire à venir"
-
-#, python-brace-format
-msgid "${b.name}"
-msgstr ""
 
 msgid "Tomorrow"
 msgstr "Demain"
@@ -9444,6 +9484,12 @@ msgstr "Modèle comme pièce jointe"
 msgid "Other Attachments"
 msgstr "Autres pièces jointes"
 
+msgid "Processing"
+msgstr "Traitement en cours"
+
+msgid "Mail will be sent in the background"
+msgstr "Le courriel sera envoyé en arrière-plan"
+
 msgid "Back"
 msgstr "Précédent"
 
@@ -9473,13 +9519,6 @@ msgstr "Mise à jour en bloc des employés"
 
 msgid "Do you want to un archive this employee?"
 msgstr "Voulez-vous archiver cet employé ?"
-
-msgid ""
-"All non-active contracts of the employee will also be deleted. Do you want "
-"to continue ?"
-msgstr ""
-"Tous les contrats non actifs de l'employé seront également supprimés. Voulez-"
-"vous continuer ?"
 
 msgid "There are currently no employees to consider."
 msgstr "Il n'y a actuellement aucun employé à considérer."
@@ -10855,6 +10894,9 @@ msgstr "Non spécifié"
 msgid "You do not have permission to perform this action."
 msgstr "Vous n'avez pas la permission d'effectuer cette action."
 
+msgid "You cannot approve or reject your own request."
+msgstr "Vous ne pouvez pas approuver ou rejeter votre propre demande."
+
 #, python-format
 msgid "Approved %(model)s can't preform this action "
 msgstr "%(model)s approuvé(e) ne peut pas effectuer cette action "
@@ -10986,6 +11028,9 @@ msgstr "Présence supprimée avec succès"
 msgid "Permission denied"
 msgstr "Permission refusée"
 
+msgid "Mail template not found."
+msgstr "Modèle de courriel introuvable."
+
 msgid "Too many failed login attempts. Try again later."
 msgstr "Trop de tentatives de connexion échouées. Réessayez plus tard."
 
@@ -11060,6 +11105,9 @@ msgstr "Actiontype introuvable"
 
 msgid "You do not have permission to view this document request."
 msgstr "Vous n'avez pas la permission de consulter cette demande de document."
+
+msgid "You do not have permission to edit this document request."
+msgstr "Vous n'avez pas la permission de modifier cette demande de document."
 
 msgid "Related model found for this employee. "
 msgstr "Modèle associé trouvé pour cet employé. "
@@ -11736,8 +11784,8 @@ msgstr "✅ Définir les modèles sélectionnés sur ACTIF"
 #, python-format
 msgid "%(n)d template set to Active."
 msgid_plural "%(n)d templates set to Active."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(n)d modèle défini sur Actif."
+msgstr[1] "%(n)d modèles définis sur Actif."
 
 msgid "🗄️ Archive selected templates"
 msgstr "🗄️ Archiver les modèles sélectionnés"
@@ -11754,8 +11802,8 @@ msgstr "📝 Définir les modèles sélectionnés sur BROUILLON"
 #, python-format
 msgid "%(n)d template set to Draft."
 msgid_plural "%(n)d templates set to Draft."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(n)d modèle défini sur Brouillon."
+msgstr[1] "%(n)d modèles définis sur Brouillon."
 
 msgid "🗑️ Invalidate cache of selected templates"
 msgstr "🗑️ Invalider le cache des modèles sélectionnés"
@@ -11763,8 +11811,8 @@ msgstr "🗑️ Invalider le cache des modèles sélectionnés"
 #, python-format
 msgid "Cache of %(n)d template invalidated."
 msgid_plural "Cache of %(n)d templates invalidated."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Cache de %(n)d modèle invalidé."
+msgstr[1] "Cache de %(n)d modèles invalidé."
 
 msgid "♻️ Repopulate cache for selected templates"
 msgstr "♻️ Repeupler le cache des modèles sélectionnés"
@@ -11772,8 +11820,8 @@ msgstr "♻️ Repeupler le cache des modèles sélectionnés"
 #, python-format
 msgid "Cache repopulated for %(n)d template."
 msgid_plural "Cache repopulated for %(n)d templates."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Cache régénéré pour %(n)d modèle."
+msgstr[1] "Cache régénéré pour %(n)d modèles."
 
 msgid "🔍 Check syntax of selected templates"
 msgstr "🔍 Vérifier la syntaxe des modèles sélectionnés"
@@ -11796,8 +11844,8 @@ msgstr ""
 #, python-format
 msgid "%(n)d template unlocked."
 msgid_plural "%(n)d templates unlocked."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(n)d modèle déverrouillé."
+msgstr[1] "%(n)d modèles déverrouillés."
 
 msgid "📥 Export selected templates as JSON fixture"
 msgstr "📥 Exporter les modèles sélectionnés en fixture JSON"
@@ -12391,8 +12439,8 @@ msgstr "Retirer cette entreprise"
 msgid "No company assignments"
 msgstr "Aucune attribution d'entreprise"
 
-msgid "Edit this employee\\"
-msgstr "Modifier cet employé\\"
+msgid "Edit this employee's companies"
+msgstr "Modifier les sociétés de cet employé"
 
 #, python-format
 msgid "Remove %(name)s from this group?"
@@ -12435,8 +12483,8 @@ msgstr ""
 #, python-format
 msgid "%(counter)s member currently in this role."
 msgid_plural "%(counter)s members currently in this role."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(counter)s membre actuellement dans ce rôle."
+msgstr[1] "%(counter)s membres actuellement dans ce rôle."
 
 msgid "Employees in this role"
 msgstr "Employés dans ce rôle"
@@ -13226,6 +13274,9 @@ msgstr "Autres employés"
 msgid "Answers"
 msgstr "Réponses"
 
+msgid "Link copied:"
+msgstr "Lien copié :"
+
 msgid "Key results"
 msgstr "Résultats clés"
 
@@ -13569,6 +13620,12 @@ msgstr "Mon entreprise"
 msgid "Main navigation"
 msgstr "Navigation principale"
 
+msgid "Horilla HR version"
+msgstr "Version de Horilla HR"
+
+msgid "Version"
+msgstr "Version"
+
 msgid "Select all users"
 msgstr "Sélectionner tous les utilisateurs"
 
@@ -13901,6 +13958,12 @@ msgstr "détails de l'objectif mis à jour"
 msgid "There are no assignees for this objective at the moment."
 msgstr "Il n'y a actuellement aucun cessionnaire pour cet objectif."
 
+msgid "Oops..."
+msgstr "Oups..."
+
+msgid "Current Value Cannot be -ve"
+msgstr "La valeur actuelle ne peut pas être négative"
+
 msgid "Employee Onboarding"
 msgstr "Intégration des employés"
 
@@ -14158,8 +14221,8 @@ msgstr "Le"
 msgid "Candidate can view this note"
 msgstr "Le candidat peut voir cette note"
 
-msgid "Candidate can\\"
-msgstr "Le candidat peut\\"
+msgid "Candidate can't view this note"
+msgstr "Le candidat ne peut pas voir cette note"
 
 msgid ""
 "No notes yet. Use the 'Add a note' field above to save interview updates."
@@ -14642,8 +14705,8 @@ msgstr "Enregistrer la vue"
 #, python-format
 msgid "%(counter)s report"
 msgid_plural "%(counter)s reports"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%(counter)s rapport"
+msgstr[1] "%(counter)s rapports"
 
 #, python-format
 msgid "%(t)s ago"
@@ -16241,8 +16304,8 @@ msgid_plural ""
 "\n"
 "                The selected dates include company holidays: %(names)s.\n"
 "            "
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "\n                Les dates sélectionnées incluent un jour férié de l'entreprise : %(names)s.\n            "
+msgstr[1] "\n                Les dates sélectionnées incluent des jours fériés de l'entreprise : %(names)s.\n            "
 
 msgid "Select All Requests"
 msgstr "Sélectionner toutes les demandes"
@@ -17076,10 +17139,6 @@ msgstr ""
 
 msgid " Send Mail"
 msgstr " Envoyer un mail"
-
-#, python-format
-msgid "{%%trans \\"
-msgstr ""
 
 msgid "No search results found!"
 msgstr "Aucun résultat de recherche trouvé !"
@@ -19594,6 +19653,9 @@ msgstr "Période de rétroaction cyclique: "
 msgid "Next feedback on: "
 msgstr "Prochain retour sur: "
 
+msgid "Link copied"
+msgstr "Lien copié"
+
 msgid "Bulk Feedback"
 msgstr "Commentaire en bloc"
 
@@ -21234,6 +21296,9 @@ msgstr "Reprise"
 msgid "matching Resumes"
 msgstr "Reprises correspondantes"
 
+msgid "No rows selected!"
+msgstr "Aucune ligne sélectionnée !"
+
 msgid "Stage bulk update"
 msgstr "Mise à jour en masse de l'étape"
 
@@ -21264,11 +21329,20 @@ msgstr "Ce champ est requis"
 msgid "Are you sure you want to delete this candidate?"
 msgstr "Êtes-vous sûr de vouloir supprimer ce candidat ?"
 
+msgid "Confirm Stage Change"
+msgstr "Confirmer le changement d'étape"
+
 msgid "Don't show this again in this session"
 msgstr "Ne plus afficher pendant cette session"
 
 msgid "Sequence updated"
 msgstr "Séquence mise à jour"
+
+msgid "Total vacancy is"
+msgstr "Le nombre total de postes vacants est"
+
+msgid "Ok"
+msgstr "OK"
 
 msgid "candidates"
 msgstr "candidats"
@@ -21300,9 +21374,6 @@ msgstr ""
 
 msgid "Visible to candidate"
 msgstr "Visible par le candidat"
-
-msgid "Candidate can't view this note"
-msgstr "Le candidat ne peut pas voir cette note"
 
 msgid "Attach files to this note"
 msgstr "Joindre des fichiers à cette note"
@@ -24184,6 +24255,14 @@ msgstr "Sécuriser l'inscription"
 msgid "Secure Sign-in"
 msgstr "Connexion sécurisée"
 
+msgid "Access Denied !"
+msgstr "Accès refusé !"
+
+msgid ""
+"Your login credentials are currently blocked. Please contact HR "
+"administrators for assistance."
+msgstr "Vos identifiants de connexion sont actuellement bloqués. Veuillez contacter les administrateurs RH pour obtenir de l'aide."
+
 msgid "Jan 03, 2023, at 11:13AM"
 msgstr "3 janv. 2023, à 11h13"
 
@@ -24365,6 +24444,12 @@ msgstr "Numéro de téléphone"
 
 msgid "Message templates and flows created successfully."
 msgstr "Modèles de messages et flux créés avec succès."
+
+#~ msgid "Clear it"
+#~ msgstr "Nettoyer"
+
+#~ msgid "Candidate can\\"
+#~ msgstr "Le candidat peut\\"
 
 #~ msgid "Create Allocation"
 #~ msgstr "Créer une allocation"
