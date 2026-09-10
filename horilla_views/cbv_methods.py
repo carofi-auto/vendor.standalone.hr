@@ -528,11 +528,60 @@ def sortby(
     return queryset
 
 
+# GET params that vary between the write (a request explicitly submitting a
+# search/filter) and a later bare reload of the same embedded list, so they
+# must be left out of saved_filter_cache_key's identity - see its docstring.
+SAVED_FILTER_CACHE_VOLATILE_PARAMS = {
+    "filter_applied",
+    "search",
+    "referrer",
+    "nav_url",
+    "page",
+    "view_id",
+}
+
+
+def saved_filter_cache_key(request):
+    """
+    Cache key for a request's "last search/filter" on a HorillaListView /
+    HorillaCardView page.
+
+    Keying on request.path alone collides whenever the same URL embeds more
+    than one independent list in a single session - e.g. every pipeline
+    stage's candidate list shares one path
+    (candidate-lists-cbv/, get-offboarding-employees-cbv/, ...) and is only
+    told apart by its own GET params (onboarding_stage_id, recruitment_id,
+    stage_id, ...). Without those in the key, stage A's cached filter (or
+    stage B's, whichever wrote last) got served back to every other stage's
+    plain reload on the same path - each stage's own identifying params
+    got silently swapped for a sibling stage's, filtering its queryset by
+    the wrong stage and rendering "No records found" despite the tab's own
+    badge count being correct.
+
+    Folding in this request's GET params - minus the volatile ones that
+    only ever appear on the "search submitted" request
+    (filter_applied/search themselves, plus referrer/nav_url/page/view_id
+    that ride along with it) - keeps the key symmetric between that write
+    and a later plain-reload read of the same identity: both carry the same
+    identifying params (onboarding_stage_id and friends), so they resolve
+    to the same key, while two different stages' requests - which never
+    share those identifying params - no longer collide.
+    """
+    identity_params = sorted(
+        (key, value)
+        for key, value in request.GET.items()
+        if key not in SAVED_FILTER_CACHE_VOLATILE_PARAMS
+    )
+    return (
+        request.session.session_key + request.path + urlencode(identity_params) + "cbv"
+    )
+
+
 def update_saved_filter_cache(request, cache):
     """
     Method to save filter on cache
     """
-    key = request.session.session_key + request.path + "cbv"
+    key = saved_filter_cache_key(request)
     existing = cache.get(key)
     if existing:
         existing.update(

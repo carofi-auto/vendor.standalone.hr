@@ -54,6 +54,7 @@ from horilla_views.cbv_methods import (  # update_initial_cache,
     hx_request_required,
     login_required,
     paginator_qry,
+    saved_filter_cache_key,
     saved_filter_path_query,
     sortby,
     split_by_import_reference,
@@ -128,6 +129,12 @@ class HorillaListView(ListView):
     columns: list = []
     export_columns = []
     default_columns: list = []
+    # Optional {column_key: plain_text_label} overrides for the "Columns"
+    # show/hide panel, for columns whose column[0] is HTML meant for the
+    # <th> itself (e.g. a per-stage "+ Task" action column) rather than a
+    # usable checkbox label. Empty by default -- every column falls back to
+    # column[0], unchanged from before this existed.
+    toggle_labels: dict = {}
     search_url: str = ""
     bulk_select_option: bool = True
     filter_selected: bool = True
@@ -153,6 +160,11 @@ class HorillaListView(ListView):
     nested_group_by_fields: list = []
 
     custom_empty_template: str = ""
+
+    # Name of a model method returning {column attribute: extra CSS classes}
+    # for that row, letting a view shade individual cells (e.g. the fields an
+    # attendance request wants changed) without forking this list template.
+    cell_class_method: str = ""
 
     action_method: str = """"""
     """
@@ -271,14 +283,10 @@ class HorillaListView(ListView):
 
                 if "filter_applied" in query_dict.keys() or "search" in query_dict:
                     update_saved_filter_cache(self.request, CACHE)
-                elif CACHE.get(
-                    str(self.request.session.session_key) + self.request.path + "cbv"
-                ):
-                    query_dict = CACHE.get(
-                        str(self.request.session.session_key)
-                        + self.request.path
-                        + "cbv"
-                    )["query_dict"]
+                elif CACHE.get(saved_filter_cache_key(self.request)):
+                    query_dict = CACHE.get(saved_filter_cache_key(self.request))[
+                        "query_dict"
+                    ]
 
                 default_filter = models.SavedFilter.objects.filter(
                     saved_filter_path_query(self.request),
@@ -347,6 +355,7 @@ class HorillaListView(ListView):
         context["export_fields"] = self.export_fields
         context["custom_empty_template"] = self.custom_empty_template
         context["records_count_in_tab"] = self.records_count_in_tab
+        context["cell_class_method"] = self.cell_class_method
         if not self.verbose_name:
             self.verbose_name = self.model.__class__
         context["stored_filters"] = models.SavedFilter.objects.filter(
@@ -424,7 +433,7 @@ class HorillaListView(ListView):
             self.default_columns = []
 
         self.toggle_form = ToggleColumnForm(
-            self.columns, self.default_columns, hidden_fields
+            self.columns, self.default_columns, hidden_fields, self.toggle_labels
         )
 
         # Remove hidden columns from visible_column
@@ -1898,14 +1907,10 @@ class HorillaCardView(ListView):
                 query_dict = self.request.GET
                 if "filter_applied" in query_dict.keys() or "search" in query_dict:
                     update_saved_filter_cache(self.request, CACHE)
-                elif CACHE.get(
-                    str(self.request.session.session_key) + self.request.path + "cbv"
-                ):
-                    query_dict = CACHE.get(
-                        str(self.request.session.session_key)
-                        + self.request.path
-                        + "cbv"
-                    )["query_dict"]
+                elif CACHE.get(saved_filter_cache_key(self.request)):
+                    query_dict = CACHE.get(saved_filter_cache_key(self.request))[
+                        "query_dict"
+                    ]
 
                 self._saved_filters = query_dict
                 self.request.exclude_filter_form = True
@@ -2606,9 +2611,17 @@ class HorillaNavView(TemplateView):
             context["custom_filter_rows"] = getattr(filterset, "custom_filter_rows", [])
             context["applied_filter_count"] = self._get_applied_filter_count(filterset)
 
-        context["active_view"] = models.ActiveView.objects.filter(
-            path=self.request.path
-        ).first()
+        active_view = models.ActiveView.objects.filter(path=self.request.path).first()
+        # An explicit ?view= on the request is a deliberate choice for THIS
+        # render and outranks whatever was last persisted - without this the
+        # toggle highlighted the stored type while the page had been asked
+        # for (and rendered) the requested one, so highlight and content
+        # disagreed. Not saved here; the toggle's own active-hnv-view-type
+        # request still owns persisting a user's choice.
+        requested_view = self.request.GET.get("view")
+        if requested_view and (not active_view or active_view.type != requested_view):
+            active_view = models.ActiveView(path=self.request.path, type=requested_view)
+        context["active_view"] = active_view
 
         extra_params = {}
 
