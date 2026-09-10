@@ -99,6 +99,21 @@
         max-height: none !important;
         overflow-y: visible !important;
     }
+
+    /* Recruitment/Onboarding/Offboarding pipeline pages also nest their
+       per-job/per-offboarding stage tables under .oh-tabs__content (their
+       own tab bar, one tab per job/offboarding), so they picked up the
+       rule above too - but unlike the profile/detail tabs it was written
+       for, the pipeline page's own body scrolls (there's no extra ancestor
+       wrapper providing an outer scrollbar), so dropping the inner cap
+       just let each stage's table grow to its full row count instead of
+       scrolling internally. Restore the cap for tables inside a pipeline
+       tab's content (id starts with "pipelineTabContent", shared by all
+       three apps' *_pipeline_shell.html). */
+    [id^="pipelineTabContent"] .heightContainer {
+        max-height: calc(100vh - 260px) !important;
+        overflow-y: auto !important;
+    }
 </style>
 <script>
     document.addEventListener("DOMContentLoaded", function () {

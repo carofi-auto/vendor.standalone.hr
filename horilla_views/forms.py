@@ -35,12 +35,14 @@ class ToggleColumnForm(forms.Form):
         columns,
         default_columns,
         hidden_fields: list,
+        toggle_labels: dict = None,
         *args,
         **kwargs,
     ):
         request = getattr(_thread_locals, "request", {})
         self.request = request
         super().__init__(*args, **kwargs)
+        toggle_labels = toggle_labels or {}
         for column in columns:
             initial = True
             if column[1] in hidden_fields:
@@ -51,8 +53,18 @@ class ToggleColumnForm(forms.Form):
             # First column is the primary/fixed column — always visible.
             if columns and column == columns[0]:
                 initial = True
+            # column[0] doubles as the actual <th> header content (rendered
+            # unescaped in horilla_list_table.html), so for a column whose
+            # header is a whole HTML button/icon rather than plain text
+            # (e.g. a per-stage "+ Task" action column), it is NOT a usable
+            # checkbox label as-is -- stripping tags isn't enough either,
+            # since a <script> block's text content would leak through
+            # (the same class of bug index.js's htmx:afterSwap handler
+            # comment already documents for tooltips). `toggle_labels` lets
+            # a view supply a real short label per column key for exactly
+            # this case; every other column keeps using column[0] directly.
             self.fields[column[1]] = forms.BooleanField(
-                label=column[0], initial=initial
+                label=toggle_labels.get(column[1], column[0]), initial=initial
             )
 
     def as_list(self) -> SafeText:

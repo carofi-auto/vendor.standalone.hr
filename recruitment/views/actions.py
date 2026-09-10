@@ -583,10 +583,4 @@ def get_mail_preview(request):
             f"</p>{rendered_body}"
         )
 
-    # Wrap in styled div
-    textarea_field = (
-        f'<div class="oh-input oh-input--textarea" '
-        f'style="border: solid .1px #dbd7d7; padding:5px;">{rendered_body}</div>'
-    )
-
-    return HttpResponse(textarea_field, content_type="text/html")
+    return HttpResponse(rendered_body, content_type="text/html")
