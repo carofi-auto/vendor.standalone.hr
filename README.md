@@ -83,6 +83,10 @@ Full Docker guide, including production deployment: [docker/README.md](docker/RE
 
 ### Manual Installation
 
+Requires **Python 3.12, 3.13 or 3.14**, and pip 21.3 or newer. Python 3.15 is
+not usable yet: `spacy` declares `Requires-Python <3.15` and is imported at
+module scope, so the app cannot start on it.
+
 ```bash
 # Clone and setup (defaults to the stable 2.0 branch)
 git clone https://github.com/horilla/horilla-hr.git
@@ -91,6 +95,12 @@ cd horilla-hr
 # Create virtual environment
 python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Upgrade pip FIRST. A venv inherits the system pip, and an older one does not
+# recognise current manylinux wheel tags -- it then tries to compile packages
+# like cryptography and PyMuPDF from source, which needs a C toolchain most
+# machines do not have. The Docker build already does this; do the same here.
+python -m pip install --upgrade pip
 
 # Install dependencies
 pip install -r requirements.txt
