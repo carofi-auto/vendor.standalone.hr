@@ -326,10 +326,10 @@
         </div>
         {% if report_description %}<p class="sr-letterhead__desc">{{ report_description }}</p>{% endif %}
         <p class="sr-letterhead__period" id="sr-period-label"></p>
-        {# Some reports analyse a fixed window rather than the selected one
+        {% comment %} Some reports analyse a fixed window rather than the selected one
            (turnover's rolling 6 months, say) and explain that in
            period_note. Without this the number looks like it ignored the
-           filter for no reason. #}
+           filter for no reason. {% endcomment %}
         <p class="sr-letterhead__note" id="sr-period-note" hidden></p>
     </div>
 
