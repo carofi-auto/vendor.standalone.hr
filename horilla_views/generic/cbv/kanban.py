@@ -26,6 +26,10 @@ class HorillaKanbanView(HorillaCardView):
     folded_groups: list = []
     action_method: str = """"""
     group_label_key: str = ""
+    # Plural noun for this board's columns, shown in the "No <label> found"
+    # empty state when there are none (e.g. "stages", "statuses"). Falls
+    # back to "groups" in the template when left blank.
+    empty_group_label: str = ""
 
     def get_related_groups(self, *args, **kwargs):
         related_groups = self.group_filter_class(self.request.GET).qs
@@ -262,6 +266,7 @@ class HorillaKanbanView(HorillaCardView):
                     "filter_class": self.filter_class.__name__,
                     "group_by_field": self.group_key,
                     "kanban_attrs": self.kanban_attrs,
+                    "empty_group_label": self.empty_group_label,
                 }
             )
 

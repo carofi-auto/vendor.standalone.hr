@@ -288,7 +288,7 @@ def recruitment(request):
                     verb_es="Has sido elegido/a como uno de los gerentes de contratación",
                     verb_fr="Vous êtes choisi(e) comme l'un des responsables du recrutement",
                     icon="people-circle",
-                    redirect=reverse("pipeline"),
+                    redirect=reverse("cbv-pipeline"),
                 )
             return HorillaRedirect(request)
     return render(
@@ -400,7 +400,7 @@ def recruitment_update(request, rec_id):
                     verb_fr=f"{recruitment_obj} a été mis(e) à jour. Vous êtes choisi(e) comme\
                             l'un des responsables",
                     icon="people-circle",
-                    redirect=reverse("pipeline"),
+                    redirect=reverse("cbv-pipeline"),
                 )
 
             return HttpResponse(
@@ -828,7 +828,7 @@ def stage_update_pipeline(request, stage_id):
                     verb_fr=f"L'étape {stage_obj.stage} dans le recrutement {stage_obj.recruitment_id}\
                           a été mise à jour.Vous avez été choisi(e) comme l'un des responsables",
                     icon="people-circle",
-                    redirect=reverse("pipeline"),
+                    redirect=reverse("cbv-pipeline"),
                 )
 
             return HorillaRedirect(request)
@@ -867,7 +867,7 @@ def recruitment_update_pipeline(request, rec_id):
                     verb_fr=f"{recruitment_obj} a été mis(e) à jour. Vous avez été\
                             choisi(e) comme l'un des responsables",
                     icon="people-circle",
-                    redirect=reverse("pipeline"),
+                    redirect=reverse("cbv-pipeline"),
                 )
 
             return HorillaRedirect(request)
@@ -963,7 +963,7 @@ def candidate_stage_update(request, cand_id):
                 verb_es=f"Nuevo candidato llegó a la etapa {stage_obj.stage}",
                 verb_fr=f"Nouveau candidat arrivé à l'étape {stage_obj.stage}",
                 icon="person-add",
-                redirect=reverse("pipeline"),
+                redirect=reverse("cbv-pipeline"),
             )
 
         return JsonResponse(
@@ -1281,7 +1281,7 @@ def stage(request):
                     verb_fr=f"L'étape {stage_obj} a été mise à jour dans le recrutement\
                           {stage_obj.recruitment_id}. Vous avez été choisi(e) comme l'un des responsables",
                     icon="people-circle",
-                    redirect=reverse("pipeline"),
+                    redirect=reverse("cbv-pipeline"),
                 )
 
             return HorillaRedirect(request)

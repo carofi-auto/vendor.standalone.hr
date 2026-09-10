@@ -309,8 +309,9 @@ class RecruitmentForm(HorillaFormView):
         Process form submission to save or update a Recruitment object and display success message.
         """
         targets_to_reload = []
+        is_create = not form.instance.pk
 
-        if form.instance.pk:
+        if not is_create:
             recruitment = form.save()
             recruitment_managers = self.request.POST.getlist("recruitment_managers")
             if recruitment_managers:
@@ -333,11 +334,24 @@ class RecruitmentForm(HorillaFormView):
             message = _("Recruitment Created Successfully")
         CACHE.delete(f"matching_resumes_{recruitment.pk}")
         messages.success(self.request, message)
-        if self.request.GET.get("pipeline") == "true" or (
+
+        from_pipeline = self.request.GET.get("pipeline") == "true" or (
             self.request.resolver_match
             and self.request.resolver_match.url_name == "recruitment-update-pipeline"
-        ):
-            # Refresh pipeline container only, instead of reloading the whole page.
+        )
+        if from_pipeline and is_create:
+            # A brand-new recruitment has no tab yet - the per-tab nav's
+            # #applyFilter only re-fetches the CURRENTLY open tab's content,
+            # it never rebuilds the tab bar itself. Navigate the whole page
+            # instead so RecruitmentTabView re-runs and picks the new
+            # recruitment's tab up; RecruitmentTabView orders tabs newest
+            # first, so with no stored active tab for this fresh load it
+            # opens directly on the recruitment just created.
+            script = f"window.location.href = '{reverse('cbv-pipeline')}';"
+            return self.HttpResponse(script=script)
+        if from_pipeline:
+            # Editing an existing recruitment: its tab already exists and is
+            # the one open, so just refresh that tab's own content.
             targets_to_reload.append("#applyFilter")
 
         return self.HttpResponse(targets_to_reload=targets_to_reload)

@@ -215,6 +215,14 @@ class StageFormView(HorillaFormView):
         context = super().get_context_data(**kwargs)
         rec_id = self.request.GET.get("recruitment_id")
         self.form.fields["recruitment_id"].initial = rec_id
+        # Add Stage is opened from one recruitment's own pipeline tab
+        # (recruitment_pipeline_actions()'s hx-get always carries that
+        # recruitment's ?recruitment_id=) - only setting .initial left the
+        # field a fully open dropdown letting the user pick a DIFFERENT
+        # recruitment to add the stage to instead, defeating the point of
+        # opening the form from that tab. Lock it, mirroring
+        # OffboardingStageFormView's offboarding_id widget.
+        self.form.fields["recruitment_id"].widget = forms.HiddenInput()
         if self.form.instance.pk:
             self.form_class.verbose_name = _("Edit Stage")
             self.form_class(instance=self.form.instance)
@@ -271,7 +279,7 @@ class StageFormView(HorillaFormView):
                         verb_fr=f"L'étape {stage_obj} a été mise à jour dans le recrutement\
                             {stage_obj.recruitment_id}. Vous avez été choisi(e) comme l'un des responsables",
                         icon="people-circle",
-                        redirect=reverse("pipeline"),
+                        redirect=reverse("cbv-pipeline"),
                     )
                 # Refresh pipeline tab content immediately after creating a stage.
                 targets_to_reload.append("#applyFilter")

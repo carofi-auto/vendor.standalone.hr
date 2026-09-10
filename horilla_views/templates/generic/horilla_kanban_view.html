@@ -39,6 +39,28 @@
     >{% csrf_token %}</div>
 
     <div class="flex gap-2.5 flex-nowrap overflow-auto groupContainer">
+        {% if not grouped_items %}
+            {# This board has no columns to group records into (e.g. a       #}
+            {# recruitment with zero stages) - grouped_items is then empty   #}
+            {# and the loop below renders nothing, leaving a blank board     #}
+            {# with no indication why. empty_group_label lets each view name #}
+            {# its own columns (recruitment/onboarding: "stages", project:   #}
+            {# "statuses", ...) since this template is shared by every       #}
+            {# kanban board; views that don't set it fall back to "groups".  #}
+            <div class="oh-wrapper" align="center" style="margin-top: 7vh; margin-bottom: 7vh; width: 100%;">
+                <div align="center">
+                    <img
+                        src='{% static "images/ui/search.svg" %}'
+                        class="oh-404__image"
+                        alt="{% trans 'Page not found. 404.' %}"
+                    >
+                    <h1 class="oh-404__title">{% blocktrans with label=empty_group_label|default:_("groups") %}No {{ label }} found{% endblocktrans %}</h1>
+                    <p class="oh-404__subtitle">
+                        {% blocktrans with label=empty_group_label|default:_("groups") %}There are no {{ label }} to display.{% endblocktrans %}
+                    </p>
+                </div>
+            </div>
+        {% endif %}
         {% for key, group in grouped_items.items %}
 
         <div

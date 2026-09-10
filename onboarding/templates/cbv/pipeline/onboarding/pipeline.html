@@ -3,16 +3,16 @@
 {% block content %}
     {% include "generic/components.html" %}
 
-    <div
-        hx-get="{% url 'cbv-pipeline-nav-onboarding' %}"
-        hx-trigger="load"
-    >
-    </div>
-
+    {% comment %}
+    No page-level Nav here, matching /recruitment/cbv-pipeline/: that page
+    renders its tab view alone and lets each tab's own Nav
+    (RecruitmentCandidateNav) carry the title, Search+Filter and view-type
+    controls instead.
+    {% endcomment %}
     <div
         class="oh-wrapper"
         id="pipelineContainer"
-        hx-get="{% url 'cbv-pipeline-tab-onboarding' %}?{{ request.GET.urlencode }}"
+        hx-get="{% url 'cbv-pipeline-tab-onboarding' %}"
         hx-trigger="load"
     >
     </div>

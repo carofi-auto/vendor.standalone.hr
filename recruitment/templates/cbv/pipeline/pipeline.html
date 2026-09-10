@@ -40,12 +40,12 @@
 
     {% include "generic/components.html" %}
 
-    <div
-        hx-get="{% url 'cbv-pipeline-nav' %}{% if request.GET.obj_id %}?obj_id={{ request.GET.obj_id }}{% endif %}"
-        hx-trigger="load"
-    >
-    </div>
-
+    {% comment %}
+    No page-level Nav here, matching /recruitment/recruitment-settings-view/:
+    that page renders its tab view alone and lets each tab's own Nav carry the
+    title, Create button and Search+Filter. PipelineNav's title/Create/view-type
+    controls now live on RecruitmentCandidateNav (the per-job-tab Nav) instead.
+    {% endcomment %}
     <div
         class="oh-wrapper"
         id="pipelineContainer"

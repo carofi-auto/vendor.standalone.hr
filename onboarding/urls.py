@@ -289,6 +289,11 @@ urlpatterns = [
         pipeline.RecruitmentPipelineContentShell.as_view(),
         name="onboarding-pipeline-shell",
     ),
+    path(
+        "onboarding-pipeline-tab-nav/<int:rec_id>/",
+        pipeline.RecruitmentCandidateNav.as_view(),
+        name="onboarding-pipeline-tab-nav",
+    ),
     # path("cbv-change-stage/<int:pk>/",pipeline.ChangeStage.as_view(),name="cbv-change-stage")
     # ── Onboarding Modern Dashboard ──────────────────────────────────────────
     path(

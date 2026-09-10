@@ -699,8 +699,15 @@ class HorillaDeleteConfirmationView(View):
         # deleting related objects
         collector.nested(delete_callback)
         reload_target = self.request.GET.get("reload_target")
+        redirect_url = self.request.GET.get("redirect_url")
         script = ""
-        if reload_target:
+        if redirect_url:
+            # For a delete that removes a whole tab/record the page's own
+            # nav is built around (e.g. a recruitment's job tab) - an
+            # in-place click reload can't make that tab disappear, so
+            # navigate the whole page instead.
+            script = f"window.location.href = {json.dumps(redirect_url)};"
+        elif reload_target:
             script = f"$('{reload_target}').first().click();"
 
         return HorillaFormView.HttpResponse(script=script)

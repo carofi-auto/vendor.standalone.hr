@@ -5,6 +5,7 @@ This module is used to map url path with view methods.
 """
 
 from django.urls import path
+from django.views.generic import RedirectView
 
 from base.views import add_remove_dynamic_fields, object_duplicate
 from recruitment import cbvs
@@ -121,7 +122,21 @@ urlpatterns = [
         views.recruitment_reopen_pipeline,
         name="recruitment-reopen-pipeline",
     ),
-    path("pipeline/", views.recruitment_pipeline, name="pipeline"),
+    # The pre-CBV pipeline page (views.recruitment_pipeline +
+    # templates/pipeline/*.html) was superseded by PipelineView at
+    # `cbv-pipeline/` but never retired, and it no longer renders correctly:
+    # its Bootstrap-era markup now inherits the Tailwind-restyled global
+    # chrome, so it came up as a broken mix of both. Anything still holding
+    # this url - notifications created before their `redirect` was repointed
+    # (the url is frozen into each row's data at send time), bookmarks, the
+    # post-action `redirect(recruitment_pipeline)` calls in views.py - is
+    # sent to the working page instead. `query_string` keeps `?closed=...`
+    # and friends, which the CBV page reads too.
+    path(
+        "pipeline/",
+        RedirectView.as_view(pattern_name="cbv-pipeline", query_string=True),
+        name="pipeline",
+    ),
     path("pipeline-search/", views.filter_pipeline, name="pipeline-search"),
     path(
         "pipeline-stages-component/<str:view>/",
@@ -1067,6 +1082,11 @@ urlpatterns = [
         "recruitment-pipeline-shell/<int:rec_id>/",
         pipeline.RecruitmentPipelineContentShell.as_view(),
         name="recruitment-pipeline-shell",
+    ),
+    path(
+        "recruitment-pipeline-tab-nav/<int:rec_id>/",
+        pipeline.RecruitmentCandidateNav.as_view(),
+        name="recruitment-pipeline-tab-nav",
     ),
     path(
         "cbv-change-stage/<int:pk>/",

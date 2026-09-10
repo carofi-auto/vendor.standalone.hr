@@ -1,0 +1,71 @@
+{% load i18n %}
+{% load static %}
+
+<div class="oh-dropdown__filter-body">
+    <div class="oh-accordion">
+        <div class="oh-accordion-header">
+            {% trans 'Candidate' %}
+        </div>
+        <div class="oh-accordion-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <div class="oh-input-group">
+                        <label class="oh-label">{% trans 'Tasks' %}</label>
+                        {{ form.tasks }}
+                    </div>
+                    <div class="oh-input-group">
+                        <label class="oh-label">{% trans 'Task Status' %}</label>
+                        {{ form.task_status }}
+                    </div>
+                    <div class="oh-input-group">
+                        <label class="oh-label">{% trans 'Start Date' %}</label>
+                        {{ form.start_date }}
+                    </div>
+                    <div class="oh-input-group">
+                        <label class="oh-label">{% trans 'End Date' %}</label>
+                        {{ form.end_date }}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <div class="oh-input-group">
+                        <label class="oh-label">{% trans 'Portal Sent' %}?</label>
+                        {{ form.portal_sent }}
+                    </div>
+                    <div class="oh-input-group">
+                        <label class="oh-label">{% trans 'Joining Set' %}?</label>
+                        {{ form.joining_set }}
+                    </div>
+                    <div class="oh-input-group">
+                        <label class="oh-label">{% trans 'Probation End From' %}</label>
+                        {{ form.probation_end_from }}
+                    </div>
+                    <div class="oh-input-group">
+                        <label class="oh-label">{% trans 'Probation End Till' %}</label>
+                        {{ form.probation_end_till }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="oh-accordion">
+        <div class="oh-accordion-header">
+            {% trans 'Interview' %}
+        </div>
+        <div class="oh-accordion-body">
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <div class="oh-input-group">
+                        <label class="oh-label">{% trans 'Scheduled From' %}</label>
+                        {{ form.scheduled_from }}
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6">
+                    <div class="oh-input-group">
+                        <label class="oh-label">{% trans 'Scheduled Till' %}</label>
+                        {{ form.scheduled_till }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

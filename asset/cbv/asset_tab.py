@@ -159,10 +159,14 @@ class AssetTabView(HorillaTabView):
             {
                 "title": _("Assets"),
                 "url": f"{reverse('assets-tab-list-view',kwargs={'pk': pk})}",
+                "badge": AssetAssignment.objects.filter(assigned_to_employee_id=pk)
+                .exclude(return_status__isnull=False)
+                .count(),
             },
             {
                 "title": _("Asset Request"),
                 "url": f"{reverse('asset-request-tab-shell',kwargs={'pk': pk})}",
+                "badge": AssetRequest.objects.filter(requested_employee_id=pk).count(),
             },
         ]
         return context
