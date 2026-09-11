@@ -760,6 +760,7 @@ def attendance_overtime_delete(request, obj_id):
             return HorillaRedirect(request)
     elif hx_target:
         return HttpResponse()
+    return HorillaRedirect(request)
 
 
 @login_required
@@ -1119,6 +1120,7 @@ def attendance_activity_import(request):
 
 @login_required
 @permission_required("attendance.add_attendanceactivity")
+@require_http_methods(["GET"])
 def attendance_activity_import_excel(request):
     if request.method == "GET":
         data_frame = pd.DataFrame(
