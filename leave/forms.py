@@ -515,6 +515,9 @@ class LeaveOneAssignForm(HorillaModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         reload_queryset(self.fields)
+        self.fields["employee_id"].widget.attrs[
+            "id"
+        ] = "id_leave_type_assign_employee_id"
         if self.instance and self.instance.pk:
             assigned_employee_ids = AvailableLeave.objects.filter(
                 leave_type_id=self.instance.pk
