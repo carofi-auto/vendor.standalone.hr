@@ -32,6 +32,80 @@ date and open a fresh Unreleased above it.
 ### Security      — vulnerabilities fixed; link the advisory and credit the reporter
 -->
 
+## [2.1.6] — 2026-09-11
+
+Bug-fix release. No security content. One migration, `employee.0006`, which
+alters only a field's `choices` and therefore emits no DDL on PostgreSQL — it
+exists to put migration state back in step with the models.
+
+### Fixed
+
+- **An internal developer note rendered onto every report page, and into
+  generated PDFs.** Django's template lexer is compiled without `re.DOTALL`, so
+  a `{# #}` comment spanning lines is not recognised as a comment at all and is
+  emitted as literal text. Nine templates shipped that way: all seven explorer
+  reports, the standard report letterhead, and `standard_report_pdf.html` —
+  the last of which put the note inside the PDFs that get circulated outside
+  the company. A repo-wide check now rejects any `{#` left unterminated on its
+  own line.
+
+- **The Employee dashboard never loaded its KPIs or charts.**
+
+- **A 500 on the attendance response endpoint.**
+
+- **The self-onboarding portal crashed on its final step.** The account it
+  creates is built directly from the portal form rather than through
+  `authenticate()`, so it carries no `.backend`. `login()` requires one
+  whenever several authentication backends are configured — always true here —
+  and raised `ValueError` instead of completing onboarding.
+
+- **Filters bled between lists that share a URL.** The saved-filter cache was
+  keyed on path alone, so every pipeline stage embedded at the same path
+  (candidate lists, offboarding employees) shared one entry: whichever stage
+  wrote last had its filter served back to the others, which then rendered "No
+  records found" while their own tab badge showed the correct count. The key
+  now includes the params that identify the individual list.
+
+- **Recruitment pipeline loading**, including N+1 queries, tab persistence,
+  mail preview, column-toggle labels, and notification links that pointed at a
+  stale pipeline.
+
+- **Onboarding**: a missing active view-toggle, the wrong pagination size, a
+  stage cache miss, and a two-column layout bug in the Create/Update Task
+  modals.
+
+- **The scheduler container reported itself unhealthy forever.** It reuses the
+  web image and inherited a `HEALTHCHECK` that curls `localhost:8000/health/`,
+  but it runs `run_scheduler` and binds no port, so the check could never pass.
+  Harmless under Compose; an orchestrator gating on health would have
+  restart-looped a service that was working correctly.
+
+- **`pip install -r requirements.txt` behaved differently across machines.**
+  Four packages had no version floor at all, and `pandas` asks for a different
+  `numpy` major above and below Python 3.14 — so the same file resolved
+  differently depending on the interpreter. Packages that ship compiled
+  artifacts now carry a floor and a major cap, so pip can select a build that
+  has a wheel for the interpreter in front of it instead of falling back to a
+  source compile. Every pure-Python pin, and so every advisory pin, is
+  unchanged. The README now also upgrades pip before installing, which the
+  Dockerfile always did and the manual instructions never mentioned.
+
+- **PMS**: nested scrollbars in the OKR detailed view.
+
+- **A duplicate Status column** on the work type and shift request tabs.
+
+- Requested Attendances now renders through the shared list table.
+
+### Changed
+
+- The Leave assign form and the Offboarding Exit Process pipeline follow the v2
+  layout, the latter using per-tab navigation to match Recruitment.
+- Filter, nav and pagination borders and accents follow the selected theme
+  colour, including the per-app quick-action panels.
+- Action button styling is consistent between detail and list views.
+- Translations updated for Arabic, German, English, Spanish and French,
+  including strings in JavaScript that were never marked for translation.
+
 ## [2.1.5] — 2026-09-09
 
 Bug-fix release. No security content and no migration — but it carries fixes
@@ -310,7 +384,10 @@ Secret — message delivery stops until it is set.
 docker pull horilla/horilla-hr:2.1.1
 ```
 
-[Unreleased]: https://github.com/horilla/horilla-hr/compare/2.1.3...HEAD
+[Unreleased]: https://github.com/horilla/horilla-hr/compare/2.1.6...HEAD
+[2.1.6]: https://github.com/horilla/horilla-hr/compare/2.1.5...2.1.6
+[2.1.5]: https://github.com/horilla/horilla-hr/compare/2.1.4...2.1.5
+[2.1.4]: https://github.com/horilla/horilla-hr/compare/2.1.3...2.1.4
 [2.1.3]: https://github.com/horilla/horilla-hr/compare/2.1.2...2.1.3
 [2.1.2]: https://github.com/horilla/horilla-hr/compare/2.1.1...2.1.2
 [2.1.1]: https://github.com/horilla/horilla-hr/releases/tag/2.1.1
