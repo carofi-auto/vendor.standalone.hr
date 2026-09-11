@@ -166,3 +166,12 @@ setuptools==84.0.0
 
 # Testing
 coverage>=7.0
+
+# --- Carofi additions -------------------------------------------------------
+# Google SSO. Pulled in only when ENABLE_SOCIAL_LOGIN is set; social_django is
+# appended to INSTALLED_APPS in horilla/settings/local_settings.py, and the
+# GoogleOAuth2 backend is APPENDED to AUTHENTICATION_BACKENDS there rather than
+# replacing it, so axes.AxesStandaloneBackend stays first.
+social-auth-app-django==6.0.1
+# AWS Secrets Manager loader (horilla/aws_secrets.py), read at settings time.
+boto3==1.43.92

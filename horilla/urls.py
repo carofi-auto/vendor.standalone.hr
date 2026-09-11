@@ -144,5 +144,12 @@ urlpatterns = [
     path("metrics/", metrics),
 ]
 
+# Carofi: Google SSO. Only mounted when enabled, so a deployment without
+# social_django in INSTALLED_APPS does not fail at import time.
+if getattr(settings, "ENABLE_SOCIAL_LOGIN", False):
+    urlpatterns.append(
+        path("social-auth/", include("social_django.urls", namespace="social"))
+    )
+
 # if settings.DEBUG:
 #     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

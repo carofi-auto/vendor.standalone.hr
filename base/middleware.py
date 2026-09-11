@@ -434,6 +434,14 @@ class ForcePasswordChangeMiddleware:
 
         if hasattr(request, "user") and request.user.is_authenticated:
             if getattr(request.user, "is_new_employee", True):
+                # Do not force local password change for social-authenticated
+                # users: they have no local password to change, so the redirect
+                # loops forever between /change-password/ and the dashboard.
+                backend_path = request.session.get("_auth_user_backend", "")
+                if backend_path.startswith("social_core.backends.") and getattr(
+                    settings, "ENABLE_SOCIAL_LOGIN", False
+                ):
+                    return self.get_response(request)
                 # HTMX sub-requests that originate from the change-password page
                 # (e.g. the notification button's hx-trigger="load") must be allowed
                 # through. Without this, the middleware redirects those sub-requests

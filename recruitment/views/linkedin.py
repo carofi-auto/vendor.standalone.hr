@@ -1,4 +1,5 @@
 import json
+import re
 
 import requests
 from bs4 import BeautifulSoup
@@ -94,8 +95,18 @@ def post_recruitment_in_linkedin(
         f"{site_url}/recruitment/application-form?recruitmentId={recruitment.id}"
     )
 
+    if not linkedin_acc.organization_id:
+        logger.error(
+            "LinkedIn account %s has no organization_id set; refusing to "
+            "post to a personal feed.",
+            linkedin_acc.id,
+        )
+        recruitment.publish_in_linkedin = False
+        recruitment.save()
+        return
+
     payload_dict = {
-        "author": f"urn:li:person:{linkedin_acc.sub_id}",
+        "author": f"urn:li:organization:{linkedin_acc.organization_id}",
         "lifecycleState": "PUBLISHED",
         "specificContent": {
             "com.linkedin.ugc.ShareContent": {
@@ -131,11 +142,57 @@ def post_recruitment_in_linkedin(
     response = requests.post(url, headers=headers, data=payload, timeout=30)
     if response.status_code == 201:
         response_data = response.json()
-        recruitment.linkedin_post_id = response_data.get("id")  # Store post ID
+        post_id = response_data.get("id")
+        logger.info(
+            "LinkedIn ugcPosts succeeded: post_id=%s author=%s",
+            post_id,
+            payload_dict["author"],
+        )
+        recruitment.linkedin_post_id = post_id
         recruitment.save()
-    else:
-        recruitment.publish_in_linkedin = False
+        return
+
+    duplicate_urn = _extract_duplicate_post_urn(response)
+    if duplicate_urn:
+        logger.info(
+            "LinkedIn ugcPosts duplicate detected; treating as success: post_id=%s",
+            duplicate_urn,
+        )
+        recruitment.linkedin_post_id = duplicate_urn
         recruitment.save()
+        return
+
+    logger.error(
+        "LinkedIn ugcPosts failed: status=%s body=%s author=%s",
+        response.status_code,
+        response.text,
+        payload_dict["author"],
+    )
+    recruitment.publish_in_linkedin = False
+    recruitment.save()
+
+
+_DUPLICATE_URN_RE = re.compile(r"urn:li:share:\d+")
+
+
+def _extract_duplicate_post_urn(response):
+    """If LinkedIn rejected the post as a duplicate, return the existing URN."""
+    if response.status_code != 422:
+        return None
+    try:
+        body = response.json()
+    except ValueError:
+        return None
+
+    is_duplicate = any(
+        err.get("code") == "DUPLICATE_POST"
+        for err in body.get("errorDetails", {}).get("inputErrors", [])
+    )
+    if not is_duplicate:
+        return None
+
+    match = _DUPLICATE_URN_RE.search(body.get("message", ""))
+    return match.group(0) if match else None
 
 
 def delete_post(recruitment):
