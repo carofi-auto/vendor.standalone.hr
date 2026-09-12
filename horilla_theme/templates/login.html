@@ -131,10 +131,14 @@
                 </p>
                 {% if social_login_enabled %}
                 <div class="oh-form-group">
-                    {# social_django 6.x decorates the auth-begin view with @require_POST to
-                       prevent login CSRF, so this MUST be a POST form -- a plain <a href> gets
-                       405. 1.x ran an older release where GET worked; pinning 6.0.1 changed the
-                       contract, and the button looked correct while being unclickable. #}
+                    {% comment %}
+                      social_django 6.x decorates the auth-begin view with @require_POST to
+                      prevent login CSRF, so this MUST be a POST form -- a plain <a href>
+                      gets 405. 1.x ran an older release where GET worked; pinning 6.0.1
+                      changed the contract, and the button looked correct while being
+                      unclickable. NOTE: {# #} is SINGLE-LINE ONLY in Django -- a multi-line
+                      one renders as visible text on the login page, which is what happened.
+                    {% endcomment %}
                     <form method="post" action="{{ social_login_url }}">
                         {% csrf_token %}
                         <button type="submit"
