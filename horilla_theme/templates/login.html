@@ -131,12 +131,18 @@
                 </p>
                 {% if social_login_enabled %}
                 <div class="oh-form-group">
-                    <a href="{{ social_login_url }}"
-                        class="oh-btn oh-onboarding-card__button mt-4 oh-btn--secondary oh-btn--shadow w-full mb-2"
-                        role="button">
-                        <ion-icon class="me-2" name="logo-google"></ion-icon>
-                        {% trans "Continue with Google" %}
-                    </a>
+                    {# social_django 6.x decorates the auth-begin view with @require_POST to
+                       prevent login CSRF, so this MUST be a POST form -- a plain <a href> gets
+                       405. 1.x ran an older release where GET worked; pinning 6.0.1 changed the
+                       contract, and the button looked correct while being unclickable. #}
+                    <form method="post" action="{{ social_login_url }}">
+                        {% csrf_token %}
+                        <button type="submit"
+                            class="oh-btn oh-onboarding-card__button mt-4 oh-btn--secondary oh-btn--shadow w-full mb-2">
+                            <ion-icon class="me-2" name="logo-google"></ion-icon>
+                            {% trans "Continue with Google" %}
+                        </button>
+                    </form>
                     <small class="text-muted text-center d-block">
                         {% trans "Only carofi.app Google Workspace accounts are allowed." %}
                     </small>

@@ -815,9 +815,10 @@ def login_user(request):
         if url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
             social_login_url += f"?{urlencode({'next': next_url})}"
 
-        if request.method == "POST":
-            return redirect(social_login_url)
-
+        # No POST branch here, deliberately. It used to redirect(social_login_url),
+        # but social_django 6.x marks the auth-begin view @require_POST, and a 302
+        # is followed by the browser with GET -- so that redirect produced a 405.
+        # The template posts straight to social:begin with a CSRF token instead.
         return render(
             request,
             "login.html",
