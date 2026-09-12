@@ -76,6 +76,11 @@ def _post_webhook(payload: dict) -> None:
 @receiver(pre_save, sender=LeaveRequest)
 def _capture_previous_status(sender, instance: LeaveRequest, **kwargs):
     """Stash the previous status so post_save can detect transitions."""
+    # raw=True means loaddata is installing a fixture. There is no status
+    # transition to report, related rows may not exist yet, and a fixture load
+    # must never look like a business event.
+    if kwargs.get("raw"):
+        return
     if instance.pk:
         try:
             instance._prev_status = (
@@ -91,6 +96,21 @@ def _capture_previous_status(sender, instance: LeaveRequest, **kwargs):
 def _notify_carofi_on_status_change(
     sender, instance: LeaveRequest, created, **kwargs
 ):
+    # raw=True means loaddata is installing a fixture, and this handler must not
+    # run. Two separate reasons:
+    #
+    #   * correctness -- _payload_for dereferences instance.employee_id and
+    #     instance.leave_type_id. During a fixture load those forward references
+    #     are not resolved yet, so the attribute access raises DoesNotExist
+    #     inside the atomic block; every subsequent row then fails with
+    #     TransactionManagementError and the original cause is masked.
+    #
+    #   * behaviour -- restoring a backup, seeding a database or running a test
+    #     fixture would otherwise POST real HMAC-signed webhooks to the Carofi
+    #     BFF, which would read them as genuine leave-status changes.
+    if kwargs.get("raw"):
+        return
+
     prev_status = getattr(instance, "_prev_status", None)
     if not created and instance.status == prev_status:
         return
